@@ -1,0 +1,137 @@
+/* Team Section */
+
+/* Carousel */
+.team-carousel {
+  position: relative;
+}
+
+.team-carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 48px;
+  height: 48px;
+  background-color: #262B3E;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.team-carousel-arrow:hover {
+  background-color: #C89D66;
+}
+
+.team-carousel-arrow.prev {
+  left: -8px;
+}
+
+.team-carousel-arrow.next {
+  right: -8px;
+}
+
+@media (min-width: 1024px) {
+  .team-carousel-arrow.prev {
+    left: -16px;
+  }
+
+  .team-carousel-arrow.next {
+    right: -20px;
+  }
+}
+
+.team-carousel-arrow svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Cards Container */
+.team-cards-wrapper {
+  overflow: hidden;
+  margin: 0 24px;
+}
+
+@media (min-width: 1024px) {
+  .team-cards-wrapper {
+    margin: 0 32px;
+  }
+}
+
+.team-cards {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  gap: 12px;
+}
+
+.team-card-wrapper {
+  flex-shrink: 0;
+  width: 100%;
+  padding: 0 4px;
+}
+
+@media (min-width: 768px) {
+  .team-card-wrapper {
+    width: 50%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .team-card-wrapper {
+    width: 33.333%;
+  }
+}
+
+/* Team Card */
+.team-card {
+  display: block;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.team-card-image {
+  height: 280px;
+  background: linear-gradient(135deg, #313851 0%, #262B3E 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.team-card-img {
+  object-fit: cover;
+}
+
+.team-card-avatar {
+  font-size: 80px;
+}
+
+.team-card-info {
+  padding: 24px;
+  text-align: center;
+}
+
+.team-card-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #262B3E;
+  margin-bottom: 8px;
+}
+
+.team-card-position {
+  font-size: 14px;
+  color: #262B3E;
+}

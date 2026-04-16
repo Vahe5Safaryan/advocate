@@ -1,0 +1,36 @@
+/* Form Input Component */
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  font-size: 15px;
+  background-color: white;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: #C89D66;
+  box-shadow: 0 0 0 3px rgba(200, 157, 102, 0.2);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: #9ca3af;
+}
+
+.form-select {
+  color: #7c7c7c;
+  cursor: pointer;
+}
+
+.form-textarea {
+  resize: none;
+  line-height: 1.6;
+}

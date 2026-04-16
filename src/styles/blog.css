@@ -1,0 +1,145 @@
+/* Blog Section */
+.blog-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.blog-description {
+  color: #7c7c7c;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* Blog Grid */
+.blog-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+@media (min-width: 768px) {
+  .blog-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .blog-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Blog Card */
+.blog-card-link {
+  text-decoration: none;
+}
+
+.blog-card {
+  background-color: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* Card Image */
+.blog-card-image {
+  position: relative;
+  height: 200px;
+  background: linear-gradient(135deg, #262B3E 0%, #010c2f 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blog-card-icon {
+  font-size: 64px;
+  opacity: 0.8;
+}
+
+.blog-card-category {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background-color: #C89D66;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Card Content */
+.blog-card-content {
+  padding: 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-card-date {
+  color: #C89D66;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.blog-card-title {
+  color: #262B3E;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 12px;
+  transition: color 0.3s ease;
+}
+
+.blog-card:hover .blog-card-title {
+  color: #C89D66;
+}
+
+.blog-card-excerpt {
+  color: #7c7c7c;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  flex: 1;
+}
+
+.blog-card-read-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #262B3E;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.blog-card-read-more svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s ease;
+}
+
+.blog-card:hover .blog-card-read-more {
+  color: #C89D66;
+}
+
+.blog-card:hover .blog-card-read-more svg {
+  transform: translateX(4px);
+}
+
+/* Blog Footer */
+.blog-footer {
+  text-align: center;
+  margin-top: 48px;
+}

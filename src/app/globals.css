@@ -1,26 +1,249 @@
-@import "tailwindcss";
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-gold: #C89D66;
+  --color-gold-hover: #b8894f;
+  --color-dark-blue: #262B3E;
+  --color-darker-blue: #010c2f;
+  --color-navy: #313851;
+  --color-gray-text: #7c7c7c;
+  --color-gray-light: #9B9B9B;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+a {
+  text-decoration: none;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: #171717;
+  font-family: 'Poppins', Arial, sans-serif;
+}
+
+/* Buttons */
+.btn-gold {
+  background-color: #C89D66;
+  color: white;
+  padding: 18px 44px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 19px;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  border: 2px solid #C89D66;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-gold:hover {
+  background-color: #010c2f;
+  border-color: #010c2f;
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: #262B3E;
+  padding: 18px 44px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 19px;
+  border: 2px solid #262B3E;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.btn-outline:hover {
+  background-color: #C89D66;
+  border-color: #C89D66;
+  color: white;
+}
+
+/* Section Styles */
+.section-title {
+  color: #C89D66;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+}
+
+.section-heading {
+  color: #262B3E;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Service Card */
+.service-card {
+  background-color: #262B3E;
+  padding: 28px 24px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.service-card:hover {
+  background-color: #C89D66;
+  transform: translateY(-5px);
+}
+
+.service-card .icon {
+  font-size: 40px;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+}
+
+.service-card h3 {
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.service-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.service-card ul li {
+  color: #9B9B9B;
+  font-size: 13px;
+  padding: 4px 0;
+  position: relative;
+  padding-left: 14px;
+}
+
+.service-card ul li::before {
+  content: "•";
+  color: #C89D66;
+  position: absolute;
+  left: 0;
+}
+
+.service-card:hover ul li {
+  color: white;
+}
+
+.service-card:hover ul li::before {
+  color: white;
+}
+
+/* Team Card */
+.team-card {
+  background-color: #262B3E;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.team-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+.team-card img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  object-position: top;
+}
+
+.team-card .info {
+  padding: 16px;
+  text-align: center;
+}
+
+.team-card h4 {
+  color: #262b3e;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.team-card .position {
+  color: #C89D66;
+  font-size: 13px;
+}
+
+/* Fancy Box */
+.fancy-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 0;
+}
+
+.fancy-box .icon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.fancy-box h5 {
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.fancy-box p {
+  color: #9B9B9B;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* Footer */
+footer {
+  background-color: #010c2f;
+  color: white;
+  padding: 50px 0 25px;
+}
+
+footer a {
+  color: #9B9B9B;
+  transition: color 0.3s ease;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: #C89D66;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .section-heading {
+    font-size: 26px;
+  }
+
+  .service-card {
+    padding: 24px 20px;
+  }
+}
+
+
+.mt-20{
+  margin-top: 20px;
+}
+
+.mt-30{
+  margin-top: 30px;
+}
+
+.pt-50{
+  padding-top: 50px;
 }

@@ -1,0 +1,33 @@
+/* Statistics Section */
+.statistics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+
+@media (min-width: 768px) {
+  .statistics-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.statistics-item {
+  text-align: center;
+}
+
+.statistics-number {
+  font-size: 36px;
+  font-weight: 700;
+  color: #C89D66;
+}
+
+@media (min-width: 768px) {
+  .statistics-number {
+    font-size: 48px;
+  }
+}
+
+.statistics-label {
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 12px;
+}

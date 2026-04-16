@@ -1,0 +1,141 @@
+/* Footer */
+.footer {
+  background-color: #010c2f;
+  color: white;
+  padding: 64px 0;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  padding-bottom: 48px;
+}
+
+@media (min-width: 768px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Company Info */
+.footer-logo {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.footer-logo-gold {
+  color: #C89D66;
+}
+
+.footer-description {
+  color: #9B9B9B;
+  margin-bottom: 24px;
+  line-height: 1.7;
+}
+
+.footer-social {
+  display: flex;
+  gap: 12px;
+}
+
+.footer-social-link {
+  width: 40px;
+  height: 40px;
+  background-color: #313851;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.footer-social-link:hover {
+  background-color: #C89D66;
+}
+
+.footer-social-icon {
+  font-size: 18px;
+}
+
+/* Footer Links */
+.footer-title {
+  color: white;
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-link {
+  color: #9B9B9B;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #C89D66;
+}
+
+/* Contact Info */
+.footer-contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.footer-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.footer-contact-icon {
+  color: #C89D66;
+  font-size: 20px;
+}
+
+.footer-contact-text {
+  color: #9B9B9B;
+}
+
+.footer-contact-link {
+  color: #9B9B9B;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-contact-link:hover {
+  color: #C89D66;
+}
+
+/* Copyright */
+.footer-copyright {
+  border-top: 1px solid #313851;
+  padding-top: 24px;
+  text-align: center;
+}
+
+.footer-copyright-text {
+  color: #9B9B9B;
+  font-size: 14px;
+}

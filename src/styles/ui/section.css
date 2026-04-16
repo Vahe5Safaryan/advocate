@@ -1,0 +1,24 @@
+/* Section Component - Unified spacing for all sections */
+.section {
+  padding: 40px 0;
+}
+
+/* Background variants */
+.section-bg-white {
+  background-color: #ffffff;
+}
+
+.section-bg-gray {
+  background-color: #f9fafb;
+}
+
+.section-bg-dark {
+  background-color: #010c2f;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .section {
+    padding: 60px 0;
+  }
+}
