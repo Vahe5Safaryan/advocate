@@ -37,7 +37,7 @@
 .contact-info-icon {
   width: 56px;
   height: 56px;
-  background-color: #C89D66;
+  background-color: #A38B4D;
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -53,7 +53,7 @@
 
 .contact-info-label {
   font-weight: 600;
-  color: #262B3E;
+  color: #0D3631;
   margin-bottom: 4px;
 }
 
@@ -72,7 +72,7 @@
 .contact-form-title {
   font-size: 24px;
   font-weight: 700;
-  color: #262B3E;
+  color: #0D3631;
   margin-bottom: 24px;
 }
 
@@ -110,7 +110,7 @@
 .contact-input:focus,
 .contact-select:focus,
 .contact-textarea:focus {
-  border-color: #C89D66;
+  border-color: #A38B4D;
   box-shadow: 0 0 0 3px rgba(200, 157, 102, 0.2);
 }
 

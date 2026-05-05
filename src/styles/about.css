@@ -15,19 +15,19 @@
 
 /* Left Content */
 .about-content {
-  background-color: #262B3E;
+  background-color: #0D3631;
   padding: 64px 32px;
 }
 
 @media (min-width: 1024px) {
   .about-content {
     width: 50%;
-    padding: 64px 56px;
+    padding: 40px 40px;
   }
 }
 
 .about-subtitle {
-  color: #C89D66;
+  color: #A38B4D;
   font-size: 14px;
   font-weight: 600;
   text-transform: uppercase;
@@ -108,7 +108,7 @@
   bottom: 32px;
   right: 32px;
   background: white;
-  padding: 24px 32px;
+  padding: 15px 20px;
   border-radius: 16px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   text-align: center;
@@ -117,12 +117,12 @@
 .about-stats-number {
   font-size: 48px;
   font-weight: 700;
-  color: #C89D66;
+  color: #A38B4D;
   margin-bottom: 8px;
 }
 
 .about-stats-label {
-  color: #262B3E;
+  color: #0D3631;
   font-weight: 600;
 }
 
@@ -134,7 +134,7 @@
   transform: translate(-50%, -50%);
   width: 80px;
   height: 80px;
-  background-color: #C89D66;
+  background-color: #A38B4D;
   border-radius: 50%;
   display: flex;
   align-items: center;

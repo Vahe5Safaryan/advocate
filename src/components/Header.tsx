@@ -1,38 +1,51 @@
 'use client';
 
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import {usePathname} from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import '@/styles/header.css';
 
-const menuItems = [
-    {title: 'Главная', href: '/'},
-    {
-        title: 'Услуги',
-        href: '/services',
-        submenu: [
-            {title: 'Уголовное право', href: '/services/criminal'},
-            {title: 'Гражданское право', href: '/services/civil'},
-            {title: 'Административное право', href: '/services/administrative'},
-            {title: 'Бухгалтерия', href: '/services/accounting'},
-            {title: 'Корпоративное право', href: '/services/corporate'},
-            {title: 'Инвестиции', href: '/services/investment'},
-        ]
-    },
-    {title: 'Команда', href: '/team'},
-    {title: 'Дела', href: '/cases'},
-    {title: 'Блог', href: '/blog'},
-    {title: 'О нас', href: '/about'},
-    {title: 'Контакты', href: '/contact'},
+const FALLBACK_MENU = [
+    { id: '1', title: 'Главная', href: '/', children: [] },
+    { id: '2', title: 'Услуги', href: '/services', children: [] },
+    { id: '3', title: 'Команда', href: '/team', children: [] },
+    { id: '4', title: 'Дела', href: '/cases', children: [] },
+    { id: '5', title: 'Блог', href: '/blog', children: [] },
+    { id: '6', title: 'О нас', href: '/about', children: [] },
+    { id: '7', title: 'Контакты', href: '/contact', children: [] },
 ];
+
+interface MenuItem {
+    id: string;
+    title: string;
+    href: string;
+    children: { id: string; title: string; href: string }[];
+}
 
 const languages = [
-    {code: 'ru', name: 'Русский', flag: '🇷🇺'},
-    {code: 'en', name: 'English', flag: '🇺🇸'},
-    {code: 'hy', name: 'Армянский', flag: '🇦🇲'},
+    { code: 'hy', name: 'Հայ', flag: '🇦🇲' },
+    { code: 'en', name: 'Eng', flag: '🇺🇸' },
+    { code: 'ru', name: 'Ру', flag: '🇷🇺' },
 ];
 
-export default function Header() {
+function getCookieLang(): string {
+    if (typeof document === 'undefined') return 'ru';
+    const match = document.cookie.match(/(?:^|;\s*)site-lang=([^;]*)/);
+    return match ? match[1] : 'ru';
+}
+
+export default function Header({
+    menuItems = [],
+    phone = '+374 (96) 374 374',
+    phone2 = '',
+    email = 'info@lsa.am',
+}: {
+    menuItems?: MenuItem[];
+    phone?: string;
+    phone2?: string;
+    email?: string;
+}) {
+    const items = menuItems.length > 0 ? menuItems : FALLBACK_MENU;
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
     const [isLangOpen, setIsLangOpen] = useState(false);
@@ -40,21 +53,33 @@ export default function Header() {
     const [currentLang, setCurrentLang] = useState(languages[0]);
     const [isScrolled, setIsScrolled] = useState(false);
     const pathname = usePathname();
+    const router = useRouter();
+
+    // Sync flag with cookie on mount
+    useEffect(() => {
+        const code = getCookieLang();
+        const found = languages.find((l) => l.code === code);
+        if (found) setCurrentLang(found);
+    }, []);
 
     const isActive = (href: string) => {
-        if (href === '/') {
-            return pathname === '/';
-        }
+        if (href === '/') return pathname === '/';
         return pathname.startsWith(href);
     };
 
     useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 100);
-        };
+        const handleScroll = () => setIsScrolled(window.scrollY > 100);
+        handleScroll();
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    const switchLang = (lang: (typeof languages)[number]) => {
+        document.cookie = `site-lang=${lang.code}; path=/; max-age=31536000`;
+        setCurrentLang(lang);
+        setIsLangOpen(false);
+        router.refresh();
+    };
 
     return (
         <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
@@ -70,14 +95,14 @@ export default function Header() {
 
                     {/* Desktop Navigation */}
                     <nav className="nav-desktop">
-                        {menuItems.map((item) => (
+                        {items.map((item) => (
                             <div
                                 key={item.href}
                                 className="nav-item"
-                                onMouseEnter={() => item.submenu && setActiveSubmenu(item.href)}
+                                onMouseEnter={() => item.children.length > 0 && setActiveSubmenu(item.href)}
                                 onMouseLeave={() => setActiveSubmenu(null)}
                             >
-                                {item.submenu ? (
+                                {item.children.length > 0 ? (
                                     <Link
                                         href={item.href}
                                         className={`nav-link nav-link-btn ${isScrolled ? 'dark' : 'light'} ${isActive(item.href) ? 'active' : ''}`}
@@ -94,9 +119,9 @@ export default function Header() {
                                     </Link>
                                 )}
 
-                                {item.submenu && activeSubmenu === item.href && (
+                                {item.children.length > 0 && activeSubmenu === item.href && (
                                     <div className="dropdown">
-                                        {item.submenu.map((subItem) => (
+                                        {item.children.map((subItem) => (
                                             <Link
                                                 key={subItem.href}
                                                 href={subItem.href}
@@ -116,7 +141,7 @@ export default function Header() {
                                 className={`lang-btn ${isScrolled ? 'dark' : 'light'}`}
                                 onClick={() => setIsLangOpen(!isLangOpen)}
                             >
-                                <span>{currentLang.flag}</span>
+                                <span>{currentLang.name}</span>
                                 <span className="lang-arrow">▼</span>
                             </button>
 
@@ -125,11 +150,8 @@ export default function Header() {
                                     {languages.map((lang) => (
                                         <button
                                             key={lang.code}
-                                            onClick={() => {
-                                                setCurrentLang(lang);
-                                                setIsLangOpen(false);
-                                            }}
-                                            className="lang-option"
+                                            onClick={() => switchLang(lang)}
+                                            className={`lang-option ${currentLang.code === lang.code ? 'active' : ''}`}
                                         >
                                             <span>{lang.flag}</span>
                                             <span>{lang.name}</span>
@@ -144,13 +166,13 @@ export default function Header() {
                     <div className="header-contact">
                         <div className="phone-icon">
                             <svg fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                             </svg>
                         </div>
                         <div>
-                            <p className="phone-number">+374 (96) 374 374</p>
-                            <p className={`phone-email ${isScrolled ? '' : 'light'}`}>info@lsa.am</p>
+                            <p className="phone-number">{phone || '+374 (96) 374 374'}</p>
+                            {phone2 && <p className="phone-number">{phone2}</p>}
+                            <p className={`phone-email ${isScrolled ? '' : 'light'}`}>{email || 'info@lsa.am'}</p>
                         </div>
                     </div>
 
@@ -170,9 +192,9 @@ export default function Header() {
                 {/* Mobile Menu */}
                 <div className={`mobile-menu ${isMenuOpen ? 'open' : ''}`}>
                     <nav>
-                        {menuItems.map((item) => (
+                        {items.map((item) => (
                             <div key={item.href}>
-                                {item.submenu ? (
+                                {item.children.length > 0 ? (
                                     <div className="mobile-nav-item-with-submenu">
                                         <Link
                                             href={item.href}
@@ -197,9 +219,9 @@ export default function Header() {
                                         {item.title}
                                     </Link>
                                 )}
-                                {item.submenu && mobileSubmenu === item.href && (
+                                {item.children.length > 0 && mobileSubmenu === item.href && (
                                     <div className="mobile-submenu">
-                                        {item.submenu.map((subItem) => (
+                                        {item.children.map((subItem) => (
                                             <Link
                                                 key={subItem.href}
                                                 href={subItem.href}
@@ -213,6 +235,28 @@ export default function Header() {
                                 )}
                             </div>
                         ))}
+
+                        {/* Mobile Language Switcher */}
+                        <div style={{ display: 'flex', gap: '8px', padding: '12px 0', borderTop: '1px solid rgba(255,255,255,0.1)', marginTop: '8px' }}>
+                            {languages.map((lang) => (
+                                <button
+                                    key={lang.code}
+                                    onClick={() => { switchLang(lang); setIsMenuOpen(false); }}
+                                    style={{
+                                        background: currentLang.code === lang.code ? 'rgba(212,175,55,0.2)' : 'transparent',
+                                        border: `1px solid ${currentLang.code === lang.code ? '#A38B4D' : 'rgba(255,255,255,0.2)'}`,
+                                        borderRadius: '6px',
+                                        padding: '6px 12px',
+                                        cursor: 'pointer',
+                                        color: currentLang.code === lang.code ? '#A38B4D' : 'inherit',
+                                        fontSize: '13px',
+                                        fontWeight: currentLang.code === lang.code ? 600 : 400,
+                                    }}
+                                >
+                                    {lang.name}
+                                </button>
+                            ))}
+                        </div>
                     </nav>
                 </div>
             </div>

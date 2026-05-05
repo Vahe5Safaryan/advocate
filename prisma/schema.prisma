@@ -1,0 +1,379 @@
+// Prisma Schema for LSA Legal Admin Panel
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== ADMIN ====================
+
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("admin")
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ==================== LANGUAGES ====================
+
+model Language {
+  id        String  @id @default(cuid())
+  code      String  @unique
+  name      String
+  flag      String
+  isDefault Boolean @default(false)
+  isActive  Boolean @default(true)
+}
+
+// ==================== HERO SLIDES ====================
+
+model HeroSlide {
+  id           String                 @id @default(cuid())
+  imageUrl     String
+  order        Int                    @default(0)
+  isActive     Boolean                @default(true)
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+  translations HeroSlideTranslation[]
+}
+
+model HeroSlideTranslation {
+  id          String    @id @default(cuid())
+  slideId     String
+  slide       HeroSlide @relation(fields: [slideId], references: [id], onDelete: Cascade)
+  language    String
+  subtitle    String
+  title       String
+  description String
+  buttonText  String    @default("Позвонить")
+
+  @@unique([slideId, language])
+}
+
+// ==================== SERVICES ====================
+
+model Service {
+  id           String               @id @default(cuid())
+  slug         String               @unique
+  icon         String               // emoji or icon identifier
+  order        Int                  @default(0)
+  isActive     Boolean              @default(true)
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  translations ServiceTranslation[]
+}
+
+model ServiceTranslation {
+  id        String  @id @default(cuid())
+  serviceId String
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  language  String
+  title      String
+  heroTitle  String
+  introTitle String  @default("")
+  items      String  // JSON array of service items for cards
+  intro      String  // JSON array of intro paragraphs
+  sections   String  // JSON array of {title, items[], paragraphs?:[{title,content}]}
+
+  @@unique([serviceId, language])
+}
+
+// ==================== TEAM MEMBERS ====================
+
+model TeamMember {
+  id            String                  @id @default(cuid())
+  slug          String                  @unique
+  imageUrl      String
+  licenseNumber String?
+  order         Int                     @default(0)
+  isActive      Boolean                 @default(true)
+  createdAt     DateTime                @default(now())
+  updatedAt     DateTime                @updatedAt
+  translations  TeamMemberTranslation[]
+}
+
+model TeamMemberTranslation {
+  id           String     @id @default(cuid())
+  teamMemberId String
+  teamMember   TeamMember @relation(fields: [teamMemberId], references: [id], onDelete: Cascade)
+  language     String
+  name         String
+  position     String
+  bio          String // JSON array of paragraphs
+
+  @@unique([teamMemberId, language])
+}
+
+// ==================== CATEGORIES ====================
+
+model Category {
+  id           String                @id @default(cuid())
+  slug         String                @unique
+  type         String                @default("blog") // blog, case
+  order        Int                   @default(0)
+  isActive     Boolean               @default(true)
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+  translations CategoryTranslation[]
+  blogPosts    BlogPost[]
+  caseStudies  CaseStudy[]
+}
+
+model CategoryTranslation {
+  id         String   @id @default(cuid())
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  language   String
+  name       String
+
+  @@unique([categoryId, language])
+}
+
+// ==================== BLOG POSTS ====================
+
+model BlogPost {
+  id           String                @id @default(cuid())
+  slug         String                @unique
+  imageUrl     String?
+  categoryId   String?
+  category     Category?             @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  publishedAt  DateTime?
+  isPublished  Boolean               @default(false)
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+  translations BlogPostTranslation[]
+}
+
+model BlogPostTranslation {
+  id       String   @id @default(cuid())
+  postId   String
+  post     BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  language String
+  title      String
+  introTitle String  @default("")
+  excerpt    String? // Auto-generated from intro, used for cards
+  intro      String  // Main intro paragraph
+  sections   String  // JSON array of {title, content}
+
+  @@unique([postId, language])
+}
+
+// ==================== CASE STUDIES ====================
+
+model CaseStudy {
+  id           String                 @id @default(cuid())
+  slug         String                 @unique
+  imageUrl     String?
+  categoryId   String?
+  category     Category?              @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  publishedAt  DateTime?
+  isPublished  Boolean                @default(false)
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+  translations CaseStudyTranslation[]
+}
+
+model CaseStudyTranslation {
+  id         String    @id @default(cuid())
+  caseId     String
+  case       CaseStudy @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  language   String
+  title      String
+  introTitle String    @default("")
+  intro      String
+  sections   String // JSON array of {title, content}
+
+  @@unique([caseId, language])
+}
+
+// ==================== MEDIA ====================
+
+model Media {
+  id        String   @id @default(cuid())
+  url       String
+  filename  String
+  mimeType  String
+  size      Int
+  alt       String?
+  createdAt DateTime @default(now())
+}
+
+// ==================== CONTACT REQUESTS ====================
+
+model ContactRequest {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  phone     String?
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+// ==================== STATISTICS ====================
+
+model Statistic {
+  id           String                  @id @default(cuid())
+  number       String
+  suffix       String                  @default("")
+  order        Int                     @default(0)
+  isActive     Boolean                 @default(true)
+  createdAt    DateTime                @default(now())
+  updatedAt    DateTime                @updatedAt
+  translations StatisticTranslation[]
+}
+
+model StatisticTranslation {
+  id          String    @id @default(cuid())
+  statisticId String
+  statistic   Statistic @relation(fields: [statisticId], references: [id], onDelete: Cascade)
+  language    String
+  label       String
+
+  @@unique([statisticId, language])
+}
+
+// ==================== ABOUT TABS ====================
+
+model AboutTab {
+  id           String                @id @default(cuid())
+  tabKey       String                @unique // mission | vision | values
+  order        Int                   @default(0)
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+  translations AboutTabTranslation[]
+}
+
+model AboutTabTranslation {
+  id         String   @id @default(cuid())
+  tabId      String
+  tab        AboutTab @relation(fields: [tabId], references: [id], onDelete: Cascade)
+  language   String
+  label      String
+  content    String   // HTML or plain text
+
+  @@unique([tabId, language])
+}
+
+// ==================== PROCESS STEPS ====================
+
+model ProcessStep {
+  id           String                    @id @default(cuid())
+  stepNumber   Int
+  order        Int                       @default(0)
+  createdAt    DateTime                  @default(now())
+  updatedAt    DateTime                  @updatedAt
+  translations ProcessStepTranslation[]
+}
+
+model ProcessStepTranslation {
+  id          String      @id @default(cuid())
+  stepId      String
+  step        ProcessStep @relation(fields: [stepId], references: [id], onDelete: Cascade)
+  language    String
+  title       String
+  description String
+
+  @@unique([stepId, language])
+}
+
+// ==================== PRACTICE AREAS ====================
+
+model PracticeArea {
+  id           String                     @id @default(cuid())
+  icon         String                     // emoji
+  order        Int                        @default(0)
+  createdAt    DateTime                   @default(now())
+  updatedAt    DateTime                   @updatedAt
+  translations PracticeAreaTranslation[]
+}
+
+model PracticeAreaTranslation {
+  id            String       @id @default(cuid())
+  practiceAreaId String
+  practiceArea  PracticeArea @relation(fields: [practiceAreaId], references: [id], onDelete: Cascade)
+  language      String
+  title         String
+  description   String
+
+  @@unique([practiceAreaId, language])
+}
+
+// ==================== CONTACT INFO ====================
+
+model ContactInfo {
+  id           String                    @id @default(cuid())
+  type         String                    // phone | phone2 | email | address | social
+  value        String
+  icon         String                    @default("")
+  link         String?
+  order        Int                       @default(0)
+  isActive     Boolean                   @default(true)
+  createdAt    DateTime                  @default(now())
+  updatedAt    DateTime                  @updatedAt
+  translations ContactInfoTranslation[]
+}
+
+model ContactInfoTranslation {
+  id            String      @id @default(cuid())
+  contactInfoId String
+  contactInfo   ContactInfo @relation(fields: [contactInfoId], references: [id], onDelete: Cascade)
+  language      String
+  label         String
+
+  @@unique([contactInfoId, language])
+}
+
+// ==================== SITE SETTINGS ====================
+
+model SiteSetting {
+  id           String                   @id @default(cuid())
+  key          String                   @unique
+  value        String
+  createdAt    DateTime                 @default(now())
+  updatedAt    DateTime                 @updatedAt
+  translations SiteSettingTranslation[]
+}
+
+model SiteSettingTranslation {
+  id        String      @id @default(cuid())
+  settingId String
+  setting   SiteSetting @relation(fields: [settingId], references: [id], onDelete: Cascade)
+  language  String
+  value     String
+
+  @@unique([settingId, language])
+}
+
+// ==================== MENU ITEMS ====================
+
+model MenuItem {
+  id           String                @id @default(cuid())
+  parentId     String?
+  parent       MenuItem?             @relation("MenuTree", fields: [parentId], references: [id])
+  children     MenuItem[]            @relation("MenuTree")
+  href         String
+  order        Int                   @default(0)
+  isActive     Boolean               @default(true)
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+  translations MenuItemTranslation[]
+}
+
+model MenuItemTranslation {
+  id         String   @id @default(cuid())
+  menuItemId String
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+  language   String
+  title      String
+
+  @@unique([menuItemId, language])
+}

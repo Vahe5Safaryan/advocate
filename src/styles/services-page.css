@@ -4,7 +4,7 @@
 .services-hero {
   position: relative;
   min-height: 350px;
-  background: linear-gradient(135deg, #010c2f 0%, #1a2a4a 100%);
+  background: linear-gradient(135deg, #0D3631 0%, #1a2a4a 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,13 +24,19 @@
 }
 
 .services-hero-title {
-  font-size: 48px;
+  font-size: 30px;
   font-weight: 700;
   color: white;
   margin-bottom: 16px;
 }
 
 @media (min-width: 768px) {
+  .services-hero-title {
+    font-size: 48px;
+  }
+}
+
+@media (min-width: 1024px) {
   .services-hero-title {
     font-size: 56px;
   }
@@ -51,7 +57,7 @@
 }
 
 .services-breadcrumb a:hover {
-  color: #C89D66;
+  color: #A38B4D;
 }
 
 .services-breadcrumb-separator {
@@ -66,7 +72,7 @@
 
 .services-page-label {
   display: inline-block;
-  color: #C89D66;
+  color: #A38B4D;
   font-size: 14px;
   font-weight: 600;
   text-transform: uppercase;
@@ -78,7 +84,7 @@
   font-family: var(--font-playfair), Georgia, serif;
   font-size: 36px;
   font-weight: 700;
-  color: #262B3E;
+  color: #0D3631;
   margin-bottom: 20px;
 }
 
@@ -89,7 +95,7 @@
 }
 
 .services-page-description {
-  color: #6b7280;
+  color: #333;
   font-size: 16px;
   line-height: 1.8;
   max-width: 800px;
@@ -131,7 +137,7 @@
 .services-page-card-icon {
   width: 60px;
   height: 60px;
-  border: 2px solid #C89D66;
+  border: 2px solid #A38B4D;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -141,13 +147,13 @@
 }
 
 .services-page-card:hover .services-page-card-icon {
-  background: #C89D66;
+  background: #A38B4D;
 }
 
 .services-page-card-icon svg {
   width: 28px;
   height: 28px;
-  color: #C89D66;
+  color: #A38B4D;
   transition: color 0.3s ease;
 }
 
@@ -162,13 +168,13 @@
 .services-page-card-title {
   font-size: 20px;
   font-weight: 700;
-  color: #262B3E;
+  color: #0D3631;
   margin-bottom: 16px;
   transition: color 0.3s ease;
 }
 
 .services-page-card:hover .services-page-card-title {
-  color: #C89D66;
+  color: #A38B4D;
 }
 
 .services-page-card-list {
@@ -182,7 +188,7 @@
   padding-left: 16px;
   padding-top: 6px;
   padding-bottom: 6px;
-  color: #6b7280;
+  color: #333;
   font-size: 14px;
   line-height: 1.5;
 }
@@ -191,7 +197,7 @@
   content: "•";
   position: absolute;
   left: 0;
-  color: #C89D66;
+  color: #A38B4D;
   font-weight: bold;
 }
 

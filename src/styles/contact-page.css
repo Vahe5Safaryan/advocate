@@ -4,7 +4,7 @@
 .contact-hero {
   position: relative;
   min-height: 350px;
-  background: linear-gradient(135deg, #010c2f 0%, #1a2a4a 100%);
+  background: linear-gradient(135deg, #0D3631 0%, #1a2a4a 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -51,7 +51,7 @@
 }
 
 .contact-breadcrumb a:hover {
-  color: #C89D66;
+  color: #A38B4D;
 }
 
 .contact-breadcrumb-separator {
@@ -62,7 +62,7 @@
 .contact-page-layout {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 48px;
+  gap: 20px;
   align-items: start;
 }
 
@@ -80,7 +80,7 @@
 
 .contact-page-label {
   display: inline-block;
-  background: #262B3E;
+  background: #0D3631;
   color: white;
   padding: 8px 16px;
   border-radius: 4px;
@@ -93,7 +93,7 @@
   font-family: var(--font-playfair), Georgia, serif;
   font-size: 36px;
   font-weight: 700;
-  color: #262B3E;
+  color: #0D3631;
   margin-bottom: 16px;
 }
 
@@ -132,7 +132,7 @@
 .contact-page-item-icon {
   width: 50px;
   height: 50px;
-  background: #262B3E;
+  background: #0D3631;
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -149,7 +149,7 @@
 .contact-page-item-title {
   font-size: 16px;
   font-weight: 700;
-  color: #262B3E;
+  color: #0D3631;
   margin-bottom: 4px;
 }
 
@@ -198,7 +198,7 @@
 .contact-page-form-group label {
   font-size: 14px;
   font-weight: 600;
-  color: #262B3E;
+  color: #0D3631;
 }
 
 .contact-page-form-group input,
@@ -209,7 +209,7 @@
   font-size: 15px;
   font-family: inherit;
   background: white;
-  color: #262B3E;
+  color: #0D3631;
   transition: all 0.3s ease;
 }
 
@@ -221,7 +221,7 @@
 .contact-page-form-group input:focus,
 .contact-page-form-group textarea:focus {
   outline: none;
-  border-color: #C89D66;
+  border-color: #A38B4D;
   box-shadow: 0 0 0 3px rgba(200, 157, 102, 0.1);
 }
 
@@ -231,7 +231,7 @@
 }
 
 .contact-page-submit {
-  background: #262B3E;
+  background: #0D3631;
   color: white;
   padding: 16px 32px;
   border: none;
@@ -244,5 +244,5 @@
 }
 
 .contact-page-submit:hover {
-  background: #C89D66;
+  background: #A38B4D;
 }

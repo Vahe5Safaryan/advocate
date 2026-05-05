@@ -1,37 +1,52 @@
-'use client';
-
 import Link from 'next/link';
+import { getContactInfo, getMenuItems, getServices, getSettings } from '@/lib/data';
 import '@/styles/footer.css';
 
-const footerLinks = {
-  services: [
-    { title: 'Уголовное право', href: '/services/criminal' },
-    { title: 'Гражданское право', href: '/services/civil' },
-    { title: 'Административное право', href: '/services/administrative' },
-    { title: 'Корпоративное право', href: '/services/corporate' },
-    { title: 'Бухгалтерия', href: '/services/accounting' },
-  ],
-  company: [
-    { title: 'О нас', href: '/about' },
-    { title: 'Команда', href: '/team' },
-    { title: 'Дела', href: '/cases' },
-    { title: 'Блог', href: '/blog' },
-    { title: 'Контакты', href: '/contact' },
-  ],
-};
-
-const socialLinks = [
-  { name: 'Facebook', icon: '📘', href: 'https://facebook.com' },
-  { name: 'Instagram', icon: '📷', href: 'https://instagram.com' },
-  { name: 'LinkedIn', icon: '💼', href: 'https://linkedin.com' },
-  { name: 'YouTube', icon: '▶️', href: 'https://youtube.com' },
+const SOCIAL_KEYS = [
+  { key: 'social_facebook', icon: '📘', name: 'Facebook' },
+  { key: 'social_instagram', icon: '📷', name: 'Instagram' },
+  { key: 'social_linkedin', icon: '💼', name: 'LinkedIn' },
+  { key: 'social_youtube', icon: '▶️', name: 'YouTube' },
 ];
 
-export default function Footer() {
+const CONTACT_ICONS: Record<string, string> = {
+  address: '📍',
+  phone: '📞',
+  email: '✉️',
+};
+
+export default async function Footer() {
+  const [contactInfo, services, menuItems, settings] = await Promise.all([
+    getContactInfo(),
+    getServices(),
+    getMenuItems(),
+    getSettings(),
+  ]);
+
+  const description =
+    settings.footer_description ||
+    'Адвокатская контора «LSA» уже более 10 лет оказывает высококачественные юридические и бухгалтерские услуги в городе Ереван.';
+
+  const currentYear = new Date().getFullYear();
+  const copyright = (settings.copyright || `© ${currentYear} LSA Legal. Все права защищены.`)
+    .replace(/\d{4}/, String(currentYear));
+
+  const titleServices = settings.footer_title_services || 'Услуги';
+  const titleCompany  = settings.footer_title_company  || 'Компания';
+  const titleContacts = settings.footer_title_contacts || 'Контакты';
+
+  const activeSocials = SOCIAL_KEYS.filter((s) => settings[s.key]);
+
+  const visibleContacts = contactInfo;
+
+  // Company nav links from DB (exclude home and services — shown separately)
+  const companyLinks = menuItems.filter(
+    (m) => m.href !== '/' && m.href !== '/services',
+  );
+
   return (
     <footer className="footer">
       <div className="container">
-        <div className="footer-copyright"></div>
         <div className="footer-grid">
           {/* Company Info */}
           <div>
@@ -39,31 +54,33 @@ export default function Footer() {
               <span className="footer-logo-gold">LSA</span>
               <span> Legal</span>
             </div>
-            <p className="footer-description">
-              Адвокатская контора «LSA» уже более 10 лет оказывает высококачественные юридические и бухгалтерские услуги в городе Ереван.
-            </p>
-            <div className="footer-social">
-              {socialLinks.map((social) => (
-                <Link
-                  key={social.name}
-                  href={social.href}
-                  target="_blank"
-                  className="footer-social-link"
-                >
-                  <span className="footer-social-icon">{social.icon}</span>
-                </Link>
-              ))}
-            </div>
+            <p className="footer-description">{description}</p>
+            {activeSocials.length > 0 && (
+              <div className="footer-social">
+                {activeSocials.map((social) => (
+                  <Link
+                    key={social.key}
+                    href={settings[social.key]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="footer-social-link"
+                    aria-label={social.name}
+                  >
+                    <span className="footer-social-icon">{social.icon}</span>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Services Links */}
           <div>
-            <h4 className="footer-title">Услуги</h4>
+            <h4 className="footer-title">{titleServices}</h4>
             <ul className="footer-links">
-              {footerLinks.services.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className="footer-link">
-                    {link.title}
+              {services.slice(0, 5).map((svc) => (
+                <li key={svc.id}>
+                  <Link href={`/services/${svc.slug}`} className="footer-link">
+                    {svc.title}
                   </Link>
                 </li>
               ))}
@@ -72,9 +89,9 @@ export default function Footer() {
 
           {/* Company Links */}
           <div>
-            <h4 className="footer-title">Компания</h4>
+            <h4 className="footer-title">{titleCompany}</h4>
             <ul className="footer-links">
-              {footerLinks.company.map((link) => (
+              {companyLinks.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="footer-link">
                     {link.title}
@@ -84,39 +101,30 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact Info */}
+          {/* Contact Info (no hours) */}
           <div>
-            <h4 className="footer-title">Контакты</h4>
+            <h4 className="footer-title">{titleContacts}</h4>
             <ul className="footer-contact-list">
-              <li className="footer-contact-item">
-                <span className="footer-contact-icon">📍</span>
-                <span className="footer-contact-text">Ереван, Армения</span>
-              </li>
-              <li className="footer-contact-item">
-                <span className="footer-contact-icon">📞</span>
-                <Link href="tel:+37496374374" className="footer-contact-link">
-                  +374 (96) 374 374
-                </Link>
-              </li>
-              <li className="footer-contact-item">
-                <span className="footer-contact-icon">✉️</span>
-                <Link href="mailto:info@lsa.am" className="footer-contact-link">
-                  info@lsa.am
-                </Link>
-              </li>
-              <li className="footer-contact-item">
-                <span className="footer-contact-icon">🕐</span>
-                <span className="footer-contact-text">Понедельник - Пятница: 09:00 - 18:00</span>
-              </li>
+              {visibleContacts.map((item) => (
+                <li key={item.id} className="footer-contact-item">
+                  <span className="footer-contact-icon">
+                    {item.icon || CONTACT_ICONS[item.type] || '📌'}
+                  </span>
+                  {item.link ? (
+                    <Link href={item.link} className="footer-contact-link">
+                      {item.value}
+                    </Link>
+                  ) : (
+                    <span className="footer-contact-text">{item.value}</span>
+                  )}
+                </li>
+              ))}
             </ul>
           </div>
         </div>
 
-        {/* Copyright */}
         <div className="footer-copyright">
-          <p className="footer-copyright-text">
-            © {new Date().getFullYear()} LSA Legal. Все права защищены.
-          </p>
+          <p className="footer-copyright-text">{copyright}</p>
         </div>
       </div>
     </footer>

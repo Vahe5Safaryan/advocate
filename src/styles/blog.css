@@ -33,6 +33,8 @@
 /* Blog Card */
 .blog-card-link {
   text-decoration: none;
+  display: block;
+  height: 100%;
 }
 
 .blog-card {
@@ -55,10 +57,13 @@
 .blog-card-image {
   position: relative;
   height: 200px;
-  background: linear-gradient(135deg, #262B3E 0%, #010c2f 100%);
+  min-height: 200px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #0D3631 0%, #0D3631 100%);
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .blog-card-icon {
@@ -70,12 +75,13 @@
   position: absolute;
   top: 16px;
   left: 16px;
-  background-color: #C89D66;
+  background-color: #A38B4D;
   color: white;
   padding: 6px 14px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
+  z-index: 1;
 }
 
 /* Card Content */
@@ -87,23 +93,27 @@
 }
 
 .blog-card-date {
-  color: #C89D66;
+  color: #A38B4D;
   font-size: 13px;
   font-weight: 500;
   margin-bottom: 12px;
 }
 
 .blog-card-title {
-  color: #262B3E;
+  color: #0D3631;
   font-size: 18px;
   font-weight: 700;
   line-height: 1.4;
   margin-bottom: 12px;
   transition: color 0.3s ease;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .blog-card:hover .blog-card-title {
-  color: #C89D66;
+  color: #A38B4D;
 }
 
 .blog-card-excerpt {
@@ -112,13 +122,17 @@
   line-height: 1.6;
   margin-bottom: 16px;
   flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .blog-card-read-more {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #262B3E;
+  color: #0D3631;
   font-size: 14px;
   font-weight: 600;
   transition: all 0.3s ease;
@@ -131,7 +145,7 @@
 }
 
 .blog-card:hover .blog-card-read-more {
-  color: #C89D66;
+  color: #A38B4D;
 }
 
 .blog-card:hover .blog-card-read-more svg {

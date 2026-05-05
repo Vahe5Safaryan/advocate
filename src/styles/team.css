@@ -12,7 +12,7 @@
   z-index: 10;
   width: 48px;
   height: 48px;
-  background-color: #262B3E;
+  background-color: #0D3631;
   color: white;
   border: none;
   border-radius: 50%;
@@ -25,7 +25,7 @@
 }
 
 .team-carousel-arrow:hover {
-  background-color: #C89D66;
+  background-color: #A38B4D;
 }
 
 .team-carousel-arrow.prev {
@@ -103,16 +103,15 @@
 }
 
 .team-card-image {
-  height: 280px;
-  background: linear-gradient(135deg, #313851 0%, #262B3E 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  aspect-ratio: 3 / 4;
+  background: linear-gradient(135deg, #0D3631 0%, #0D3631 100%);
   position: relative;
+  overflow: hidden;
 }
 
 .team-card-img {
   object-fit: cover;
+  object-position: 50% 0%;
 }
 
 .team-card-avatar {
@@ -127,11 +126,11 @@
 .team-card-name {
   font-size: 20px;
   font-weight: 700;
-  color: #262B3E;
+  color: #0D3631;
   margin-bottom: 8px;
 }
 
 .team-card-position {
   font-size: 14px;
-  color: #262B3E;
+  color: #0D3631;
 }

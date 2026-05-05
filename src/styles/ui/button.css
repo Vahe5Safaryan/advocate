@@ -13,26 +13,26 @@
 
 /* Gold Button */
 .btn-gold {
-  background-color: #C89D66;
+  background-color: #A38B4D;
   color: white;
-  border: 2px solid #C89D66;
+  border: 2px solid #A38B4D;
 }
 
 .btn-gold:hover {
-  background-color: #010c2f;
-  border-color: #010c2f;
+  background-color: #0D3631;
+  border-color: #0D3631;
 }
 
 /* Outline Button */
 .btn-outline {
   background-color: transparent;
-  color: #262B3E;
-  border: 2px solid #262B3E;
+  color: #0D3631;
+  border: 2px solid #0D3631;
 }
 
 .btn-outline:hover {
-  background-color: #C89D66;
-  border-color: #C89D66;
+  background-color: #A38B4D;
+  border-color: #A38B4D;
   color: white;
 }
 
@@ -44,6 +44,6 @@
 }
 
 .btn-outline-white:hover {
-  background-color: #C89D66;
-  border-color: #C89D66;
+  background-color: #A38B4D;
+  border-color: #A38B4D;
 }
