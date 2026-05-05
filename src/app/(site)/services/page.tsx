@@ -22,11 +22,6 @@ export default async function ServicesPage() {
         <div className="services-hero-overlay"></div>
         <div className="container services-hero-content">
           <h1 className="services-hero-title">{tl(L.services, lang)}</h1>
-          <div className="services-breadcrumb">
-            <Link href="/">{tl(L.home, lang)}</Link>
-            <span className="services-breadcrumb-separator">/</span>
-            <span>{tl(L.services, lang)}</span>
-          </div>
         </div>
       </section>
 

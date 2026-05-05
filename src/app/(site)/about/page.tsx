@@ -54,11 +54,6 @@ export default async function AboutPage() {
         <div className="about-hero-overlay"></div>
         <div className="container about-hero-content">
           <h1 className="about-hero-title">{tl(L.about, lang)}</h1>
-          <div className="about-breadcrumb">
-            <Link href="/">{tl(L.home, lang)}</Link>
-            <span className="about-breadcrumb-separator">/</span>
-            <span>{tl(L.about, lang)}</span>
-          </div>
         </div>
       </section>
 

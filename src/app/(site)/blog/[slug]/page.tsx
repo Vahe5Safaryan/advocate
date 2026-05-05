@@ -27,13 +27,6 @@ export default async function BlogDetailPage({ params }: { params: Params }) {
         <div className="blog-detail-hero-overlay"></div>
         <div className="container blog-detail-hero-content">
           <h1 className="blog-detail-hero-title">{post.title}</h1>
-          <div className="blog-detail-breadcrumb">
-            <Link href="/">Главная</Link>
-            <span className="blog-detail-breadcrumb-separator">›</span>
-            <Link href="/blog">Блог</Link>
-            <span className="blog-detail-breadcrumb-separator">›</span>
-            <span>{post.title}</span>
-          </div>
         </div>
       </section>
 

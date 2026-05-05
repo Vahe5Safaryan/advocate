@@ -24,11 +24,6 @@ export default async function TeamPage() {
         <div className="team-hero-overlay"></div>
         <div className="container team-hero-content">
           <h1 className="team-hero-title">{tl(L.team, lang)}</h1>
-          <div className="team-breadcrumb">
-            <Link href="/">{tl(L.home, lang)}</Link>
-            <span className="team-breadcrumb-separator">/</span>
-            <span>{tl(L.team, lang)}</span>
-          </div>
         </div>
       </section>
 

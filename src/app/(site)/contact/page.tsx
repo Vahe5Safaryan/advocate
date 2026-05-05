@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { Section } from '@/components/ui';
 import { getContactInfo, getLang } from '@/lib/data';
 import { L, tl } from '@/lib/labels';
@@ -22,11 +21,6 @@ export default async function ContactPage() {
         <div className="contact-hero-overlay"></div>
         <div className="container contact-hero-content">
           <h1 className="contact-hero-title">{tl(L.contact, lang)}</h1>
-          <div className="contact-breadcrumb">
-            <Link href="/">{tl(L.home, lang)}</Link>
-            <span className="contact-breadcrumb-separator">/</span>
-            <span>{tl(L.contact, lang)}</span>
-          </div>
         </div>
       </section>
 

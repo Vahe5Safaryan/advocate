@@ -42,13 +42,6 @@ export default async function ServiceDetailPage({ params }: { params: Params }) 
         <div className="service-detail-hero-overlay"></div>
         <div className="container service-detail-hero-content">
           <h1 className="service-detail-hero-title">{s.heroTitle}</h1>
-          <div className="service-detail-breadcrumb">
-            <Link href="/">Главная</Link>
-            <span className="service-detail-breadcrumb-separator">/</span>
-            <Link href="/services">Услуги</Link>
-            <span className="service-detail-breadcrumb-separator">/</span>
-            <span>{s.title}</span>
-          </div>
         </div>
       </section>
 

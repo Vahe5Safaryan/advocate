@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { Section } from '@/components/ui';
 import { getBlogPosts, getLang } from '@/lib/data';
 import { L, tl } from '@/lib/labels';
@@ -21,11 +20,6 @@ export default async function BlogPage() {
         <div className="blog-hero-overlay"></div>
         <div className="container blog-hero-content">
           <h1 className="blog-hero-title">{tl(L.blog, lang)}</h1>
-          <div className="blog-breadcrumb">
-            <Link href="/">{tl(L.home, lang)}</Link>
-            <span className="blog-breadcrumb-separator">/</span>
-            <span>{tl(L.blog, lang)}</span>
-          </div>
         </div>
       </section>
 

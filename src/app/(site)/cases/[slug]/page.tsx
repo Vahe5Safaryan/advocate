@@ -28,13 +28,6 @@ export default async function CaseDetailPage({ params }: { params: Params }) {
         <div className="container blog-detail-hero-content">
           {caseStudy.category && <span className="case-detail-category">{caseStudy.category}</span>}
           <h1 className="blog-detail-hero-title">{caseStudy.title}</h1>
-          <div className="blog-detail-breadcrumb">
-            <Link href="/">Главная</Link>
-            <span className="blog-detail-breadcrumb-separator">›</span>
-            <Link href="/cases">Дела</Link>
-            <span className="blog-detail-breadcrumb-separator">›</span>
-            <span>{caseStudy.title}</span>
-          </div>
         </div>
       </section>
 

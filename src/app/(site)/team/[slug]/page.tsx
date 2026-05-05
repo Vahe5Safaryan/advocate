@@ -1,5 +1,4 @@
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
 import Image from 'next/image';
 import { Section } from '@/components/ui';
 import { getTeamMemberBySlug, getTeamMembers, getLang } from '@/lib/data';
@@ -29,13 +28,6 @@ export default async function TeamMemberPage({ params }: { params: Params }) {
       <section className="team-detail-hero">
         <div className="team-detail-hero-overlay"></div>
         <div className="container team-detail-hero-content">
-          <div className="team-detail-breadcrumb">
-            <Link href="/">Главная</Link>
-            <span className="team-detail-breadcrumb-separator">&gt;</span>
-            <Link href="/team">Команда</Link>
-            <span className="team-detail-breadcrumb-separator">&gt;</span>
-            <span>{member.name}</span>
-          </div>
         </div>
       </section>
 
