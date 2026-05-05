@@ -15,8 +15,6 @@ export default function ImageUpload({
   value,
   onChange,
   label = 'Изображение',
-  previewWidth = 400,
-  previewHeight = 225,
 }: ImageUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);

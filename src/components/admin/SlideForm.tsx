@@ -193,7 +193,7 @@ export default function SlideForm({ initialData, isEditing = false }: SlideFormP
               handleTranslationChange(activeTab, 'title', e.target.value)
             }
             className="admin-form-input"
-            placeholder="Добро пожаловать в LSA Law Firm"
+            placeholder="Добро пожаловать в NEW LEX Law Firm"
             required
           />
         </div>

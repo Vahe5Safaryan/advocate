@@ -25,10 +25,10 @@ export default async function Footer() {
 
   const description =
     settings.footer_description ||
-    'Адвокатская контора «LSA» уже более 10 лет оказывает высококачественные юридические и бухгалтерские услуги в городе Ереван.';
+    'Адвокатская контора «NEW LEX» уже более 10 лет оказывает высококачественные юридические и бухгалтерские услуги в городе Ереван.';
 
   const currentYear = new Date().getFullYear();
-  const copyright = (settings.copyright || `© ${currentYear} LSA Legal. Все права защищены.`)
+  const copyright = (settings.copyright || `© ${currentYear} NEW LEX Legal. Все права защищены.`)
     .replace(/\d{4}/, String(currentYear));
 
   const titleServices = settings.footer_title_services || 'Услуги';
@@ -51,7 +51,7 @@ export default async function Footer() {
           {/* Company Info */}
           <div>
             <div className="footer-logo">
-              <span className="footer-logo-gold">LSA</span>
+              <span className="footer-logo-gold">NEW LEX</span>
               <span> Legal</span>
             </div>
             <p className="footer-description">{description}</p>

@@ -43,12 +43,7 @@ export async function POST(request: NextRequest) {
   const url = `/uploads/${uniqueName}`;
 
   const media = await prisma.media.create({
-    data: {
-      url,
-      filename: file.name,
-      mimeType: file.type,
-      size: file.size,
-    },
+    data: { url, filename: file.name, mimeType: file.type, size: file.size },
   });
 
   return NextResponse.json(media);

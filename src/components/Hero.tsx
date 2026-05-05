@@ -18,7 +18,7 @@ const FALLBACK_SLIDES: Slide[] = [
     id: '1',
     imageUrl: '/images/hero/hero1.jpg',
     subtitle: 'Ваш путь к справедливости начинается здесь',
-    title: 'Добро пожаловать в LSA Law Firm',
+    title: 'Добро пожаловать в NEW LEX Law Firm',
     description: 'Предоставляем исключительные юридические услуги с приверженностью профессионализму и совершенству.',
     buttonText: 'Позвонить',
   },

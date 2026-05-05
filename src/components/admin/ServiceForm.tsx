@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { toSlug } from '@/lib/slug';
 
@@ -65,10 +65,62 @@ function parseSection(raw: { title: string; items: string[]; paragraphs?: Sectio
   return { title: raw.title, items: raw.items, paragraphs: raw.paragraphs ?? [] };
 }
 
+const ICON_GROUPS = [
+  {
+    label: 'Юридические',
+    icons: ['⚖️', '🛡️', '🏛️', '📜', '🔏', '🔒', '👨‍⚖️', '👩‍⚖️', '🔨', '⚡', '🪪', '🧾', '🗂️', '📑', '🗃️'],
+  },
+  {
+    label: 'Финансы и бизнес',
+    icons: ['💼', '🧮', '📊', '📈', '📉', '🤝', '💰', '💳', '🏦', '💵', '🪙', '📦', '🏷️', '🔑', '🗝️'],
+  },
+  {
+    label: 'Недвижимость',
+    icons: ['🏢', '🏠', '🏗️', '🏘️', '🏡', '🔐', '📐', '📏', '🗺️', '🏙️', '🏚️', '⛪', '🏬', '🏪', '🏨'],
+  },
+  {
+    label: 'Семья и люди',
+    icons: ['👨‍👩‍👦', '👪', '👶', '👦', '👧', '🧑', '👫', '👩‍💼', '👨‍💼', '🧑‍⚖️', '🫂', '🤱', '💍', '💒', '👥'],
+  },
+  {
+    label: 'Медицина и здоровье',
+    icons: ['🏥', '🩺', '💊', '🩹', '🧬', '🔬', '🩻', '❤️', '🫀', '🧠', '🦷', '👁️', '💉', '🚑', '🏋️'],
+  },
+  {
+    label: 'Миграция и путешествия',
+    icons: ['🌐', '✈️', '🛂', '🛃', '🗺️', '🌍', '🌏', '🌎', '🏳️', '🏴', '📫', '🛫', '🛬', '🚢', '🗼'],
+  },
+  {
+    label: 'Технологии',
+    icons: ['💻', '🖥️', '📱', '⌨️', '🖱️', '🖨️', '💾', '📡', '🔌', '🔋', '🤖', '🧩', '🔧', '⚙️', '🛠️'],
+  },
+  {
+    label: 'Документы и офис',
+    icons: ['📋', '📝', '📄', '📃', '📁', '📂', '🗄️', '🖊️', '✒️', '📎', '📏', '🖇️', '🗒️', '✉️', '📬'],
+  },
+  {
+    label: 'Общие',
+    icons: ['💡', '🎯', '🔍', '📌', '✅', '🏆', '🌟', '💎', '🎖️', '🥇', '🎗️', '🔖', '📣', '📢', '🔔'],
+  },
+];
+
 export default function ServiceForm({ initialData, isEditing = false }: ServiceFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('ru');
+  const [showIconPicker, setShowIconPicker] = useState(false);
+  const iconPickerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!showIconPicker) return;
+    const handler = (e: MouseEvent) => {
+      if (iconPickerRef.current && !iconPickerRef.current.contains(e.target as Node)) {
+        setShowIconPicker(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [showIconPicker]);
 
   const [slug, setSlug] = useState(initialData?.slug || '');
   const [autoSlug, setAutoSlug] = useState(!isEditing);
@@ -183,9 +235,62 @@ export default function ServiceForm({ initialData, isEditing = false }: ServiceF
             <label className="admin-form-label">Slug (URL)</label>
             <input type="text" value={slug} onChange={(e) => { setAutoSlug(false); setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-')); }} className="admin-form-input" placeholder="criminal" required />
           </div>
-          <div className="admin-form-group">
-            <label className="admin-form-label">Иконка (emoji)</label>
-            <input type="text" value={icon} onChange={(e) => setIcon(e.target.value)} className="admin-form-input" placeholder="⚖️" />
+          <div className="admin-form-group" style={{ position: 'relative' }} ref={iconPickerRef}>
+            <label className="admin-form-label">Иконка</label>
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+              <button
+                type="button"
+                onClick={() => setShowIconPicker((v) => !v)}
+                title="Выбрать иконку"
+                style={{ fontSize: '30px', lineHeight: 1, padding: '8px 14px', border: '1px solid var(--admin-border)', borderRadius: '8px', background: 'var(--admin-bg)', cursor: 'pointer', minWidth: '60px', textAlign: 'center' }}
+              >
+                {icon || '⚖️'}
+              </button>
+              <input
+                type="text"
+                value={icon}
+                onChange={(e) => setIcon(e.target.value)}
+                className="admin-form-input"
+                placeholder="или введите своё ✏️"
+                style={{ maxWidth: '180px' }}
+              />
+            </div>
+
+            {showIconPicker && (
+              <div style={{ position: 'absolute', zIndex: 100, top: '100%', left: 0, marginTop: '6px', background: '#fff', border: '1px solid var(--admin-border)', borderRadius: '12px', boxShadow: '0 8px 24px rgba(0,0,0,0.12)', padding: '16px', minWidth: '340px', maxHeight: '420px', overflowY: 'auto' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                  <span style={{ fontWeight: 600, fontSize: '14px' }}>Выберите иконку</span>
+                  <button type="button" onClick={() => setShowIconPicker(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '18px', lineHeight: 1, color: '#666' }}>×</button>
+                </div>
+                {ICON_GROUPS.map((group) => (
+                  <div key={group.label} style={{ marginBottom: '12px' }}>
+                    <div style={{ fontSize: '11px', fontWeight: 600, color: '#888', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '6px' }}>{group.label}</div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                      {group.icons.map((emoji) => (
+                        <button
+                          key={emoji}
+                          type="button"
+                          onClick={() => { setIcon(emoji); setShowIconPicker(false); }}
+                          title={emoji}
+                          style={{
+                            fontSize: '24px',
+                            lineHeight: 1,
+                            padding: '6px',
+                            border: icon === emoji ? '2px solid var(--color-gold)' : '2px solid transparent',
+                            borderRadius: '8px',
+                            background: icon === emoji ? 'rgba(163,139,77,0.1)' : 'transparent',
+                            cursor: 'pointer',
+                            transition: 'background 0.15s',
+                          }}
+                        >
+                          {emoji}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           <div className="admin-form-group">
             <label className="admin-form-label">Порядок</label>

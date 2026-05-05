@@ -12,7 +12,6 @@ const languages = [
   { code: 'hy', name: 'Հայ', flag: '🇦🇲' },
 ];
 
-const KEYS = ['about_hero_image', 'about_hero_title'];
 
 interface Setting {
   id: string;

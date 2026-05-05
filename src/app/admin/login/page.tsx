@@ -41,7 +41,7 @@ export default function AdminLoginPage() {
       <div className="admin-login-container">
         <div className="admin-login-card">
           <div className="admin-login-header">
-            <div className="admin-login-logo">LSA Admin</div>
+            <div className="admin-login-logo">NEW LEX Admin</div>
             <p className="admin-login-subtitle">Войдите в панель управления</p>
           </div>
 
@@ -90,7 +90,7 @@ export default function AdminLoginPage() {
           </form>
 
           <p className="admin-login-footer">
-            LSA Legal Admin Panel
+            NEW LEX Legal Admin Panel
           </p>
         </div>
       </div>

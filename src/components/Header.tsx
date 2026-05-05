@@ -34,11 +34,16 @@ function getCookieLang(): string {
     return match ? match[1] : 'ru';
 }
 
+function setCookieLang(code: string): void {
+    if (typeof document === 'undefined') return;
+    document.cookie = `site-lang=${code}; path=/; max-age=31536000`;
+}
+
 export default function Header({
     menuItems = [],
     phone = '+374 (96) 374 374',
     phone2 = '',
-    email = 'info@lsa.am',
+    email = 'info@newlex.am',
 }: {
     menuItems?: MenuItem[];
     phone?: string;
@@ -50,17 +55,13 @@ export default function Header({
     const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
     const [isLangOpen, setIsLangOpen] = useState(false);
     const [mobileSubmenu, setMobileSubmenu] = useState<string | null>(null);
-    const [currentLang, setCurrentLang] = useState(languages[0]);
+    const [currentLang, setCurrentLang] = useState(() => {
+        const code = getCookieLang();
+        return languages.find((l) => l.code === code) ?? languages[0];
+    });
     const [isScrolled, setIsScrolled] = useState(false);
     const pathname = usePathname();
     const router = useRouter();
-
-    // Sync flag with cookie on mount
-    useEffect(() => {
-        const code = getCookieLang();
-        const found = languages.find((l) => l.code === code);
-        if (found) setCurrentLang(found);
-    }, []);
 
     const isActive = (href: string) => {
         if (href === '/') return pathname === '/';
@@ -75,7 +76,7 @@ export default function Header({
     }, []);
 
     const switchLang = (lang: (typeof languages)[number]) => {
-        document.cookie = `site-lang=${lang.code}; path=/; max-age=31536000`;
+        setCookieLang(lang.code);
         setCurrentLang(lang);
         setIsLangOpen(false);
         router.refresh();
@@ -88,7 +89,7 @@ export default function Header({
                     {/* Logo */}
                     <Link href="/" className="logo">
                         <div className="logo-text">
-                            <span className="logo-gold">LSA</span>
+                            <span className="logo-gold">NEW LEX</span>
                             <span className={isScrolled ? 'logo-dark' : 'logo-light'}> Legal</span>
                         </div>
                     </Link>
@@ -172,7 +173,7 @@ export default function Header({
                         <div>
                             <p className="phone-number">{phone || '+374 (96) 374 374'}</p>
                             {phone2 && <p className="phone-number">{phone2}</p>}
-                            <p className={`phone-email ${isScrolled ? '' : 'light'}`}>{email || 'info@lsa.am'}</p>
+                            <p className={`phone-email ${isScrolled ? '' : 'light'}`}>{email || 'info@newlex.am'}</p>
                         </div>
                     </div>
 

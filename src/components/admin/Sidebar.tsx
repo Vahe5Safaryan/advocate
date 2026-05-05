@@ -177,7 +177,7 @@ export default function AdminSidebar() {
     <aside className="admin-sidebar">
       <div className="admin-sidebar-header">
         <div className="admin-sidebar-logo">
-          LSA <span>Admin</span>
+          NEW LEX <span>Admin</span>
         </div>
       </div>
 

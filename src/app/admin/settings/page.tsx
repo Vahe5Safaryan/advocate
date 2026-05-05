@@ -42,7 +42,7 @@ interface Setting {
 }
 
 export default function AdminSettingsPage() {
-  const [settings, setSettings] = useState<Record<string, Setting>>({});
+  const [, setSettings] = useState<Record<string, Setting>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState<string | null>(null);
   const [saved, setSaved] = useState<string | null>(null);
@@ -146,8 +146,6 @@ export default function AdminSettingsPage() {
                     value={formValues[key]?.value || ''}
                     onChange={(url) => updateValue(key, url)}
                     label="Изображение"
-                    previewWidth={480}
-                    previewHeight={320}
                   />
                 ) : hasTranslations ? (
                   <div className="admin-form-group">

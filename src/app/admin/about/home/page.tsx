@@ -165,7 +165,7 @@ export default function AdminAboutHomePage() {
                 <textarea className="admin-form-input" rows={3}
                   value={description[activeLang] || ''}
                   onChange={(e) => setDescription((p) => ({ ...p, [activeLang]: e.target.value }))}
-                  placeholder="Адвокатская контора «LSA» уже более 10 лет..."
+                  placeholder="Адвокатская контора «NEW LEX» уже более 10 лет..."
                 />
               </div>
             </div>

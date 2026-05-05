@@ -1,4 +1,4 @@
-// Prisma Schema for LSA Legal Admin Panel
+// Prisma Schema for NEW LEX Legal Admin Panel
 
 generator client {
   provider = "prisma-client-js"
