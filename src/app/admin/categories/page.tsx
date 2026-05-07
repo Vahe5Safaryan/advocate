@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import SessionProvider from '@/components/admin/SessionProvider';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 interface Category {
   id: string;
@@ -24,6 +25,8 @@ export default function AdminCategoriesPage() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
   const [formData, setFormData] = useState({
     slug: '',
     type: 'blog',
@@ -85,13 +88,19 @@ export default function AdminCategoriesPage() {
     setShowForm(true);
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Удалить категорию?')) return;
+  const requestDelete = (id: string) => setDeleteId(id);
+
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    setDeleting(true);
     try {
-      await fetch(`/api/admin/categories/${id}`, { method: 'DELETE' });
-      setCategories(categories.filter((c) => c.id !== id));
+      await fetch(`/api/admin/categories/${deleteId}`, { method: 'DELETE' });
+      setCategories((prev) => prev.filter((c) => c.id !== deleteId));
     } catch (error) {
       console.error('Error deleting category:', error);
+    } finally {
+      setDeleting(false);
+      setDeleteId(null);
     }
   };
 
@@ -202,7 +211,7 @@ export default function AdminCategoriesPage() {
                     <td>
                       <div className="admin-actions">
                         <button onClick={() => handleEdit(cat)} className="admin-btn admin-btn-secondary admin-btn-sm">Редактировать</button>
-                        <button onClick={() => handleDelete(cat.id)} className="admin-btn admin-btn-danger admin-btn-sm">Удалить</button>
+                        <button onClick={() => requestDelete(cat.id)} className="admin-btn admin-btn-danger admin-btn-sm">Удалить</button>
                       </div>
                     </td>
                   </tr>
@@ -211,6 +220,18 @@ export default function AdminCategoriesPage() {
             </table>
           )}
         </div>
+
+        <ConfirmDialog
+          open={Boolean(deleteId)}
+          title="Удалить категорию?"
+          description="Это действие нельзя отменить. Категория будет удалена навсегда."
+          confirmText="Удалить"
+          cancelText="Отмена"
+          tone="danger"
+          loading={deleting}
+          onClose={() => (deleting ? null : setDeleteId(null))}
+          onConfirm={confirmDelete}
+        />
       </AdminLayout>
     </SessionProvider>
   );

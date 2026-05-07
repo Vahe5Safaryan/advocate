@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import prisma from '@/lib/prisma';
-import { writeFile, mkdir } from 'fs/promises';
+import { PutObjectCommand } from '@aws-sdk/client-s3';
 import path from 'path';
+import { getMinioBucket, getS3Client } from '@/lib/storage';
 
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'];
 const MAX_SIZE = 10 * 1024 * 1024; // 10 MB
@@ -35,16 +36,36 @@ export async function POST(request: NextRequest) {
 
   const ext = path.extname(file.name).toLowerCase() || '.jpg';
   const uniqueName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}${ext}`;
-  const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+  const objectKey = `images/${uniqueName}`;
 
-  await mkdir(uploadDir, { recursive: true });
-  await writeFile(path.join(uploadDir, uniqueName), buffer);
+  const s3 = getS3Client();
+  const bucket = getMinioBucket();
+  try {
+    await s3.send(
+      new PutObjectCommand({
+        Bucket: bucket,
+        Key: objectKey,
+        Body: buffer,
+        ContentType: file.type,
+        Metadata: {
+          originalFilename: file.name,
+        },
+      }),
+    );
+  } catch {
+    return NextResponse.json({ error: 'Upload storage error' }, { status: 500 });
+  }
 
-  const url = `/uploads/${uniqueName}`;
+  const url = `/api/media/${encodeURIComponent(objectKey)}`;
 
-  const media = await prisma.media.create({
-    data: { url, filename: file.name, mimeType: file.type, size: file.size },
-  });
+  let media;
+  try {
+    media = await prisma.media.create({
+      data: { url, filename: file.name, mimeType: file.type, size: file.size },
+    });
+  } catch {
+    return NextResponse.json({ error: 'Database error' }, { status: 500 });
+  }
 
   return NextResponse.json(media);
 }

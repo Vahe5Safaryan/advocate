@@ -3,10 +3,16 @@ import { hash } from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
+function requiredEnv(name: string): string {
+  const v = process.env[name];
+  if (!v) throw new Error(`Missing environment variable: ${name}`);
+  return v;
+}
+
 async function main() {
-  // Admin — credentials from .env
-  const adminEmail = process.env.ADMIN_EMAIL || 'admin@lsa.am';
-  const adminPassword = await hash(process.env.ADMIN_PASSWORD || 'admin123', 12);
+  // Admin — credentials from environment variables only (no defaults)
+  const adminEmail = requiredEnv('ADMIN_EMAIL');
+  const adminPassword = await hash(requiredEnv('ADMIN_PASSWORD'), 12);
   await prisma.admin.upsert({
     where: { email: adminEmail },
     update: {},
@@ -278,7 +284,7 @@ async function main() {
   console.log('✓ Menu items');
 
   console.log('\n✅ Seed completed!');
-  console.log('📧 Admin: admin@lsa.am / admin123');
+  console.log(`📧 Admin: ${adminEmail}`);
 }
 
 main()

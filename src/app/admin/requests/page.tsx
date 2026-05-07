@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import SessionProvider from '@/components/admin/SessionProvider';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 interface ContactRequest {
   id: string;
@@ -25,6 +26,8 @@ export default function AdminRequestsPage() {
   const [requests, setRequests] = useState<ContactRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => { fetchRequests(); }, []);
 
@@ -47,10 +50,18 @@ export default function AdminRequestsPage() {
     setRequests((prev) => prev.map((r) => r.id === id ? { ...r, isRead } : r));
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Удалить эту заявку?')) return;
-    await fetch(`/api/admin/requests/${id}`, { method: 'DELETE' });
-    setRequests((prev) => prev.filter((r) => r.id !== id));
+  const requestDelete = (id: string) => setDeleteId(id);
+
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    setDeleting(true);
+    try {
+      await fetch(`/api/admin/requests/${deleteId}`, { method: 'DELETE' });
+      setRequests((prev) => prev.filter((r) => r.id !== deleteId));
+    } finally {
+      setDeleting(false);
+      setDeleteId(null);
+    }
   };
 
   const unreadCount = requests.filter((r) => !r.isRead).length;
@@ -133,7 +144,7 @@ export default function AdminRequestsPage() {
                       Ответить по email
                     </a>
                     <button
-                      onClick={() => handleDelete(req.id)}
+                      onClick={() => requestDelete(req.id)}
                       className="admin-btn admin-btn-danger admin-btn-sm"
                       style={{ marginLeft: 'auto' }}
                     >
@@ -145,6 +156,18 @@ export default function AdminRequestsPage() {
             </div>
           )}
         </div>
+
+        <ConfirmDialog
+          open={Boolean(deleteId)}
+          title="Удалить заявку?"
+          description="Это действие нельзя отменить. Заявка будет удалена навсегда."
+          confirmText="Удалить"
+          cancelText="Отмена"
+          tone="danger"
+          loading={deleting}
+          onClose={() => (deleting ? null : setDeleteId(null))}
+          onConfirm={confirmDelete}
+        />
       </AdminLayout>
     </SessionProvider>
   );

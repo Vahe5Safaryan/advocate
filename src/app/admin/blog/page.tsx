@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import AdminLayout from '@/components/admin/AdminLayout';
 import SessionProvider from '@/components/admin/SessionProvider';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 interface BlogPost {
   id: string;
@@ -18,6 +19,8 @@ interface BlogPost {
 export default function AdminBlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     fetchPosts();
@@ -35,13 +38,19 @@ export default function AdminBlogPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Вы уверены, что хотите удалить эту статью?')) return;
+  const requestDelete = (id: string) => setDeleteId(id);
+
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    setDeleting(true);
     try {
-      await fetch(`/api/admin/blog/${id}`, { method: 'DELETE' });
-      setPosts(posts.filter((p) => p.id !== id));
+      await fetch(`/api/admin/blog/${deleteId}`, { method: 'DELETE' });
+      setPosts((prev) => prev.filter((p) => p.id !== deleteId));
     } catch (error) {
       console.error('Error deleting post:', error);
+    } finally {
+      setDeleting(false);
+      setDeleteId(null);
     }
   };
 
@@ -120,7 +129,7 @@ export default function AdminBlogPage() {
                           <button onClick={() => handleTogglePublish(post.id, post.isPublished)} className="admin-btn admin-btn-secondary admin-btn-sm">
                             {post.isPublished ? 'Скрыть' : 'Опубликовать'}
                           </button>
-                          <button onClick={() => handleDelete(post.id)} className="admin-btn admin-btn-danger admin-btn-sm">
+                          <button onClick={() => requestDelete(post.id)} className="admin-btn admin-btn-danger admin-btn-sm">
                             Удалить
                           </button>
                         </div>
@@ -132,6 +141,18 @@ export default function AdminBlogPage() {
             </table>
           )}
         </div>
+
+        <ConfirmDialog
+          open={Boolean(deleteId)}
+          title="Удалить статью?"
+          description="Это действие нельзя отменить. Статья будет удалена навсегда."
+          confirmText="Удалить"
+          cancelText="Отмена"
+          tone="danger"
+          loading={deleting}
+          onClose={() => (deleting ? null : setDeleteId(null))}
+          onConfirm={confirmDelete}
+        />
       </AdminLayout>
     </SessionProvider>
   );

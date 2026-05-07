@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import AdminLayout from '@/components/admin/AdminLayout';
 import SessionProvider from '@/components/admin/SessionProvider';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 interface TeamMemberTranslation {
   language: string;
@@ -25,6 +26,8 @@ interface TeamMember {
 export default function AdminTeamPage() {
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     fetchTeamMembers();
@@ -42,14 +45,19 @@ export default function AdminTeamPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Вы уверены, что хотите удалить этого сотрудника?')) return;
+  const requestDelete = (id: string) => setDeleteId(id);
 
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    setDeleting(true);
     try {
-      await fetch(`/api/admin/team/${id}`, { method: 'DELETE' });
-      setTeamMembers(teamMembers.filter((m) => m.id !== id));
+      await fetch(`/api/admin/team/${deleteId}`, { method: 'DELETE' });
+      setTeamMembers((prev) => prev.filter((m) => m.id !== deleteId));
     } catch (error) {
       console.error('Error deleting team member:', error);
+    } finally {
+      setDeleting(false);
+      setDeleteId(null);
     }
   };
 
@@ -154,7 +162,7 @@ export default function AdminTeamPage() {
                             {member.isActive ? 'Скрыть' : 'Показать'}
                           </button>
                           <button
-                            onClick={() => handleDelete(member.id)}
+                            onClick={() => requestDelete(member.id)}
                             className="admin-btn admin-btn-danger admin-btn-sm"
                           >
                             Удалить
@@ -168,6 +176,18 @@ export default function AdminTeamPage() {
             </table>
           )}
         </div>
+
+        <ConfirmDialog
+          open={Boolean(deleteId)}
+          title="Удалить сотрудника?"
+          description="Это действие нельзя отменить. Запись сотрудника будет удалена навсегда."
+          confirmText="Удалить"
+          cancelText="Отмена"
+          tone="danger"
+          loading={deleting}
+          onClose={() => (deleting ? null : setDeleteId(null))}
+          onConfirm={confirmDelete}
+        />
       </AdminLayout>
     </SessionProvider>
   );

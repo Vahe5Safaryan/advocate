@@ -24,7 +24,7 @@ const FALLBACK_SLIDES: Slide[] = [
   },
   {
     id: '2',
-    imageUrl: '/images/hero/hero2.jpg',
+    imageUrl: '/images/hero/hro2.jpg',
     subtitle: 'Ваш путь к справедливости начинается здесь',
     title: 'Надёжный партнёр на пути к правосудию',
     description: 'Мы на вашей стороне, защищаем ваши права и добиваемся справедливости.',
@@ -42,7 +42,7 @@ const FALLBACK_SLIDES: Slide[] = [
 
 export default function Hero({ slides = [] }: { slides?: Slide[] }) {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const data = slides.length > 0 ? slides : FALLBACK_SLIDES;
+  const data = (slides.length > 0 ? slides : FALLBACK_SLIDES).filter((s) => !!s.imageUrl);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -65,6 +65,7 @@ export default function Hero({ slides = [] }: { slides?: Slide[] }) {
               fill
               priority={index === 0}
               className="hero-bg-img"
+              unoptimized
             />
             <div className="hero-overlay"></div>
           </div>

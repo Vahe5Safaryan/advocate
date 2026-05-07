@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import AdminLayout from '@/components/admin/AdminLayout';
 import SessionProvider from '@/components/admin/SessionProvider';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 const languages = [
   { code: 'ru', name: 'Ру', flag: '🇷🇺' },
@@ -35,6 +36,8 @@ export default function AdminMenuPage() {
   const [activeLang, setActiveLang] = useState('ru');
   const [form, setForm] = useState(emptyForm);
   const [mounted, setMounted] = useState(false);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => { setMounted(true); fetchItems(); }, []);
 
@@ -83,10 +86,18 @@ export default function AdminMenuPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Удалить этот пункт меню?')) return;
-    await fetch(`/api/admin/menu/${id}`, { method: 'DELETE' });
-    fetchItems();
+  const requestDelete = (id: string) => setDeleteId(id);
+
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    setDeleting(true);
+    try {
+      await fetch(`/api/admin/menu/${deleteId}`, { method: 'DELETE' });
+      await fetchItems();
+    } finally {
+      setDeleting(false);
+      setDeleteId(null);
+    }
   };
 
   // Returns flat list of <tr> elements — no <div> wrapper inside <tbody>
@@ -107,7 +118,7 @@ export default function AdminMenuPage() {
         <td>
           <div className="admin-actions">
             <button onClick={() => openEdit(item)} className="admin-btn admin-btn-secondary admin-btn-sm">Редактировать</button>
-            <button onClick={() => handleDelete(item.id)} className="admin-btn admin-btn-danger admin-btn-sm">Удалить</button>
+            <button onClick={() => requestDelete(item.id)} className="admin-btn admin-btn-danger admin-btn-sm">Удалить</button>
           </div>
         </td>
       </tr>,
@@ -250,6 +261,18 @@ export default function AdminMenuPage() {
             </table>
           )}
         </div>
+
+        <ConfirmDialog
+          open={Boolean(deleteId)}
+          title="Удалить пункт меню?"
+          description="Это действие нельзя отменить. Пункт меню будет удалён навсегда."
+          confirmText="Удалить"
+          cancelText="Отмена"
+          tone="danger"
+          loading={deleting}
+          onClose={() => (deleting ? null : setDeleteId(null))}
+          onConfirm={confirmDelete}
+        />
       </AdminLayout>
 
       {modal}

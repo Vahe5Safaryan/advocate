@@ -99,7 +99,7 @@ Admin authentication uses NextAuth.js with credentials provider:
 - Auth config in `src/lib/auth.ts`
 - Login page at `/admin/login`
 - Session strategy: JWT (24 hour expiry)
-- Default admin: admin@lsa.am / admin123 (from seed)
+- Seeded admin credentials are provided via env vars `ADMIN_EMAIL` and `ADMIN_PASSWORD` (see `.env.example`)
 
 ## Environment Variables
 

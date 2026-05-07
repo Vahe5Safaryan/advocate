@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import AdminLayout from '@/components/admin/AdminLayout';
 import SessionProvider from '@/components/admin/SessionProvider';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 interface AboutTab {
   id: string;
@@ -21,6 +22,8 @@ const tabKeyLabels: Record<string, string> = {
 export default function AdminAboutTabsPage() {
   const [tabs, setTabs] = useState<AboutTab[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => { fetchTabs(); }, []);
 
@@ -34,10 +37,18 @@ export default function AdminAboutTabsPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Удалить этот таб?')) return;
-    await fetch(`/api/admin/about/tabs/${id}`, { method: 'DELETE' });
-    setTabs(tabs.filter((t) => t.id !== id));
+  const requestDelete = (id: string) => setDeleteId(id);
+
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    setDeleting(true);
+    try {
+      await fetch(`/api/admin/about/tabs/${deleteId}`, { method: 'DELETE' });
+      setTabs((prev) => prev.filter((t) => t.id !== deleteId));
+    } finally {
+      setDeleting(false);
+      setDeleteId(null);
+    }
   };
 
   return (
@@ -91,7 +102,7 @@ export default function AdminAboutTabsPage() {
                           <Link href={`/admin/about/tabs/${tab.id}`} className="admin-btn admin-btn-secondary admin-btn-sm">
                             Редактировать
                           </Link>
-                          <button onClick={() => handleDelete(tab.id)} className="admin-btn admin-btn-danger admin-btn-sm">
+                          <button onClick={() => requestDelete(tab.id)} className="admin-btn admin-btn-danger admin-btn-sm">
                             Удалить
                           </button>
                         </div>
@@ -103,6 +114,18 @@ export default function AdminAboutTabsPage() {
             </table>
           )}
         </div>
+
+        <ConfirmDialog
+          open={Boolean(deleteId)}
+          title="Удалить таб?"
+          description="Это действие нельзя отменить. Таб будет удалён навсегда."
+          confirmText="Удалить"
+          cancelText="Отмена"
+          tone="danger"
+          loading={deleting}
+          onClose={() => (deleting ? null : setDeleteId(null))}
+          onConfirm={confirmDelete}
+        />
       </AdminLayout>
     </SessionProvider>
   );

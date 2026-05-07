@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import AdminLayout from '@/components/admin/AdminLayout';
 import SessionProvider from '@/components/admin/SessionProvider';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 interface MediaItem {
   id: string;
@@ -28,6 +29,8 @@ export default function AdminMediaPage() {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => { fetchMedia(); }, []);
 
@@ -41,10 +44,18 @@ export default function AdminMediaPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Удалить этот файл?')) return;
-    await fetch(`/api/admin/media/${id}`, { method: 'DELETE' });
-    setMedia(media.filter((m) => m.id !== id));
+  const requestDelete = (id: string) => setDeleteId(id);
+
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    setDeleting(true);
+    try {
+      await fetch(`/api/admin/media/${deleteId}`, { method: 'DELETE' });
+      setMedia((prev) => prev.filter((m) => m.id !== deleteId));
+    } finally {
+      setDeleting(false);
+      setDeleteId(null);
+    }
   };
 
   const handleCopyUrl = (url: string) => {
@@ -161,7 +172,7 @@ export default function AdminMediaPage() {
                         {copied === item.url ? '✓ Скопировано' : 'Копировать URL'}
                       </button>
                       <button
-                        onClick={() => handleDelete(item.id)}
+                        onClick={() => requestDelete(item.id)}
                         className="admin-btn admin-btn-danger admin-btn-sm"
                         style={{ fontSize: '11px' }}
                       >
@@ -174,6 +185,18 @@ export default function AdminMediaPage() {
             </div>
           )}
         </div>
+
+        <ConfirmDialog
+          open={Boolean(deleteId)}
+          title="Удалить файл?"
+          description="Это действие нельзя отменить. Файл будет удалён навсегда."
+          confirmText="Удалить"
+          cancelText="Отмена"
+          tone="danger"
+          loading={deleting}
+          onClose={() => (deleting ? null : setDeleteId(null))}
+          onConfirm={confirmDelete}
+        />
       </AdminLayout>
     </SessionProvider>
   );

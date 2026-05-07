@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import AdminLayout from '@/components/admin/AdminLayout';
 import SessionProvider from '@/components/admin/SessionProvider';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 interface ServiceTranslation {
   language: string;
@@ -22,6 +23,8 @@ interface Service {
 export default function AdminServicesPage() {
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     fetchServices();
@@ -39,14 +42,19 @@ export default function AdminServicesPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Вы уверены, что хотите удалить эту услугу?')) return;
+  const requestDelete = (id: string) => setDeleteId(id);
 
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    setDeleting(true);
     try {
-      await fetch(`/api/admin/services/${id}`, { method: 'DELETE' });
-      setServices(services.filter((s) => s.id !== id));
+      await fetch(`/api/admin/services/${deleteId}`, { method: 'DELETE' });
+      setServices((prev) => prev.filter((s) => s.id !== deleteId));
     } catch (error) {
       console.error('Error deleting service:', error);
+    } finally {
+      setDeleting(false);
+      setDeleteId(null);
     }
   };
 
@@ -142,7 +150,7 @@ export default function AdminServicesPage() {
                             {service.isActive ? 'Скрыть' : 'Показать'}
                           </button>
                           <button
-                            onClick={() => handleDelete(service.id)}
+                            onClick={() => requestDelete(service.id)}
                             className="admin-btn admin-btn-danger admin-btn-sm"
                           >
                             Удалить
@@ -156,6 +164,18 @@ export default function AdminServicesPage() {
             </table>
           )}
         </div>
+
+        <ConfirmDialog
+          open={Boolean(deleteId)}
+          title="Удалить услугу?"
+          description="Это действие нельзя отменить. Услуга будет удалена навсегда."
+          confirmText="Удалить"
+          cancelText="Отмена"
+          tone="danger"
+          loading={deleting}
+          onClose={() => (deleting ? null : setDeleteId(null))}
+          onConfirm={confirmDelete}
+        />
       </AdminLayout>
     </SessionProvider>
   );

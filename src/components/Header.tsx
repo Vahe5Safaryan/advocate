@@ -55,12 +55,10 @@ export default function Header({
     const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
     const [isLangOpen, setIsLangOpen] = useState(false);
     const [mobileSubmenu, setMobileSubmenu] = useState<string | null>(null);
-    const [currentLang, setCurrentLang] = useState(languages[0]);
-
-    useEffect(() => {
+    const [currentLang, setCurrentLang] = useState(() => {
         const code = getCookieLang();
-        setCurrentLang(languages.find((l) => l.code === code) ?? languages[0]);
-    }, []);
+        return languages.find((l) => l.code === code) ?? languages[0];
+    });
     const [isScrolled, setIsScrolled] = useState(false);
     const pathname = usePathname();
     const router = useRouter();

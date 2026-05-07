@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import AdminLayout from '@/components/admin/AdminLayout';
 import SessionProvider from '@/components/admin/SessionProvider';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 interface HeroSlide {
   id: string;
@@ -21,6 +22,8 @@ interface HeroSlide {
 export default function AdminSlidesPage() {
   const [slides, setSlides] = useState<HeroSlide[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     fetchSlides();
@@ -38,14 +41,19 @@ export default function AdminSlidesPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Вы уверены, что хотите удалить этот слайд?')) return;
+  const requestDelete = (id: string) => setDeleteId(id);
 
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    setDeleting(true);
     try {
-      await fetch(`/api/admin/slides/${id}`, { method: 'DELETE' });
-      setSlides(slides.filter((s) => s.id !== id));
+      await fetch(`/api/admin/slides/${deleteId}`, { method: 'DELETE' });
+      setSlides((prev) => prev.filter((s) => s.id !== deleteId));
     } catch (error) {
       console.error('Error deleting slide:', error);
+    } finally {
+      setDeleting(false);
+      setDeleteId(null);
     }
   };
 
@@ -109,14 +117,34 @@ export default function AdminSlidesPage() {
                   return (
                     <tr key={slide.id}>
                       <td>
-                        <Image
-                          src={slide.imageUrl}
-                          alt={ruTranslation?.title || 'Slide'}
-                          width={80}
-                          height={50}
-                          className="admin-table-image"
-                          style={{ objectFit: 'cover' }}
-                        />
+                        {slide.imageUrl ? (
+                          <Image
+                            src={slide.imageUrl}
+                            alt={ruTranslation?.title || 'Slide'}
+                            width={80}
+                            height={50}
+                            className="admin-table-image"
+                            style={{ objectFit: 'cover' }}
+                            unoptimized
+                          />
+                        ) : (
+                          <div
+                            className="admin-table-image"
+                            style={{
+                              width: 80,
+                              height: 50,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              background: 'var(--admin-bg-secondary)',
+                              color: 'var(--admin-text-muted)',
+                              borderRadius: '6px',
+                              fontSize: '12px',
+                            }}
+                          >
+                            No image
+                          </div>
+                        )}
                       </td>
                       <td>{ruTranslation?.title || '-'}</td>
                       <td>{slide.order}</td>
@@ -148,7 +176,7 @@ export default function AdminSlidesPage() {
                             {slide.isActive ? 'Скрыть' : 'Показать'}
                           </button>
                           <button
-                            onClick={() => handleDelete(slide.id)}
+                            onClick={() => requestDelete(slide.id)}
                             className="admin-btn admin-btn-danger admin-btn-sm"
                           >
                             Удалить
@@ -162,6 +190,18 @@ export default function AdminSlidesPage() {
             </table>
           )}
         </div>
+
+        <ConfirmDialog
+          open={Boolean(deleteId)}
+          title="Удалить слайд?"
+          description="Это действие нельзя отменить. Слайд будет удалён навсегда."
+          confirmText="Удалить"
+          cancelText="Отмена"
+          tone="danger"
+          loading={deleting}
+          onClose={() => (deleting ? null : setDeleteId(null))}
+          onConfirm={confirmDelete}
+        />
       </AdminLayout>
     </SessionProvider>
   );

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import AdminLayout from '@/components/admin/AdminLayout';
 import SessionProvider from '@/components/admin/SessionProvider';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 interface CaseStudy {
   id: string;
@@ -18,6 +19,8 @@ interface CaseStudy {
 export default function AdminCasesPage() {
   const [cases, setCases] = useState<CaseStudy[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     fetchCases();
@@ -35,13 +38,19 @@ export default function AdminCasesPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Вы уверены, что хотите удалить это дело?')) return;
+  const requestDelete = (id: string) => setDeleteId(id);
+
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    setDeleting(true);
     try {
-      await fetch(`/api/admin/cases/${id}`, { method: 'DELETE' });
-      setCases(cases.filter((c) => c.id !== id));
+      await fetch(`/api/admin/cases/${deleteId}`, { method: 'DELETE' });
+      setCases((prev) => prev.filter((c) => c.id !== deleteId));
     } catch (error) {
       console.error('Error deleting case:', error);
+    } finally {
+      setDeleting(false);
+      setDeleteId(null);
     }
   };
 
@@ -120,7 +129,7 @@ export default function AdminCasesPage() {
                           <button onClick={() => handleTogglePublish(item.id, item.isPublished)} className="admin-btn admin-btn-secondary admin-btn-sm">
                             {item.isPublished ? 'Скрыть' : 'Опубликовать'}
                           </button>
-                          <button onClick={() => handleDelete(item.id)} className="admin-btn admin-btn-danger admin-btn-sm">
+                          <button onClick={() => requestDelete(item.id)} className="admin-btn admin-btn-danger admin-btn-sm">
                             Удалить
                           </button>
                         </div>
@@ -132,6 +141,18 @@ export default function AdminCasesPage() {
             </table>
           )}
         </div>
+
+        <ConfirmDialog
+          open={Boolean(deleteId)}
+          title="Удалить дело?"
+          description="Это действие нельзя отменить. Дело будет удалено навсегда."
+          confirmText="Удалить"
+          cancelText="Отмена"
+          tone="danger"
+          loading={deleting}
+          onClose={() => (deleting ? null : setDeleteId(null))}
+          onConfirm={confirmDelete}
+        />
       </AdminLayout>
     </SessionProvider>
   );

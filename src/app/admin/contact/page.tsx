@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import AdminLayout from '@/components/admin/AdminLayout';
 import SessionProvider from '@/components/admin/SessionProvider';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 interface ContactItem {
   id: string;
@@ -27,6 +28,8 @@ const typeLabels: Record<string, string> = {
 export default function AdminContactPage() {
   const [contacts, setContacts] = useState<ContactItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => { fetchContacts(); }, []);
 
@@ -40,10 +43,18 @@ export default function AdminContactPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Удалить этот контакт?')) return;
-    await fetch(`/api/admin/contact/${id}`, { method: 'DELETE' });
-    setContacts(contacts.filter((c) => c.id !== id));
+  const requestDelete = (id: string) => setDeleteId(id);
+
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    setDeleting(true);
+    try {
+      await fetch(`/api/admin/contact/${deleteId}`, { method: 'DELETE' });
+      setContacts((prev) => prev.filter((c) => c.id !== deleteId));
+    } finally {
+      setDeleting(false);
+      setDeleteId(null);
+    }
   };
 
   const handleToggleActive = async (id: string, isActive: boolean) => {
@@ -106,7 +117,7 @@ export default function AdminContactPage() {
                           <button onClick={() => handleToggleActive(item.id, item.isActive)} className="admin-btn admin-btn-secondary admin-btn-sm">
                             {item.isActive ? 'Скрыть' : 'Показать'}
                           </button>
-                          <button onClick={() => handleDelete(item.id)} className="admin-btn admin-btn-danger admin-btn-sm">Удалить</button>
+                          <button onClick={() => requestDelete(item.id)} className="admin-btn admin-btn-danger admin-btn-sm">Удалить</button>
                         </div>
                       </td>
                     </tr>
@@ -116,6 +127,18 @@ export default function AdminContactPage() {
             </table>
           )}
         </div>
+
+        <ConfirmDialog
+          open={Boolean(deleteId)}
+          title="Удалить контакт?"
+          description="Это действие нельзя отменить. Контакт будет удалён навсегда."
+          confirmText="Удалить"
+          cancelText="Отмена"
+          tone="danger"
+          loading={deleting}
+          onClose={() => (deleting ? null : setDeleteId(null))}
+          onConfirm={confirmDelete}
+        />
       </AdminLayout>
     </SessionProvider>
   );

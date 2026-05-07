@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import AdminLayout from '@/components/admin/AdminLayout';
 import SessionProvider from '@/components/admin/SessionProvider';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 interface Statistic {
   id: string;
@@ -17,6 +18,8 @@ interface Statistic {
 export default function AdminStatsPage() {
   const [stats, setStats] = useState<Statistic[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => { fetchStats(); }, []);
 
@@ -30,10 +33,18 @@ export default function AdminStatsPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Удалить эту статистику?')) return;
-    await fetch(`/api/admin/statistics/${id}`, { method: 'DELETE' });
-    setStats(stats.filter((s) => s.id !== id));
+  const requestDelete = (id: string) => setDeleteId(id);
+
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    setDeleting(true);
+    try {
+      await fetch(`/api/admin/statistics/${deleteId}`, { method: 'DELETE' });
+      setStats((prev) => prev.filter((s) => s.id !== deleteId));
+    } finally {
+      setDeleting(false);
+      setDeleteId(null);
+    }
   };
 
   return (
@@ -90,7 +101,7 @@ export default function AdminStatsPage() {
                           <Link href={`/admin/about/stats/${stat.id}`} className="admin-btn admin-btn-secondary admin-btn-sm">
                             Редактировать
                           </Link>
-                          <button onClick={() => handleDelete(stat.id)} className="admin-btn admin-btn-danger admin-btn-sm">
+                          <button onClick={() => requestDelete(stat.id)} className="admin-btn admin-btn-danger admin-btn-sm">
                             Удалить
                           </button>
                         </div>
@@ -102,6 +113,18 @@ export default function AdminStatsPage() {
             </table>
           )}
         </div>
+
+        <ConfirmDialog
+          open={Boolean(deleteId)}
+          title="Удалить статистику?"
+          description="Это действие нельзя отменить. Счётчик будет удалён навсегда."
+          confirmText="Удалить"
+          cancelText="Отмена"
+          tone="danger"
+          loading={deleting}
+          onClose={() => (deleting ? null : setDeleteId(null))}
+          onConfirm={confirmDelete}
+        />
       </AdminLayout>
     </SessionProvider>
   );

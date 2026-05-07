@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import AdminLayout from '@/components/admin/AdminLayout';
 import SessionProvider from '@/components/admin/SessionProvider';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 
 interface PracticeArea {
   id: string;
@@ -15,6 +16,8 @@ interface PracticeArea {
 export default function AdminPracticePage() {
   const [areas, setAreas] = useState<PracticeArea[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => { fetchAreas(); }, []);
 
@@ -28,10 +31,18 @@ export default function AdminPracticePage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Удалить эту сферу практики?')) return;
-    await fetch(`/api/admin/about/practice/${id}`, { method: 'DELETE' });
-    setAreas(areas.filter((a) => a.id !== id));
+  const requestDelete = (id: string) => setDeleteId(id);
+
+  const confirmDelete = async () => {
+    if (!deleteId) return;
+    setDeleting(true);
+    try {
+      await fetch(`/api/admin/about/practice/${deleteId}`, { method: 'DELETE' });
+      setAreas((prev) => prev.filter((a) => a.id !== deleteId));
+    } finally {
+      setDeleting(false);
+      setDeleteId(null);
+    }
   };
 
   return (
@@ -85,7 +96,7 @@ export default function AdminPracticePage() {
                           <Link href={`/admin/about/practice/${area.id}`} className="admin-btn admin-btn-secondary admin-btn-sm">
                             Редактировать
                           </Link>
-                          <button onClick={() => handleDelete(area.id)} className="admin-btn admin-btn-danger admin-btn-sm">
+                          <button onClick={() => requestDelete(area.id)} className="admin-btn admin-btn-danger admin-btn-sm">
                             Удалить
                           </button>
                         </div>
@@ -97,6 +108,18 @@ export default function AdminPracticePage() {
             </table>
           )}
         </div>
+
+        <ConfirmDialog
+          open={Boolean(deleteId)}
+          title="Удалить сферу практики?"
+          description="Это действие нельзя отменить. Сфера практики будет удалена навсегда."
+          confirmText="Удалить"
+          cancelText="Отмена"
+          tone="danger"
+          loading={deleting}
+          onClose={() => (deleting ? null : setDeleteId(null))}
+          onConfirm={confirmDelete}
+        />
       </AdminLayout>
     </SessionProvider>
   );
