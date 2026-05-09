@@ -2,7 +2,7 @@ type LangMap = Record<string, string>;
 
 export const L: Record<string, LangMap> = {
   // Page titles & breadcrumbs (navigation — already working, do not change)
-  home:     { ru: 'Главная',      en: 'Home',       hy: 'Գлхавор' },
+  home:     { ru: 'Главная',      en: 'Home',       hy: 'Գլխավոր' },
   blog:     { ru: 'Блог',         en: 'Blog',        hy: 'Բլոգ' },
   cases:    { ru: 'Дела',         en: 'Cases',       hy: 'Գործեր' },
   team:     { ru: 'Команда',      en: 'Team',        hy: 'Թիմ' },
@@ -32,10 +32,10 @@ export const L: Record<string, LangMap> = {
   // About page
   about_team_label:      { ru: 'Наша команда',                        en: 'Our Team',                           hy: 'Մեր թիմը' },
   about_team_title:      { ru: 'Познакомьтесь с нашими экспертами',   en: 'Meet Our Experts',                   hy: 'Ծանոթացեք մեր փորձագետներին' },
-  about_process_label:   { ru: 'Наш процесс',                         en: 'Our Process',                             hy: 'Գործընthačracid' },
-  about_practice_label:  { ru: 'Сферы практики',                      en: 'Practice Areas',                          hy: 'Գործунknownunkнownеunknownасti ОlоrunknownтнunkнownеrunknownА' },
-  about_practice_title:  { ru: 'Опытные юристы защищают ваши права',  en: 'Experienced Lawyers Protect Your Rights',  hy: 'Фunkнownоrkнownunkнownаgeтнunkнownаgunkнown фаsтаbаnnunkнownеrunknownе кpаsтpаnunknownеnnunkнown unkнownеr иrаvunkнownunknownkнownunkнownnnunkнown' },
-  about_services_btn:    { ru: 'Наши услуги',                         en: 'Our Services',                            hy: 'Меrunknownр unkнownаrrunknownаunknownunkнownunk' },
+  about_process_label:   { ru: 'Наш процесс',                         en: 'Our Process',                             hy: 'Մեր գործընթացը' },
+  about_practice_label:  { ru: 'Сферы практики',                      en: 'Practice Areas',                          hy: 'Գործելակերպի ոլորտներ' },
+  about_practice_title:  { ru: 'Опытные юристы защищают ваши права',  en: 'Experienced Lawyers Protect Your Rights',  hy: 'Փորձառու իրավաբանները պաշտպանում են ձեր իրավունքները' },
+  about_services_btn:    { ru: 'Наши услуги',                         en: 'Our Services',                            hy: 'Մեր ծառայությունները' },
 
   // Team section
   team_subtitle: { ru: 'Команда',          en: 'Team',            hy: 'Թիմ' },
@@ -88,5 +88,5 @@ export const L: Record<string, LangMap> = {
 };
 
 export function tl(map: LangMap, lang: string): string {
-  return map[lang] ?? map.ru;
+  return map[lang] ?? map.en ?? map.ru ?? '';
 }

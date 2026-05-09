@@ -38,20 +38,23 @@ async function main() {
       imageUrl: '/images/hero/hero1.jpg', order: 0,
       ru: { subtitle: 'Ваш путь к справедливости начинается здесь', title: 'Добро пожаловать в NEW LEX Law Firm', description: 'Предоставляем исключительные юридические услуги с приверженностью профессионализму и совершенству.', buttonText: 'Позвонить' },
       en: { subtitle: 'Your Journey to Justice Starts Here', title: 'Welcome to NEW LEX Law Firm', description: 'Providing exceptional legal services with a commitment to professionalism and excellence.', buttonText: 'Call Now' },
+      hy: { subtitle: 'Ձեր ճանապարհը դեպի արդարությունը սկսվում է այստեղ', title: 'Բարի գալուստ NEW LEX իրավաբանական ընկերություն', description: 'Մենք առաջարկում ենք բարձրակարգ իրավաբանական ծառայություններ՝ պրոֆեսիոնալիզմի և գերազանցության նվիրվածությամբ։', buttonText: 'Զանգել' },
     },
     {
       imageUrl: '/images/hero/hero2.jpg', order: 1,
       ru: { subtitle: 'Ваш путь к справедливости начинается здесь', title: 'Надёжный партнёр на пути к правосудию', description: 'Мы на вашей стороне, защищаем ваши права и добиваемся справедливости.', buttonText: 'Позвонить' },
       en: { subtitle: 'Your Journey to Justice Starts Here', title: 'Trusted Partner on Your Path to Justice', description: 'We are on your side, protecting your rights and ensuring justice is achieved.', buttonText: 'Call Now' },
+      hy: { subtitle: 'Ձեր ճանապարհը դեպի արդարությունը սկսվում է այստեղ', title: 'Հուսալի գործընկեր՝ դեպի արդարություն', description: 'Մենք ձեր կողմում ենք, պաշտպանում ենք ձեր իրավունքները և հասնում արդարության։', buttonText: 'Զանգել' },
     },
     {
       imageUrl: '/images/hero/hero1.jpg', order: 2,
       ru: { subtitle: 'Ваш путь к справедливости начинается здесь', title: 'Юридическая поддержка для каждого клиента', description: 'Наша команда разрабатывает индивидуальные решения для ваших уникальных правовых вопросов.', buttonText: 'Позвонить' },
       en: { subtitle: 'Your Journey to Justice Starts Here', title: 'Legal Support for Every Client', description: 'Our team develops individual solutions for your unique legal matters.', buttonText: 'Call Now' },
+      hy: { subtitle: 'Ձեր ճանապարհը դեպի արդարությունը սկսվում է այստեղ', title: 'Իրավաբանական աջակցություն յուրաքանչյուր հաճախորդի', description: 'Մեր թիմը մշակում է անհատական լուծումներ ձեր իրավական հարցերի համար։', buttonText: 'Զանգել' },
     },
   ].entries()) {
     const s = await prisma.heroSlide.create({ data: { imageUrl: slide.imageUrl, order: slide.order, isActive: true } });
-    for (const [lang, tr] of Object.entries({ ru: slide.ru, en: slide.en })) {
+    for (const [lang, tr] of Object.entries({ ru: slide.ru, en: slide.en, hy: slide.hy })) {
       await prisma.heroSlideTranslation.create({ data: { slideId: s.id, language: lang, ...tr } });
     }
   }
@@ -105,14 +108,15 @@ async function main() {
   await prisma.statisticTranslation.deleteMany();
   await prisma.statistic.deleteMany();
   for (const [, stat] of [
-    { number: '500', suffix: '+', order: 0, ru: 'Успешных дел', en: 'Successful cases' },
-    { number: '10', suffix: '+', order: 1, ru: 'Лет опыта', en: 'Years of experience' },
-    { number: '15', suffix: '', order: 2, ru: 'Опытных юристов', en: 'Experienced lawyers' },
-    { number: '98', suffix: '%', order: 3, ru: 'Довольных клиентов', en: 'Satisfied clients' },
+    { number: '500', suffix: '+', order: 0, ru: 'Успешных дел', en: 'Successful cases', hy: 'Հաջող գործեր' },
+    { number: '10', suffix: '+', order: 1, ru: 'Лет опыта', en: 'Years of experience', hy: 'Տարիների փորձ' },
+    { number: '15', suffix: '', order: 2, ru: 'Опытных юристов', en: 'Experienced lawyers', hy: 'Փորձառու իրավաբաններ' },
+    { number: '98', suffix: '%', order: 3, ru: 'Довольных клиентов', en: 'Satisfied clients', hy: 'Գոհ հաճախորդներ' },
   ].entries()) {
     const s = await prisma.statistic.create({ data: { number: stat.number, suffix: stat.suffix, order: stat.order, isActive: true } });
     await prisma.statisticTranslation.create({ data: { statisticId: s.id, language: 'ru', label: stat.ru } });
     await prisma.statisticTranslation.create({ data: { statisticId: s.id, language: 'en', label: stat.en } });
+    await prisma.statisticTranslation.create({ data: { statisticId: s.id, language: 'hy', label: stat.hy } });
   }
   console.log('✓ Statistics');
 
@@ -428,34 +432,35 @@ async function main() {
   await prisma.contactInfoTranslation.deleteMany();
   await prisma.contactInfo.deleteMany();
   for (const item of [
-    { type: 'address', value: 'ул. Туманяна 8, Ереван, Армения', icon: '📍', link: '', order: 0, ru: 'Адрес', en: 'Address' },
-    { type: 'phone', value: '+374 (96) 374 374', icon: '📞', link: 'tel:+37496374374', order: 1, ru: 'Телефон', en: 'Phone' },
-    { type: 'email', value: 'info@lsa.am', icon: '📧', link: 'mailto:info@lsa.am', order: 2, ru: 'Эл. почта', en: 'Email' },
-    { type: 'hours', value: 'Пн-Пт: 09:00–18:00', icon: '🕐', link: '', order: 3, ru: 'Часы работы', en: 'Working Hours' },
+    { type: 'address', value: 'ул. Туманяна 8, Ереван, Армения', icon: '📍', link: '', order: 0, ru: 'Адрес', en: 'Address', hy: 'Հասցե' },
+    { type: 'phone', value: '+374 (96) 374 374', icon: '📞', link: 'tel:+37496374374', order: 1, ru: 'Телефон', en: 'Phone', hy: 'Հեռախոս' },
+    { type: 'email', value: 'info@lsa.am', icon: '📧', link: 'mailto:info@lsa.am', order: 2, ru: 'Эл. почта', en: 'Email', hy: 'Էլ․ փոստ' },
+    { type: 'hours', value: 'Пн-Пт: 09:00–18:00', icon: '🕐', link: '', order: 3, ru: 'Часы работы', en: 'Working Hours', hy: 'Աշխատանքային ժամեր' },
   ]) {
     const c = await prisma.contactInfo.create({ data: { type: item.type, value: item.value, icon: item.icon, link: item.link, order: item.order, isActive: true } });
     await prisma.contactInfoTranslation.create({ data: { contactInfoId: c.id, language: 'ru', label: item.ru } });
     await prisma.contactInfoTranslation.create({ data: { contactInfoId: c.id, language: 'en', label: item.en } });
+    await prisma.contactInfoTranslation.create({ data: { contactInfoId: c.id, language: 'hy', label: item.hy } });
   }
   console.log('✓ Contact info');
 
   // Site Settings
   const settingsList = [
-    { key: 'site_name', value: 'NEW LEX Law Firm', ru: 'NEW LEX Юридическая фирма', en: 'NEW LEX Law Firm' },
-    { key: 'site_description', value: 'Юридические услуги в Армении', ru: 'Юридические услуги в Армении', en: 'Legal services in Armenia' },
-    { key: 'phone', value: '+374 (96) 374 374', ru: '', en: '' },
-    { key: 'email', value: 'info@lsa.am', ru: '', en: '' },
-    { key: 'address', value: 'ул. Туманяна 8, Ереван, Армения', ru: 'ул. Туманяна 8, Ереван, Армения', en: '8 Tumanyan St., Yerevan, Armenia' },
-    { key: 'copyright', value: '© 2024 NEW LEX Law Firm. Все права защищены.', ru: '© 2024 NEW LEX Law Firm. Все права защищены.', en: '© 2024 NEW LEX Law Firm. All rights reserved.' },
-    { key: 'working_hours', value: 'Пн-Пт: 09:00–18:00', ru: 'Пн-Пт: 09:00–18:00', en: 'Mon-Fri: 09:00–18:00' },
-    { key: 'footer_description', value: 'Адвокатская контора «NEW LEX» уже более 10 лет оказывает высококачественные юридические и бухгалтерские услуги в городе Ереван.', ru: 'Адвокатская контора «NEW LEX» уже более 10 лет оказывает высококачественные юридические и бухгалтерские услуги в городе Ереван.', en: 'NEW LEX Law Firm has been providing high-quality legal and accounting services in Yerevan for over 10 years.' },
-    { key: 'footer_title_services', value: 'Услуги', ru: 'Услуги', en: 'Services' },
-    { key: 'footer_title_company',  value: 'Компания', ru: 'Компания', en: 'Company' },
-    { key: 'footer_title_contacts', value: 'Контакты', ru: 'Контакты', en: 'Contacts' },
-    { key: 'social_facebook', value: '', ru: '', en: '' },
-    { key: 'social_instagram', value: '', ru: '', en: '' },
-    { key: 'social_linkedin', value: '', ru: '', en: '' },
-    { key: 'social_youtube', value: '', ru: '', en: '' },
+    { key: 'site_name', value: 'NEW LEX Law Firm', ru: 'NEW LEX Юридическая фирма', en: 'NEW LEX Law Firm', hy: 'NEW LEX իրավաբանական ընկերություն' },
+    { key: 'site_description', value: 'Юридические услуги в Армении', ru: 'Юридические услуги в Армении', en: 'Legal services in Armenia', hy: 'Իրավաբանական ծառայություններ Հայաստանում' },
+    { key: 'phone', value: '+374 (96) 374 374', ru: '', en: '', hy: '' },
+    { key: 'email', value: 'info@lsa.am', ru: '', en: '', hy: '' },
+    { key: 'address', value: 'ул. Туманяна 8, Ереван, Армения', ru: 'ул. Туманяна 8, Ереван, Армения', en: '8 Tumanyan St., Yerevan, Armenia', hy: 'Թումանյան 8, Երևան, Հայաստան' },
+    { key: 'copyright', value: '© 2024 NEW LEX Law Firm. Все права защищены.', ru: '© 2024 NEW LEX Law Firm. Все права защищены.', en: '© 2024 NEW LEX Law Firm. All rights reserved.', hy: '© 2024 NEW LEX Law Firm. Բոլոր իրավունքները պաշտպանված են։' },
+    { key: 'working_hours', value: 'Пн-Пт: 09:00–18:00', ru: 'Пн-Пт: 09:00–18:00', en: 'Mon-Fri: 09:00–18:00', hy: 'Երկ–ուրբ․՝ 09։00–18։00' },
+    { key: 'footer_description', value: 'Адвокатская контора «NEW LEX» уже более 10 лет оказывает высококачественные юридические и бухгалтерские услуги в городе Ереван.', ru: 'Адвокатская контора «NEW LEX» уже более 10 лет оказывает высококачественные юридические и бухгалтерские услуги в городе Ереван.', en: 'NEW LEX Law Firm has been providing high-quality legal and accounting services in Yerevan for over 10 years.', hy: '«NEW LEX» իրավաբանական ընկերությունը ավելի քան 10 տարի բարձրորակ իրավաբանական և հաշվապահական ծառայություններ է մատուցում Երևանում։' },
+    { key: 'footer_title_services', value: 'Услуги', ru: 'Услуги', en: 'Services', hy: 'Ծառայություններ' },
+    { key: 'footer_title_company',  value: 'Компания', ru: 'Компания', en: 'Company', hy: 'Ընկերություն' },
+    { key: 'footer_title_contacts', value: 'Контакты', ru: 'Контакты', en: 'Contacts', hy: 'Կապ' },
+    { key: 'social_facebook', value: '', ru: '', en: '', hy: '' },
+    { key: 'social_instagram', value: '', ru: '', en: '', hy: '' },
+    { key: 'social_linkedin', value: '', ru: '', en: '', hy: '' },
+    { key: 'social_youtube', value: '', ru: '', en: '', hy: '' },
   ];
   for (const s of settingsList) {
     const setting = await prisma.siteSetting.upsert({
@@ -477,6 +482,13 @@ async function main() {
         create: { settingId: setting.id, language: 'en', value: s.en },
       });
     }
+    if (s.hy) {
+      await prisma.siteSettingTranslation.upsert({
+        where: { settingId_language: { settingId: setting.id, language: 'hy' } },
+        update: { value: s.hy },
+        create: { settingId: setting.id, language: 'hy', value: s.hy },
+      });
+    }
   }
   console.log('✓ Site settings');
 
@@ -484,18 +496,19 @@ async function main() {
   await prisma.menuItemTranslation.deleteMany();
   await prisma.menuItem.deleteMany();
   const menuItems = [
-    { href: '/', order: 0, ru: 'Главная', en: 'Home' },
-    { href: '/services', order: 1, ru: 'Услуги', en: 'Services' },
-    { href: '/team', order: 2, ru: 'Команда', en: 'Team' },
-    { href: '/cases', order: 3, ru: 'Дела', en: 'Cases' },
-    { href: '/blog', order: 4, ru: 'Блог', en: 'Blog' },
-    { href: '/about', order: 5, ru: 'О нас', en: 'About' },
-    { href: '/contact', order: 6, ru: 'Контакты', en: 'Contacts' },
+    { href: '/', order: 0, ru: 'Главная', en: 'Home', hy: 'Գլխավոր' },
+    { href: '/services', order: 1, ru: 'Услуги', en: 'Services', hy: 'Ծառայություններ' },
+    { href: '/team', order: 2, ru: 'Команда', en: 'Team', hy: 'Թիմ' },
+    { href: '/cases', order: 3, ru: 'Дела', en: 'Cases', hy: 'Գործեր' },
+    { href: '/blog', order: 4, ru: 'Блог', en: 'Blog', hy: 'Բլոգ' },
+    { href: '/about', order: 5, ru: 'О нас', en: 'About', hy: 'Մեր մասին' },
+    { href: '/contact', order: 6, ru: 'Контакты', en: 'Contacts', hy: 'Կապ' },
   ];
   for (const item of menuItems) {
     const m = await prisma.menuItem.create({ data: { href: item.href, order: item.order, isActive: true } });
     await prisma.menuItemTranslation.create({ data: { menuItemId: m.id, language: 'ru', title: item.ru } });
     await prisma.menuItemTranslation.create({ data: { menuItemId: m.id, language: 'en', title: item.en } });
+    await prisma.menuItemTranslation.create({ data: { menuItemId: m.id, language: 'hy', title: item.hy } });
   }
   console.log('✓ Menu items');
 
