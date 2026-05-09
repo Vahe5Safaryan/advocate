@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button, Section } from '@/components/ui';
 import { getAboutTabs, getProcessSteps, getPracticeAreas, getTeamMembers, getSettings, getLang } from '@/lib/data';
+import { TEAM_FALLBACK_MEMBERS } from '@/lib/team-fallback';
 import { L, tl } from '@/lib/labels';
 import AboutTabs from '@/components/AboutTabs';
 import '@/styles/about-page.css';
@@ -28,11 +29,7 @@ const FALLBACK_AREAS = [
   { id: '6', icon: '🏢', title: 'Корпоративное право', description: 'Регистрация компаний, договоры, слияния и поглощения.' },
 ];
 
-const FALLBACK_TEAM = [
-  { id: '1', slug: 'tatevik-malkhasyan', imageUrl: '/images/team/team1.jpg', name: 'Татевик Малхасян', position: 'Директор компании, Адвокат' },
-  { id: '2', slug: 'andranik-mnatsakanyan', imageUrl: '/images/team/team2.jpg', name: 'Андраник Мнацаканян', position: 'Партнер, Адвокат' },
-  { id: '3', slug: 'gurgen-nersisyan', imageUrl: '/images/team/team3.jpg', name: 'Гурген Нерсисян', position: 'Партнер, Адвокат' },
-];
+const FALLBACK_TEAM = TEAM_FALLBACK_MEMBERS.slice(0, 3);
 
 export default async function AboutPage() {
   await waitForRequest();

@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers';
 import prisma from './prisma';
+import { getTeamFallbackDetail } from './team-fallback';
 
 const SUPPORTED = ['ru', 'en', 'hy'] as const;
 type Lang = (typeof SUPPORTED)[number];
@@ -137,17 +138,19 @@ export async function getTeamMemberBySlug(slug: string) {
     where: { slug },
     include: { translations: true },
   });
-  if (!m) return null;
-  const tr = pickT(m.translations, lang);
-  return {
-    id: m.id,
-    slug: m.slug,
-    imageUrl: m.imageUrl,
-    licenseNumber: m.licenseNumber ?? '',
-    name: tr?.name ?? '',
-    position: tr?.position ?? '',
-    bio: tr?.bio ? (JSON.parse(tr.bio) as string[]) : [],
-  };
+  if (m) {
+    const tr = pickT(m.translations, lang);
+    return {
+      id: m.id,
+      slug: m.slug,
+      imageUrl: m.imageUrl,
+      licenseNumber: m.licenseNumber ?? '',
+      name: tr?.name ?? '',
+      position: tr?.position ?? '',
+      bio: tr?.bio ? (JSON.parse(tr.bio) as string[]) : [],
+    };
+  }
+  return getTeamFallbackDetail(slug);
 }
 
 // ─── Blog ────────────────────────────────────────────────────────────────────
