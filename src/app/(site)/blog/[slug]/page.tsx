@@ -1,3 +1,4 @@
+import { waitForRequest } from '@/lib/next-connection';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -11,6 +12,7 @@ export const dynamic = 'force-dynamic';
 type Params = Promise<{ slug: string }>;
 
 export default async function BlogDetailPage({ params }: { params: Params }) {
+  await waitForRequest();
   const { slug } = await params;
   const [post, allPosts, lang] = await Promise.all([getBlogPostBySlug(slug), getBlogPosts(3), getLang()]);
 

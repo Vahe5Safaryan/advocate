@@ -1,3 +1,4 @@
+import { waitForRequest } from '@/lib/next-connection';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button, Section } from '@/components/ui';
@@ -34,6 +35,7 @@ const FALLBACK_TEAM = [
 ];
 
 export default async function AboutPage() {
+  await waitForRequest();
   const [tabs, steps, areas, allMembers, settings, lang] = await Promise.all([
     getAboutTabs(),
     getProcessSteps(),

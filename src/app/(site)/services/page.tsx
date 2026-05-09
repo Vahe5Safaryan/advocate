@@ -1,3 +1,4 @@
+import { waitForRequest } from '@/lib/next-connection';
 import Link from 'next/link';
 import { Section } from '@/components/ui';
 import { getServices, getLang } from '@/lib/data';
@@ -5,6 +6,7 @@ import { L, tl } from '@/lib/labels';
 import '@/styles/services-page.css';
 
 export default async function ServicesPage() {
+  await waitForRequest();
   const [services, lang] = await Promise.all([getServices(), getLang()]);
 
   const data = services.length > 0 ? services : [

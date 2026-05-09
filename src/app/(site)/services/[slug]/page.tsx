@@ -1,3 +1,4 @@
+import { waitForRequest } from '@/lib/next-connection';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Section } from '@/components/ui';
@@ -9,6 +10,7 @@ export const dynamic = 'force-dynamic';
 type Params = Promise<{ slug: string }>;
 
 export default async function ServiceDetailPage({ params }: { params: Params }) {
+  await waitForRequest();
   const { slug } = await params;
   const [service, allServices] = await Promise.all([getServiceBySlug(slug), getServices()]);
 

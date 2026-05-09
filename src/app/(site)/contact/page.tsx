@@ -1,3 +1,4 @@
+import { waitForRequest } from '@/lib/next-connection';
 import { Section } from '@/components/ui';
 import { getContactInfo, getLang } from '@/lib/data';
 import { L, tl } from '@/lib/labels';
@@ -12,6 +13,7 @@ const FALLBACK = [
 ];
 
 export default async function ContactPage() {
+  await waitForRequest();
   const [items, lang] = await Promise.all([getContactInfo(), getLang()]);
   const contactInfo = items.length > 0 ? items : FALLBACK;
 

@@ -1,3 +1,4 @@
+import { waitForRequest } from '@/lib/next-connection';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Section } from '@/components/ui';
@@ -15,6 +16,7 @@ const FALLBACK = [
 ];
 
 export default async function TeamPage() {
+  await waitForRequest();
   const [members, lang] = await Promise.all([getTeamMembers(), getLang()]);
   const data = members.length > 0 ? members : FALLBACK;
 

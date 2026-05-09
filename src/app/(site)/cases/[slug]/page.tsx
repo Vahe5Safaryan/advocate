@@ -1,3 +1,4 @@
+import { waitForRequest } from '@/lib/next-connection';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -11,6 +12,7 @@ export const dynamic = 'force-dynamic';
 type Params = Promise<{ slug: string }>;
 
 export default async function CaseDetailPage({ params }: { params: Params }) {
+  await waitForRequest();
   const { slug } = await params;
   const [caseStudy, allCases, lang] = await Promise.all([getCaseStudyBySlug(slug), getCaseStudies(4), getLang()]);
 
