@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Button, SectionHeader, Section } from '@/components/ui';
 import { getLang } from '@/lib/data';
 import { getBlogFallbackList } from '@/lib/blog-fallback';
-import { L, tl } from '@/lib/labels';
+import { t } from '@/messages';
 import '@/styles/blog.css';
 
 interface BlogPost {
@@ -15,12 +15,6 @@ interface BlogPost {
   excerpt: string;
   imageUrl?: string;
 }
-
-const READ_MORE: Record<string, string> = {
-  ru: 'Читать далее',
-  en: 'Read more',
-  hy: 'Կարդալ ավելին',
-};
 
 function formatDate(iso: string) {
   if (!iso) return '';
@@ -60,7 +54,7 @@ export default async function Blog({ posts = [] }: { posts?: BlogPost[] }) {
         <h3 className="blog-card-title">{post.title}</h3>
         <p className="blog-card-excerpt">{post.excerpt}</p>
         <span className="blog-card-read-more">
-          {READ_MORE[lang] ?? READ_MORE.ru}
+          {t(lang, 'blog_read_more')}
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
@@ -72,8 +66,8 @@ export default async function Blog({ posts = [] }: { posts?: BlogPost[] }) {
   return (
     <Section background="gray">
       <SectionHeader
-        subtitle={tl(L.blog_subtitle, lang)}
-        title={tl(L.blog_title, lang)}
+        subtitle={t(lang, 'blog_subtitle')}
+        title={t(lang, 'blog_title')}
       />
 
       <div className="blog-grid">
@@ -86,7 +80,7 @@ export default async function Blog({ posts = [] }: { posts?: BlogPost[] }) {
 
       <div className="blog-footer">
         <Button href="/blog" variant="outline">
-          {tl(L.blog_btn, lang)}
+          {t(lang, 'blog_btn')}
         </Button>
       </div>
     </Section>

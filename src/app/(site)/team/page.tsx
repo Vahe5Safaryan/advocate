@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Section } from '@/components/ui';
 import { getTeamMembers, getLang } from '@/lib/data';
 import { TEAM_FALLBACK_MEMBERS } from '@/lib/team-fallback';
-import { L, tl } from '@/lib/labels';
+import { t } from '@/messages';
 import '@/styles/team-page.css';
 
 export default async function TeamPage() {
@@ -17,14 +17,14 @@ export default async function TeamPage() {
       <section className="team-hero">
         <div className="team-hero-overlay"></div>
         <div className="container team-hero-content">
-          <h1 className="team-hero-title">{tl(L.team, lang)}</h1>
+          <h1 className="team-hero-title">{t(lang, 'team')}</h1>
         </div>
       </section>
 
       <Section background="gray">
         <div className="team-page-header">
-          <span className="team-page-label">{tl(L.team_page_label, lang)}</span>
-          <h2 className="team-page-title">{tl(L.team_page_title, lang)}</h2>
+          <span className="team-page-label">{t(lang, 'team_page_label')}</span>
+          <h2 className="team-page-title">{t(lang, 'team_page_title')}</h2>
         </div>
 
         <div className="team-page-grid">

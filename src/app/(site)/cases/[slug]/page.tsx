@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Section } from '@/components/ui';
 import { getCaseFallbackBySlug, getCaseFallbackRelatedList } from '@/lib/cases-fallback';
 import { getCaseStudyBySlug, getCaseStudies, getLang } from '@/lib/data';
-import { L, tl } from '@/lib/labels';
+import { t } from '@/messages';
 import '@/styles/blog-detail.css';
 
 export const dynamic = 'force-dynamic';
@@ -78,7 +78,7 @@ export default async function CaseDetailPage({ params }: { params: Params }) {
 
           {related.length > 0 && (
             <aside className="blog-detail-sidebar">
-              <h3 className="blog-detail-sidebar-title">{tl(L.related_cases, lang)}</h3>
+              <h3 className="blog-detail-sidebar-title">{t(lang, 'related_cases')}</h3>
               <div className="blog-detail-related">
                 {related.map((c) => (
                   <Link key={c.id} href={`/cases/${c.slug}`} className="blog-detail-related-card">

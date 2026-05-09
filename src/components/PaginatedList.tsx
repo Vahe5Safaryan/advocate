@@ -14,18 +14,6 @@ interface ListItem {
   imageUrl?: string;
 }
 
-const READ_MORE: Record<string, string> = {
-  ru: 'Читать далее',
-  en: 'Read more',
-  hy: 'Կարդալ ավելին',
-};
-
-const READ_MORE_CASE: Record<string, string> = {
-  ru: 'Подробнее',
-  en: 'Details',
-  hy: 'Մանրամասն',
-};
-
 function formatDate(iso: string) {
   if (!iso) return '';
   try {
@@ -42,18 +30,15 @@ export default function PaginatedList({
   items,
   basePath,
   perPage = 12,
-  lang = 'ru',
-  variant = 'blog',
+  readMoreText,
   enableDetailLinks = true,
 }: {
   items: ListItem[];
   basePath: string;
   perPage?: number;
-  lang?: string;
-  variant?: 'blog' | 'cases';
+  readMoreText: string;
   enableDetailLinks?: boolean;
 }) {
-  const labels = variant === 'cases' ? READ_MORE_CASE : READ_MORE;
   const [page, setPage] = useState(1);
   const totalPages = Math.ceil(items.length / perPage);
   const visible = items.slice((page - 1) * perPage, page * perPage);
@@ -87,7 +72,7 @@ export default function PaginatedList({
                 <h3 className="blog-page-card-title">{item.title}</h3>
                 <p className="blog-page-card-excerpt">{item.excerpt}</p>
                 <span className="blog-page-card-read-more">
-                  {labels[lang] ?? labels.ru}
+                  {readMoreText}
                   <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
@@ -109,17 +94,17 @@ export default function PaginatedList({
 
       {totalPages > 1 && (
         <div className="blog-pagination">
-          <button className="blog-pagination-btn" onClick={() => goTo(page - 1)} disabled={page === 1}>
+          <button type="button" className="blog-pagination-btn" onClick={() => goTo(page - 1)} disabled={page === 1}>
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-            <button key={p} className={`blog-pagination-btn ${page === p ? 'active' : ''}`} onClick={() => goTo(p)}>
+            <button key={p} type="button" className={`blog-pagination-btn ${page === p ? 'active' : ''}`} onClick={() => goTo(p)}>
               {p}
             </button>
           ))}
-          <button className="blog-pagination-btn" onClick={() => goTo(page + 1)} disabled={page === totalPages}>
+          <button type="button" className="blog-pagination-btn" onClick={() => goTo(page + 1)} disabled={page === totalPages}>
             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>

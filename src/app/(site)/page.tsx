@@ -1,5 +1,6 @@
 import { waitForRequest } from '@/lib/next-connection';
 import { getHeroSlides, getServices, getStatistics, getTeamMembers, getBlogPosts, getContactInfo, getSettings, getLang } from '@/lib/data';
+import { getStatisticsFallbackItems, t } from '@/messages';
 import Hero from '@/components/Hero';
 import Services from '@/components/Services';
 import About from '@/components/About';
@@ -22,10 +23,24 @@ export default async function Home() {
   ]);
 
   const aboutFeatures = [
-    { icon: settings.home_about_f1_icon || '📚', title: settings.home_about_f1_title || 'Множество успешных дел', description: settings.home_about_f1_desc || 'Наша команда успешно завершила множество дел в различных сферах права' },
-    { icon: settings.home_about_f2_icon || '⚖️', title: settings.home_about_f2_title || 'Профессиональные юристы', description: settings.home_about_f2_desc || 'Опытные адвокаты предоставляют индивидуальные юридические консультации' },
-    { icon: settings.home_about_f3_icon || '💼', title: settings.home_about_f3_title || 'Более 10 лет опыта', description: settings.home_about_f3_desc || 'Наш стратегический подход основан на десятилетнем опыте работы' },
+    {
+      icon: settings.home_about_f1_icon || '📚',
+      title: settings.home_about_f1_title || t(lang, 'about_feature_1_title'),
+      description: settings.home_about_f1_desc || t(lang, 'about_feature_1_desc'),
+    },
+    {
+      icon: settings.home_about_f2_icon || '⚖️',
+      title: settings.home_about_f2_title || t(lang, 'about_feature_2_title'),
+      description: settings.home_about_f2_desc || t(lang, 'about_feature_2_desc'),
+    },
+    {
+      icon: settings.home_about_f3_icon || '💼',
+      title: settings.home_about_f3_title || t(lang, 'about_feature_3_title'),
+      description: settings.home_about_f3_desc || t(lang, 'about_feature_3_desc'),
+    },
   ];
+
+  const displayStats = stats.length > 0 ? stats : getStatisticsFallbackItems(lang);
 
   return (
     <>
@@ -39,7 +54,7 @@ export default async function Home() {
         features={aboutFeatures}
       />
       <Services services={services} />
-      <Statistics stats={stats} />
+      <Statistics stats={displayStats} />
       <Team members={members} lang={lang} />
       <Blog posts={posts} />
       <Contact contactInfo={contactInfo} lang={lang} />

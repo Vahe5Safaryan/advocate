@@ -1,7 +1,7 @@
 import { waitForRequest } from '@/lib/next-connection';
 import { Section } from '@/components/ui';
 import { getContactInfo, getLang } from '@/lib/data';
-import { L, tl } from '@/lib/labels';
+import { t } from '@/messages';
 import ContactPageForm from '@/components/ContactPageForm';
 import '@/styles/contact-page.css';
 
@@ -22,7 +22,7 @@ export default async function ContactPage() {
       <section className="contact-hero">
         <div className="contact-hero-overlay"></div>
         <div className="container contact-hero-content">
-          <h1 className="contact-hero-title">{tl(L.contact, lang)}</h1>
+          <h1 className="contact-hero-title">{t(lang, 'contact')}</h1>
         </div>
       </section>
 

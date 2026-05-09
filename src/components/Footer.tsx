@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { getContactInfo, getMenuItems, getServices, getSettings } from '@/lib/data';
+import { getContactInfo, getLang, getMenuItems, getServices, getSettings } from '@/lib/data';
+import { t } from '@/messages';
 import '@/styles/footer.css';
 
 const SOCIAL_KEYS = [
@@ -16,24 +17,26 @@ const CONTACT_ICONS: Record<string, string> = {
 };
 
 export default async function Footer() {
-  const [contactInfo, services, menuItems, settings] = await Promise.all([
+  const [contactInfo, services, menuItems, settings, lang] = await Promise.all([
     getContactInfo(),
     getServices(),
     getMenuItems(),
     getSettings(),
+    getLang(),
   ]);
 
   const description =
-    settings.footer_description ||
-    'Адвокатская контора «NEW LEX» уже более 10 лет оказывает высококачественные юридические и бухгалтерские услуги в городе Ереван.';
+    settings.footer_description || t(lang, 'footer_description_default');
 
   const currentYear = new Date().getFullYear();
-  const copyright = (settings.copyright || `© ${currentYear} NEW LEX Legal. Все права защищены.`)
-    .replace(/\d{4}/, String(currentYear));
+  const copyright = (settings.copyright || t(lang, 'footer_copyright_default')).replace(
+    /\d{4}/,
+    String(currentYear),
+  );
 
-  const titleServices = settings.footer_title_services || 'Услуги';
-  const titleCompany  = settings.footer_title_company  || 'Компания';
-  const titleContacts = settings.footer_title_contacts || 'Контакты';
+  const titleServices = settings.footer_title_services || t(lang, 'footer_title_services_default');
+  const titleCompany = settings.footer_title_company || t(lang, 'footer_title_company_default');
+  const titleContacts = settings.footer_title_contacts || t(lang, 'footer_title_contacts_default');
 
   const activeSocials = SOCIAL_KEYS.filter((s) => settings[s.key]);
 

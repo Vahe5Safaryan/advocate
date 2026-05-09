@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import type { ReactElement } from 'react';
-import { L, tl } from '@/lib/labels';
+import { t } from '@/messages';
 
 interface ContactItem {
   id: string;
@@ -62,10 +62,10 @@ export default function ContactPageForm({ contactInfo, lang = 'ru' }: { contactI
         setSuccess(true);
         setFormData({ name: '', email: '', phone: '', message: '' });
       } else {
-        setError(data.error || tl(L.form_error_default, lang));
+        setError(data.error || t(lang, 'form_error_default'));
       }
     } catch {
-      setError(tl(L.form_error_network, lang));
+      setError(t(lang, 'form_error_network'));
     } finally {
       setSending(false);
     }
@@ -74,8 +74,8 @@ export default function ContactPageForm({ contactInfo, lang = 'ru' }: { contactI
   return (
     <div className="contact-page-layout">
       <div className="contact-page-info">
-        <span className="contact-page-label">{tl(L.contact_page_label, lang)}</span>
-        <h2 className="contact-page-title">{tl(L.contact_title, lang)}</h2>
+        <span className="contact-page-label">{t(lang, 'contact_page_label')}</span>
+        <h2 className="contact-page-title">{t(lang, 'contact_title')}</h2>
 
         <div className="contact-page-items">
           {contactInfo.map((item) => (
@@ -102,31 +102,31 @@ export default function ContactPageForm({ contactInfo, lang = 'ru' }: { contactI
         {success ? (
           <div style={{ textAlign: 'center', padding: '48px 24px' }}>
             <div style={{ fontSize: '56px', marginBottom: '16px' }}>✅</div>
-            <h3 style={{ fontSize: '22px', fontWeight: 600, marginBottom: '8px' }}>{tl(L.form_success_title, lang)}</h3>
-            <p style={{ color: '#666', marginBottom: '24px' }}>{tl(L.form_success_desc, lang)}</p>
-            <button onClick={() => setSuccess(false)} className="contact-page-submit" style={{ width: 'auto', padding: '12px 32px' }}>
-              {tl(L.form_send_another, lang)}
+            <h3 style={{ fontSize: '22px', fontWeight: 600, marginBottom: '8px' }}>{t(lang, 'form_success_title')}</h3>
+            <p style={{ color: '#666', marginBottom: '24px' }}>{t(lang, 'form_success_desc')}</p>
+            <button type="button" onClick={() => setSuccess(false)} className="contact-page-submit" style={{ width: 'auto', padding: '12px 32px' }}>
+              {t(lang, 'form_send_another')}
             </button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="contact-page-form">
             <div className="contact-page-form-row">
               <div className="contact-page-form-group">
-                <label htmlFor="name">{tl(L.form_name, lang)}</label>
-                <input type="text" id="name" name="name" placeholder={tl(L.form_name_ph, lang)} value={formData.name} onChange={handleChange} required />
+                <label htmlFor="name">{t(lang, 'form_name')}</label>
+                <input type="text" id="name" name="name" placeholder={t(lang, 'form_name_ph')} value={formData.name} onChange={handleChange} required />
               </div>
               <div className="contact-page-form-group">
-                <label htmlFor="email">{tl(L.form_email_label, lang)}</label>
-                <input type="email" id="email" name="email" placeholder={tl(L.form_email_your, lang)} value={formData.email} onChange={handleChange} required />
+                <label htmlFor="email">{t(lang, 'form_email_label')}</label>
+                <input type="email" id="email" name="email" placeholder={t(lang, 'form_email_your')} value={formData.email} onChange={handleChange} required />
               </div>
             </div>
             <div className="contact-page-form-group">
-              <label htmlFor="phone">{tl(L.form_phone, lang)}</label>
-              <input type="tel" id="phone" name="phone" placeholder={tl(L.form_phone_ph, lang)} value={formData.phone} onChange={handleChange} />
+              <label htmlFor="phone">{t(lang, 'form_phone')}</label>
+              <input type="tel" id="phone" name="phone" placeholder={t(lang, 'form_phone_ph')} value={formData.phone} onChange={handleChange} />
             </div>
             <div className="contact-page-form-group">
-              <label htmlFor="message">{tl(L.form_message, lang)}</label>
-              <textarea id="message" name="message" placeholder={tl(L.form_message_ph, lang)} rows={5} value={formData.message} onChange={handleChange} required></textarea>
+              <label htmlFor="message">{t(lang, 'form_message')}</label>
+              <textarea id="message" name="message" placeholder={t(lang, 'form_message_ph')} rows={5} value={formData.message} onChange={handleChange} required></textarea>
             </div>
             {error && (
               <div style={{ color: '#dc2626', fontSize: '14px', marginBottom: '12px', padding: '10px 14px', background: '#fef2f2', borderRadius: '8px', border: '1px solid #fecaca' }}>
@@ -134,7 +134,7 @@ export default function ContactPageForm({ contactInfo, lang = 'ru' }: { contactI
               </div>
             )}
             <button type="submit" disabled={sending} className="contact-page-submit">
-              {sending ? tl(L.form_sending, lang) : tl(L.form_submit, lang)}
+              {sending ? t(lang, 'form_sending') : t(lang, 'form_submit')}
             </button>
           </form>
         )}
