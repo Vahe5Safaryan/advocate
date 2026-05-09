@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Section } from '@/components/ui';
+import { getCaseFallbackBySlug, getCaseFallbackRelatedList } from '@/lib/cases-fallback';
 import { getCaseStudyBySlug, getCaseStudies, getLang } from '@/lib/data';
 import { L, tl } from '@/lib/labels';
 import '@/styles/blog-detail.css';
@@ -14,11 +15,19 @@ type Params = Promise<{ slug: string }>;
 export default async function CaseDetailPage({ params }: { params: Params }) {
   await waitForRequest();
   const { slug } = await params;
-  const [caseStudy, allCases, lang] = await Promise.all([getCaseStudyBySlug(slug), getCaseStudies(4), getLang()]);
+  const [fromDb, allCases, lang] = await Promise.all([getCaseStudyBySlug(slug), getCaseStudies(4), getLang()]);
 
+  const caseStudy =
+    fromDb ?? (allCases.length === 0 ? getCaseFallbackBySlug(slug, lang) : null);
   if (!caseStudy) return notFound();
 
-  const related = allCases.filter((c) => c.slug !== slug).slice(0, 3);
+  const fromDbRelated = allCases.filter((c) => c.slug !== slug).slice(0, 3);
+  const related =
+    fromDbRelated.length > 0
+      ? fromDbRelated
+      : allCases.length === 0
+        ? getCaseFallbackRelatedList(slug, lang, 3)
+        : [];
 
   return (
     <>

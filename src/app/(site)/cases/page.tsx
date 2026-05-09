@@ -1,20 +1,15 @@
 import { waitForRequest } from '@/lib/next-connection';
 import { Section } from '@/components/ui';
+import { getCaseFallbackList } from '@/lib/cases-fallback';
 import { getCaseStudies, getLang } from '@/lib/data';
 import { L, tl } from '@/lib/labels';
 import PaginatedList from '@/components/PaginatedList';
 import '@/styles/blog-page.css';
 
-const FALLBACK = [
-  { id: '1', slug: 'fraud-defense', category: 'Уголовное право', publishedAt: '2024-03-15', title: 'Успешная защита в деле о мошенничестве', excerpt: 'Клиент был оправдан по обвинению в мошенничестве благодаря тщательному анализу доказательств.' },
-  { id: '2', slug: 'debt-collection', category: 'Гражданское право', publishedAt: '2024-03-10', title: 'Взыскание задолженности в размере 50 млн драмов', excerpt: 'Представление интересов кредитора в споре о взыскании крупной суммы задолженности.' },
-  { id: '3', slug: 'international-company', category: 'Корпоративное право', publishedAt: '2024-03-05', title: 'Регистрация международной компании', excerpt: 'Успешная регистрация филиала международной корпорации в Армении.' },
-];
-
 export default async function CasesPage() {
   await waitForRequest();
   const [cases, lang] = await Promise.all([getCaseStudies(), getLang()]);
-  const data = cases.length > 0 ? cases : FALLBACK;
+  const data = cases.length > 0 ? cases : getCaseFallbackList(lang);
 
   return (
     <>

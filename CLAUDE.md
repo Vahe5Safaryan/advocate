@@ -15,7 +15,9 @@ npm run start    # Start production server
 npm run lint     # Run ESLint (uses eslint.config.mjs flat config)
 ```
 
-### Database Commands (Prisma + SQLite)
+### Database Commands (Prisma + PostgreSQL)
+
+Default local database: `docker compose up -d postgres` (user `postgres`, password `1234`, database `advocade` — see `docker-compose.yml` and `.env.example`).
 
 ```bash
 npx prisma generate          # Generate Prisma client
@@ -32,7 +34,7 @@ npx ts-node prisma/seed.ts   # Seed database with initial data
 - **TypeScript 5** with strict mode
 - **Tailwind CSS 4** via PostCSS
 - **ESLint 9** with flat config format
-- **Prisma** with SQLite (dev.db)
+- **Prisma** with PostgreSQL
 - **NextAuth.js** with credentials provider for admin auth
 
 ## Project Structure
@@ -104,6 +106,6 @@ Admin authentication uses NextAuth.js with credentials provider:
 ## Environment Variables
 
 Required in `.env`:
-- `DATABASE_URL` - SQLite connection string (e.g., `file:./dev.db`)
+- `DATABASE_URL` - PostgreSQL connection string. On your machine use `localhost` as the host (e.g. `postgresql://USER:PASS@localhost:5432/DB?schema=public`). Use host `postgres` only when the app runs in the same Docker Compose network as the database.
 - `NEXTAUTH_SECRET` - NextAuth.js secret
 - `NEXTAUTH_URL` - Base URL for NextAuth
