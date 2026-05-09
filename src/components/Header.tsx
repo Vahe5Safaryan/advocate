@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { setSiteLang } from '@/app/actions/site-lang';
 import '@/styles/header.css';
 
 const FALLBACK_MENU = [
@@ -57,7 +58,7 @@ export default function Header({
     const [mobileSubmenu, setMobileSubmenu] = useState<string | null>(null);
     const [currentLang, setCurrentLang] = useState(() => {
         const code = getCookieLang();
-        return languages.find((l) => l.code === code) ?? languages[0];
+        return languages.find((l) => l.code === code) ?? languages.find((l) => l.code === 'ru') ?? languages[0];
     });
     const [isScrolled, setIsScrolled] = useState(false);
     const pathname = usePathname();
@@ -75,7 +76,8 @@ export default function Header({
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const switchLang = (lang: (typeof languages)[number]) => {
+    const switchLang = async (lang: (typeof languages)[number]) => {
+        await setSiteLang(lang.code);
         setCookieLang(lang.code);
         setCurrentLang(lang);
         setIsLangOpen(false);
@@ -151,7 +153,7 @@ export default function Header({
                                     {languages.map((lang) => (
                                         <button
                                             key={lang.code}
-                                            onClick={() => switchLang(lang)}
+                                            onClick={() => void switchLang(lang)}
                                             className={`lang-option ${currentLang.code === lang.code ? 'active' : ''}`}
                                         >
                                             <span>{lang.flag}</span>
@@ -242,7 +244,9 @@ export default function Header({
                             {languages.map((lang) => (
                                 <button
                                     key={lang.code}
-                                    onClick={() => { switchLang(lang); setIsMenuOpen(false); }}
+                                    onClick={() => {
+                                        void switchLang(lang).finally(() => setIsMenuOpen(false));
+                                    }}
                                     style={{
                                         background: currentLang.code === lang.code ? 'rgba(212,175,55,0.2)' : 'transparent',
                                         border: `1px solid ${currentLang.code === lang.code ? '#A38B4D' : 'rgba(255,255,255,0.2)'}`,

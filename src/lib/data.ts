@@ -1,23 +1,26 @@
 import { cookies } from 'next/headers';
+import { unstable_noStore as noStore } from 'next/cache';
 import prisma from './prisma';
 import { getTeamFallbackDetail } from './team-fallback';
+import { SITE_LANGS, type SiteLang } from './site-lang';
 
-const SUPPORTED = ['ru', 'en', 'hy'] as const;
-type Lang = (typeof SUPPORTED)[number];
-
-export async function getLang(): Promise<Lang> {
+export async function getLang(): Promise<SiteLang> {
+  noStore();
   try {
     const store = await cookies();
     const v = store.get('site-lang')?.value;
-    return (SUPPORTED as readonly string[]).includes(v ?? '') ? (v as Lang) : 'ru';
+    return (SITE_LANGS as readonly string[]).includes(v ?? '') ? (v as SiteLang) : 'ru';
   } catch {
     // cookies() is unavailable in generateStaticParams (build time) — default to ru
     return 'ru';
   }
 }
 
-function pickT<T extends { language: string }>(arr: T[], lang: string): T | undefined {
-  return arr.find((t) => t.language === lang) ?? arr[0];
+/** Prefer explicit locale, then English, then Russian, then Armenian — never arbitrary DB row order (was showing Russian for `hy`). */
+function pickT<T extends { language: string }>(arr: T[], lang: SiteLang): T | undefined {
+  if (arr.length === 0) return undefined;
+  const by = (code: string) => arr.find((t) => t.language === code);
+  return by(lang) ?? by('en') ?? by('ru') ?? by('hy') ?? arr[0];
 }
 
 // ─── Hero ────────────────────────────────────────────────────────────────────
