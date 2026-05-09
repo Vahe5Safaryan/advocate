@@ -208,6 +208,239 @@ async function main() {
   }
   console.log('✓ Practice areas');
 
+  // Blog — matches UI FALLBACK slugs in Blog.tsx / blog/page.tsx so detail routes resolve
+  await prisma.blogPostTranslation.deleteMany();
+  await prisma.blogPost.deleteMany();
+  await prisma.categoryTranslation.deleteMany({ where: { category: { type: 'blog' } } });
+  await prisma.category.deleteMany({ where: { type: 'blog' } });
+
+  const blogCategories = [
+    {
+      slug: 'blog-tax-law',
+      order: 0,
+      ru: 'Налоговое право',
+      en: 'Tax Law',
+      hy: 'Հարկային իրավունք',
+    },
+    {
+      slug: 'blog-labor-law',
+      order: 1,
+      ru: 'Трудовое право',
+      en: 'Labor Law',
+      hy: 'Աշխատանքային իրավունք',
+    },
+    {
+      slug: 'blog-corporate-law',
+      order: 2,
+      ru: 'Корпоративное право',
+      en: 'Corporate Law',
+      hy: 'Կորպորատիվ իրավունք',
+    },
+  ];
+
+  const catBySlug: Record<string, string> = {};
+  for (const c of blogCategories) {
+    const cat = await prisma.category.create({
+      data: { slug: c.slug, type: 'blog', order: c.order, isActive: true },
+    });
+    catBySlug[c.slug] = cat.id;
+    for (const lang of ['ru', 'en', 'hy'] as const) {
+      const name = c[lang];
+      await prisma.categoryTranslation.create({
+        data: { categoryId: cat.id, language: lang, name },
+      });
+    }
+  }
+
+  const sectionPair = (ruTitle: string, ruBody: string, enTitle: string, enBody: string, hyTitle: string, hyBody: string) =>
+    JSON.stringify([
+      { title: ruTitle, content: ruBody },
+      { title: enTitle, content: enBody },
+      { title: hyTitle, content: hyBody },
+    ]);
+
+  const blogPostsSeed = [
+    {
+      slug: 'tax-changes-2024',
+      categorySlug: 'blog-tax-law',
+      publishedAt: new Date('2024-03-15T12:00:00Z'),
+      ru: {
+        title: 'Изменения в налоговом законодательстве Армении в 2024 году',
+        introTitle: 'Ключевые поправки',
+        excerpt:
+          'Обзор ключевых изменений в налоговом кодексе, которые вступят в силу в новом году.',
+        intro:
+          'В 2024 году вступают в силу ряд изменений налогового законодательства Республики Армения. Ниже приведён обзор основных новелл для бизнеса и физических лиц.',
+        sections: sectionPair(
+          'Основные изменения',
+          'Пересмотрены ставки и сроки подачи деклараций для отдельных категорий налогоплательщиков. Рекомендуем заранее проконсультироваться с бухгалтерией или юристом.',
+          'Key changes',
+          'Rates and filing deadlines have been revised for certain taxpayer categories. Consult your accountant or lawyer early.',
+          'Հիմնական փոփոխություններ',
+          'Վերանայվել են դրույքաչափերը և ներկայացման ժամկետները որոշ կատեգորիաների համար:',
+        ),
+      },
+      en: {
+        title: 'Changes to Armenian tax law in 2024',
+        introTitle: 'Key amendments',
+        excerpt: 'Overview of major changes to the tax code taking effect in the new year.',
+        intro:
+          'Several amendments to Armenia’s tax legislation take effect in 2024. Below is an overview of the main updates for businesses and individuals.',
+        sections: sectionPair(
+          'Основные изменения',
+          'Пересмотрены ставки и сроки подачи деклараций для отдельных категорий налогоплательщиков. Рекомендуем заранее проконсультироваться с бухгалтерией или юристом.',
+          'Key changes',
+          'Rates and filing deadlines have been revised for certain taxpayer categories. Consult your accountant or lawyer early.',
+          'Հիմնական փոփոխություններ',
+          'Վերանայվել են դրույքաչափերը և ներկայացման ժամկետները որոշ կատեգորիաների համար:',
+        ),
+      },
+      hy: {
+        title: '2024 թվականին Հայաստանի հարկային օրենսդրության փոփոխություններ',
+        introTitle: 'Հիմնական ուղղումներ',
+        excerpt: 'Հարկային օրենսգրքի հիմնական փոփոխությունների համառոտ նկարագիր:',
+        intro:
+          '2024 թվականին ուժի մեջ են մտնում Հայաստանի հարկային օրենսդրության մի շարք փոփոխություններ:',
+        sections: sectionPair(
+          'Основные изменения',
+          'Пересмотрены ставки и сроки подачи деклараций для отдельных категорий налогоплательщиков. Рекомендуем заранее проконсультироваться с бухгалтерией или юристом.',
+          'Key changes',
+          'Rates and filing deadlines have been revised for certain taxpayer categories. Consult your accountant or lawyer early.',
+          'Հիմնական փոփոխություններ',
+          'Վերանայվել են դրույքաչափերը և ներկայացման ժամկետները որոշ կատեգորիաների համար:',
+        ),
+      },
+    },
+    {
+      slug: 'labor-disputes',
+      categorySlug: 'blog-labor-law',
+      publishedAt: new Date('2024-03-10T12:00:00Z'),
+      ru: {
+        title: 'Как защитить свои права при трудовых спорах',
+        introTitle: 'Практические рекомендации',
+        excerpt:
+          'Практические советы по защите трудовых прав и разрешению конфликтов с работодателем.',
+        intro:
+          'Трудовые споры требуют грамотного документооборота и соблюдения процедур. В статье собраны базовые шаги для защиты интересов работника или работодателя.',
+        sections: sectionPair(
+          'Документы и сроки',
+          'Сохраняйте трудовой договор, приказы и переписку. Соблюдайте сроки обращения в инспекцию труда или суд.',
+          'Documents and deadlines',
+          'Keep your contract, orders, and correspondence. Respect deadlines for labor inspectorate or court filings.',
+          'Փաստաթղթեր և ժամկետներ',
+          'Պահպանեք պայմանագիրը, հրամանները և նամակագրությունը:',
+        ),
+      },
+      en: {
+        title: 'How to protect your rights in labor disputes',
+        introTitle: 'Practical guidance',
+        excerpt: 'Practical tips on labor rights and resolving conflicts with an employer.',
+        intro:
+          'Labor disputes require solid documentation and procedural care. This article outlines basic steps to protect employee or employer interests.',
+        sections: sectionPair(
+          'Документы и сроки',
+          'Сохраняйте трудовой договор, приказы и переписку. Соблюдайте сроки обращения в инспекцию труда или суд.',
+          'Documents and deadlines',
+          'Keep your contract, orders, and correspondence. Respect deadlines for labor inspectorate or court filings.',
+          'Փաստաթղթեր և ժամկետներ',
+          'Պահպանեք պայմանագիրը, հրամանները և նամակագրությունը:',
+        ),
+      },
+      hy: {
+        title: 'Ինչպես պաշտպանել ձեր իրավունքները աշխատանքային վեճերի ժամանակ',
+        introTitle: 'Գործնական խորհուրդներ',
+        excerpt: 'Խորհուրդներ աշխատանքային իրավունքների պաշտպանության և գործատուի հետ հակամարտությունների լուծման վերաբերյալ:',
+        intro:
+          'Աշխատանքային վեճերը պահանջում են ճիշտ փաստաթղթավորում և ընթացակարգերի պահպանում:',
+        sections: sectionPair(
+          'Документы и сроки',
+          'Сохраняйте трудовой договор, приказы и переписку. Соблюдайте сроки обращения в инспекцию труда или суд.',
+          'Documents and deadlines',
+          'Keep your contract, orders, and correspondence. Respect deadlines for labor inspectorate or court filings.',
+          'Փաստաթղթեր և ժամկետներ',
+          'Պահպանեք պայմանագիրը, հրամանները և նամակագրությունը:',
+        ),
+      },
+    },
+    {
+      slug: 'business-registration',
+      categorySlug: 'blog-corporate-law',
+      publishedAt: new Date('2024-03-05T12:00:00Z'),
+      ru: {
+        title: 'Регистрация бизнеса в Армении: пошаговое руководство',
+        introTitle: 'С чего начать',
+        excerpt:
+          'Полное руководство по регистрации компании для иностранных инвесторов.',
+        intro:
+          'Армения предлагает прозрачные процедуры регистрации юридических лиц. Ниже приведена упрощённая последовательность шагов для иностранных инвесторов.',
+        sections: sectionPair(
+          'Этапы регистрации',
+          'Выбор организационно-правовой формы, учреждение, государственная регистрация и налоговый учёт.',
+          'Registration steps',
+          'Choose a legal form, incorporate, complete state registration, and tax enrollment.',
+          'Գրանցման փուլեր',
+          'Իրավաբանական ձևի ընտրություն, հիմնում, պետական գրանցում և հարկային հաշվառում:',
+        ),
+      },
+      en: {
+        title: 'Business registration in Armenia: a step-by-step guide',
+        introTitle: 'Where to start',
+        excerpt: 'A practical guide to company registration for foreign investors.',
+        intro:
+          'Armenia offers transparent procedures for registering legal entities. Below is a simplified sequence for foreign investors.',
+        sections: sectionPair(
+          'Этапы регистрации',
+          'Выбор организационно-правовой формы, учреждение, государственная регистрация и налоговый учёт.',
+          'Registration steps',
+          'Choose a legal form, incorporate, complete state registration, and tax enrollment.',
+          'Գրանցման փուլեր',
+          'Իրավաբանական ձևի ընտրություն, հիմնում, պետական գրանցում և հարկային հաշվառում:',
+        ),
+      },
+      hy: {
+        title: 'Բիզնեսի գրանցում Հայաստանում. քայլ առ քայլ ուղեցույց',
+        introTitle: 'Որտեղից սկսել',
+        excerpt: 'Ընկերության գրանցման ամբողջական ուղեցույց օտարերկրյա ներդրողների համար:',
+        intro:
+          'Հայաստանում իրավաբանական անձանց գրանցումը բավական թափանցիկ ընթացակարգ է:',
+        sections: sectionPair(
+          'Этапы регистрации',
+          'Выбор организационно-правовой формы, учреждение, государственная регистрация и налоговый учёт.',
+          'Registration steps',
+          'Choose a legal form, incorporate, complete state registration, and tax enrollment.',
+          'Գրանցման փուլեր',
+          'Իրավաբանական ձևի ընտրություն, հիմնում, պետական գրանցում և հարկային հաշվառում:',
+        ),
+      },
+    },
+  ];
+
+  for (const bp of blogPostsSeed) {
+    const post = await prisma.blogPost.create({
+      data: {
+        slug: bp.slug,
+        categoryId: catBySlug[bp.categorySlug],
+        publishedAt: bp.publishedAt,
+        isPublished: true,
+      },
+    });
+    for (const lang of ['ru', 'en', 'hy'] as const) {
+      const tr = bp[lang];
+      await prisma.blogPostTranslation.create({
+        data: {
+          postId: post.id,
+          language: lang,
+          title: tr.title,
+          introTitle: tr.introTitle,
+          excerpt: tr.excerpt,
+          intro: tr.intro,
+          sections: tr.sections,
+        },
+      });
+    }
+  }
+  console.log('✓ Blog posts');
+
   // Contact Info
   await prisma.contactInfoTranslation.deleteMany();
   await prisma.contactInfo.deleteMany();
