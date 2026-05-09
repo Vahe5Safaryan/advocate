@@ -1,6 +1,6 @@
 /* Footer */
 .footer {
-  background-color: #010c2f;
+  background-color: #0D3631;
   color: white;
   padding: 64px 0;
 }
@@ -32,7 +32,7 @@
 }
 
 .footer-logo-gold {
-  color: #C89D66;
+  color: #A38B4D;
 }
 
 .footer-description {
@@ -49,7 +49,7 @@
 .footer-social-link {
   width: 40px;
   height: 40px;
-  background-color: #313851;
+  background-color: #0D3631;
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -59,7 +59,7 @@
 }
 
 .footer-social-link:hover {
-  background-color: #C89D66;
+  background-color: #A38B4D;
 }
 
 .footer-social-icon {
@@ -90,7 +90,7 @@
 }
 
 .footer-link:hover {
-  color: #C89D66;
+  color: #A38B4D;
 }
 
 /* Contact Info */
@@ -110,7 +110,7 @@
 }
 
 .footer-contact-icon {
-  color: #C89D66;
+  color: #A38B4D;
   font-size: 20px;
 }
 
@@ -125,12 +125,12 @@
 }
 
 .footer-contact-link:hover {
-  color: #C89D66;
+  color: #A38B4D;
 }
 
 /* Copyright */
 .footer-copyright {
-  border-top: 1px solid #313851;
+  border-top: 1px solid #0D3631;
   padding-top: 24px;
   text-align: center;
 }

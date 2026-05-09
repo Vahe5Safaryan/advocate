@@ -4,7 +4,7 @@
 .team-hero {
   position: relative;
   min-height: 350px;
-  background: linear-gradient(135deg, #010c2f 0%, #1a2a4a 100%);
+  background: linear-gradient(135deg, #0D3631 0%, #1a2a4a 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,7 +52,7 @@
 }
 
 .team-breadcrumb a:hover {
-  color: #C89D66;
+  color: #A38B4D;
 }
 
 .team-breadcrumb-separator {
@@ -67,7 +67,7 @@
 
 .team-page-label {
   display: inline-block;
-  color: #C89D66;
+  color: #A38B4D;
   font-size: 14px;
   font-weight: 600;
   text-transform: uppercase;
@@ -78,7 +78,7 @@
 .team-page-title {
   font-size: 32px;
   font-weight: 700;
-  color: #262B3E;
+  color: #0D3631;
   margin-bottom: 16px;
 }
 
@@ -131,16 +131,15 @@
 }
 
 .team-page-card-image {
-  height: 280px;
-  background: linear-gradient(135deg, #313851 0%, #262B3E 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  aspect-ratio: 3 / 4;
+  background: linear-gradient(135deg, #0D3631 0%, #0D3631 100%);
   position: relative;
+  overflow: hidden;
 }
 
 .team-page-card-img {
   object-fit: cover;
+  object-position: 50% 0%;
 }
 
 .team-page-card-avatar {
@@ -155,11 +154,11 @@
 .team-page-card-name {
   font-size: 20px;
   font-weight: 700;
-  color: #262B3E;
+  color: #0D3631;
   margin-bottom: 8px;
 }
 
 .team-page-card-position {
   font-size: 14px;
-  color: #262B3E;
+  color: #0D3631;
 }

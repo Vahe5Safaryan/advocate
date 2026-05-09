@@ -1,9 +1,9 @@
 /* Hero Section */
 .hero {
   position: relative;
-  height: 50vh;
-  min-height: 400px;
-  max-height: 500px;
+  height: 100vh;
+  min-height: 450px;
+  max-height: 550px;
   overflow: hidden;
 }
 
@@ -62,7 +62,7 @@
 }
 
 .hero-subtitle {
-  color: #C89D66;
+  color: #A38B4D;
   font-size: 12px;
   font-weight: 500;
   margin-bottom: 12px;
@@ -120,19 +120,19 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background-color: #C89D66;
+  background-color: #A38B4D;
   color: white;
   padding: 12px 24px;
   border-radius: 4px;
   font-weight: 600;
   font-size: 14px;
   transition: all 0.3s ease;
-  border: 2px solid #C89D66;
+  border: 2px solid #A38B4D;
 }
 
 .hero-call-btn:hover {
-  background-color: #010c2f;
-  border-color: #010c2f;
+  background-color: #0D3631;
+  border-color: #0D3631;
 }
 
 .hero-call-btn svg {
@@ -159,7 +159,11 @@
 }
 
 .hero-arrow:hover {
-  color: #C89D66;
+  color: #A38B4D;
+}
+
+.hero-arrow.prev {
+  left: 16px;
 }
 
 .hero-arrow.next {
@@ -167,6 +171,10 @@
 }
 
 @media (min-width: 768px) {
+  .hero-arrow.prev {
+    left: 30px;
+  }
+
   .hero-arrow.next {
     right: 30px;
   }

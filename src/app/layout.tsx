@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins, Playfair_Display } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -17,9 +15,9 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "LSA Legal | Юридические услуги в Армении",
-  description: "Высококачественные юридические и бухгалтерские услуги в Ереване и регионах Армении. Адвокатская контора LSA - более 10 лет опыта.",
-  keywords: "LSA, адвокат, Ереван, Армения, юридические услуги, бухгалтерские услуги, юрист",
+  title: "NEW LEX Legal | Юридические услуги в Армении",
+  description: "Высококачественные юридические и бухгалтерские услуги в Ереване и регионах Армении. Адвокатская контора NEW LEX - более 10 лет опыта.",
+  keywords: "NEW LEX, адвокат, Ереван, Армения, юридические услуги, бухгалтерские услуги, юрист",
 };
 
 export default function RootLayout({
@@ -33,11 +31,7 @@ export default function RootLayout({
       className={`${poppins.variable} ${playfair.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Header />
-        <main className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        {children}
       </body>
     </html>
   );

@@ -4,7 +4,7 @@
 .team-detail-hero {
   position: relative;
   min-height: 200px;
-  background: linear-gradient(135deg, #010c2f 0%, #1a2a4a 100%);
+  background: linear-gradient(135deg, #0D3631 0%, #1a2a4a 100%);
   display: flex;
   align-items: center;
   padding-top: 120px;
@@ -36,7 +36,7 @@
 }
 
 .team-detail-breadcrumb a:hover {
-  color: #C89D66;
+  color: #A38B4D;
 }
 
 .team-detail-breadcrumb-separator {
@@ -47,7 +47,7 @@
 .team-detail-content {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 48px;
+  gap: 30px;
 }
 
 @media (min-width: 1024px) {
@@ -68,7 +68,7 @@
   width: 100%;
   max-width: 350px;
   aspect-ratio: 3/4;
-  background: linear-gradient(135deg, #313851 0%, #262B3E 100%);
+  background: linear-gradient(135deg, #0D3631 0%, #0D3631 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -99,14 +99,14 @@
 .team-detail-info-name {
   font-size: 20px;
   font-weight: 700;
-  color: #262B3E;
+  color: #0D3631;
   margin-bottom: 8px;
 }
 
 .team-detail-info-position {
   font-size: 15px;
   font-weight: 600;
-  color: #C89D66;
+  color: #A38B4D;
   margin-bottom: 8px;
 }
 
@@ -116,14 +116,14 @@
 }
 
 /* Bio Section */
-.team-detail-bio {
-  padding-top: 16px;
-}
+/*.team-detail-bio {*/
+/*  padding-top: 16px;*/
+/*}*/
 
 .team-detail-title {
   font-size: 32px;
   font-weight: 700;
-  color: #262B3E;
+  color: #0D3631;
   margin-bottom: 24px;
 }
 
@@ -138,6 +138,7 @@
   font-size: 15px;
   line-height: 1.8;
   margin-bottom: 20px;
+  white-space: pre-line;
 }
 
 .team-detail-paragraph:last-child {
