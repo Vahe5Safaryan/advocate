@@ -1,3 +1,4 @@
+import { waitForRequest } from '@/lib/next-connection';
 import { getHeroSlides, getServices, getStatistics, getTeamMembers, getBlogPosts, getContactInfo, getSettings, getLang } from '@/lib/data';
 import Hero from '@/components/Hero';
 import Services from '@/components/Services';
@@ -8,6 +9,7 @@ import Blog from '@/components/Blog';
 import Contact from '@/components/Contact';
 
 export default async function Home() {
+  await waitForRequest();
   const [slides, services, stats, members, posts, contactInfo, settings, lang] = await Promise.all([
     getHeroSlides(),
     getServices(),

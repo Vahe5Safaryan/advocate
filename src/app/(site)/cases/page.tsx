@@ -1,3 +1,4 @@
+import { waitForRequest } from '@/lib/next-connection';
 import { Section } from '@/components/ui';
 import { getCaseStudies, getLang } from '@/lib/data';
 import { L, tl } from '@/lib/labels';
@@ -11,6 +12,7 @@ const FALLBACK = [
 ];
 
 export default async function CasesPage() {
+  await waitForRequest();
   const [cases, lang] = await Promise.all([getCaseStudies(), getLang()]);
   const data = cases.length > 0 ? cases : FALLBACK;
 

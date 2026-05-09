@@ -1,3 +1,4 @@
+import { waitForRequest } from '@/lib/next-connection';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { Section } from '@/components/ui';
@@ -15,6 +16,7 @@ const licenseLabel: Record<string, string> = {
 };
 
 export default async function TeamMemberPage({ params }: { params: Params }) {
+  await waitForRequest();
   const { slug } = await params;
   const [member, lang] = await Promise.all([getTeamMemberBySlug(slug), getLang()]);
 

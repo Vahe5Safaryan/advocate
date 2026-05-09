@@ -1,3 +1,4 @@
+import { waitForRequest } from '@/lib/next-connection';
 import { Section } from '@/components/ui';
 import { getBlogPosts, getLang } from '@/lib/data';
 import { L, tl } from '@/lib/labels';
@@ -11,6 +12,7 @@ const FALLBACK = [
 ];
 
 export default async function BlogPage() {
+  await waitForRequest();
   const [posts, lang] = await Promise.all([getBlogPosts(), getLang()]);
   const data = posts.length > 0 ? posts : FALLBACK;
 
