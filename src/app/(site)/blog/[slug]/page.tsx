@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Section } from '@/components/ui';
+import { getBlogFallbackBySlug, getBlogFallbackRelatedList } from '@/lib/blog-fallback';
 import { getBlogPostBySlug, getBlogPosts, getLang } from '@/lib/data';
 import { L, tl } from '@/lib/labels';
 import '@/styles/blog-detail.css';
@@ -14,11 +15,19 @@ type Params = Promise<{ slug: string }>;
 export default async function BlogDetailPage({ params }: { params: Params }) {
   await waitForRequest();
   const { slug } = await params;
-  const [post, allPosts, lang] = await Promise.all([getBlogPostBySlug(slug), getBlogPosts(3), getLang()]);
+  const [fromDb, allPosts, lang] = await Promise.all([getBlogPostBySlug(slug), getBlogPosts(4), getLang()]);
 
+  const post =
+    fromDb ?? (allPosts.length === 0 ? getBlogFallbackBySlug(slug, lang) : null);
   if (!post) return notFound();
 
-  const related = allPosts.filter((p) => p.slug !== slug).slice(0, 3);
+  const fromDbRelated = allPosts.filter((p) => p.slug !== slug).slice(0, 3);
+  const related =
+    fromDbRelated.length > 0
+      ? fromDbRelated
+      : allPosts.length === 0
+        ? getBlogFallbackRelatedList(slug, lang, 3)
+        : [];
 
   return (
     <>

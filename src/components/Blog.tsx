@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button, SectionHeader, Section } from '@/components/ui';
 import { getLang } from '@/lib/data';
+import { getBlogFallbackList } from '@/lib/blog-fallback';
 import { L, tl } from '@/lib/labels';
 import '@/styles/blog.css';
 
@@ -14,12 +15,6 @@ interface BlogPost {
   excerpt: string;
   imageUrl?: string;
 }
-
-const FALLBACK: BlogPost[] = [
-  { id: '1', slug: 'tax-changes-2024', category: 'Налоговое право', publishedAt: '2024-03-15', title: 'Изменения в налоговом законодательстве Армении в 2024 году', excerpt: 'Обзор ключевых изменений в налоговом кодексе, которые вступят в силу в новом году.' },
-  { id: '2', slug: 'labor-disputes', category: 'Трудовое право', publishedAt: '2024-03-10', title: 'Как защитить свои права при трудовых спорах', excerpt: 'Практические советы по защите трудовых прав и разрешению конфликтов с работодателем.' },
-  { id: '3', slug: 'business-registration', category: 'Корпоративное право', publishedAt: '2024-03-05', title: 'Регистрация бизнеса в Армении: пошаговое руководство', excerpt: 'Полное руководство по регистрации компании для иностранных инвесторов.' },
-];
 
 const READ_MORE: Record<string, string> = {
   ru: 'Читать далее',
@@ -41,8 +36,7 @@ function formatDate(iso: string) {
 
 export default async function Blog({ posts = [] }: { posts?: BlogPost[] }) {
   const lang = await getLang();
-  const fromDb = posts.length > 0;
-  const data = fromDb ? posts : FALLBACK;
+  const data = posts.length > 0 ? posts : getBlogFallbackList(lang);
 
   const cardInner = (post: BlogPost, index: number) => (
     <>
@@ -83,17 +77,11 @@ export default async function Blog({ posts = [] }: { posts?: BlogPost[] }) {
       />
 
       <div className="blog-grid">
-        {data.map((post, index) =>
-          fromDb ? (
-            <Link href={`/blog/${post.slug}`} key={post.id} className="blog-card-link">
-              <article className="blog-card">{cardInner(post, index)}</article>
-            </Link>
-          ) : (
-            <div key={post.id} className="blog-card-link">
-              <article className="blog-card">{cardInner(post, index)}</article>
-            </div>
-          ),
-        )}
+        {data.map((post, index) => (
+          <Link href={`/blog/${post.slug}`} key={post.id} className="blog-card-link">
+            <article className="blog-card">{cardInner(post, index)}</article>
+          </Link>
+        ))}
       </div>
 
       <div className="blog-footer">
