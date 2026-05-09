@@ -4,12 +4,9 @@ import { Section } from '@/components/ui';
 import { getServiceBySlug, getServices } from '@/lib/data';
 import '@/styles/services-detail.css';
 
-type Params = Promise<{ slug: string }>;
+export const dynamic = 'force-dynamic';
 
-export async function generateStaticParams() {
-  const services = await getServices();
-  return services.map((s) => ({ slug: s.slug }));
-}
+type Params = Promise<{ slug: string }>;
 
 export default async function ServiceDetailPage({ params }: { params: Params }) {
   const { slug } = await params;

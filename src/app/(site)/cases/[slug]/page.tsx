@@ -6,12 +6,9 @@ import { getCaseStudyBySlug, getCaseStudies, getLang } from '@/lib/data';
 import { L, tl } from '@/lib/labels';
 import '@/styles/blog-detail.css';
 
-type Params = Promise<{ slug: string }>;
+export const dynamic = 'force-dynamic';
 
-export async function generateStaticParams() {
-  const cases = await getCaseStudies();
-  return cases.map((c) => ({ slug: c.slug }));
-}
+type Params = Promise<{ slug: string }>;
 
 export default async function CaseDetailPage({ params }: { params: Params }) {
   const { slug } = await params;

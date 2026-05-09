@@ -1,15 +1,12 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { Section } from '@/components/ui';
-import { getTeamMemberBySlug, getTeamMembers, getLang } from '@/lib/data';
+import { getTeamMemberBySlug, getLang } from '@/lib/data';
 import '@/styles/team-detail.css';
 
-type Params = Promise<{ slug: string }>;
+export const dynamic = 'force-dynamic';
 
-export async function generateStaticParams() {
-  const members = await getTeamMembers();
-  return members.map((m) => ({ slug: m.slug }));
-}
+type Params = Promise<{ slug: string }>;
 
 const licenseLabel: Record<string, string> = {
   ru: 'Лицензия',
