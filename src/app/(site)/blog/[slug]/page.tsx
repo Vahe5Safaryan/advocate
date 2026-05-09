@@ -6,12 +6,9 @@ import { getBlogPostBySlug, getBlogPosts, getLang } from '@/lib/data';
 import { L, tl } from '@/lib/labels';
 import '@/styles/blog-detail.css';
 
-type Params = Promise<{ slug: string }>;
+export const dynamic = 'force-dynamic';
 
-export async function generateStaticParams() {
-  const posts = await getBlogPosts();
-  return posts.map((p) => ({ slug: p.slug }));
-}
+type Params = Promise<{ slug: string }>;
 
 export default async function BlogDetailPage({ params }: { params: Params }) {
   const { slug } = await params;
