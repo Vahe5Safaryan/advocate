@@ -252,13 +252,6 @@ async function main() {
     }
   }
 
-  const sectionPair = (ruTitle: string, ruBody: string, enTitle: string, enBody: string, hyTitle: string, hyBody: string) =>
-    JSON.stringify([
-      { title: ruTitle, content: ruBody },
-      { title: enTitle, content: enBody },
-      { title: hyTitle, content: hyBody },
-    ]);
-
   const blogPostsSeed = [
     {
       slug: 'tax-changes-2024',
@@ -271,14 +264,13 @@ async function main() {
           'Обзор ключевых изменений в налоговом кодексе, которые вступят в силу в новом году.',
         intro:
           'В 2024 году вступают в силу ряд изменений налогового законодательства Республики Армения. Ниже приведён обзор основных новелл для бизнеса и физических лиц.',
-        sections: sectionPair(
-          'Основные изменения',
-          'Пересмотрены ставки и сроки подачи деклараций для отдельных категорий налогоплательщиков. Рекомендуем заранее проконсультироваться с бухгалтерией или юристом.',
-          'Key changes',
-          'Rates and filing deadlines have been revised for certain taxpayer categories. Consult your accountant or lawyer early.',
-          'Հիմնական փոփոխություններ',
-          'Վերանայվել են դրույքաչափերը և ներկայացման ժամկետները որոշ կատեգորիաների համար:',
-        ),
+        sections: JSON.stringify([
+          {
+            title: 'Основные изменения',
+            content:
+              'Пересмотрены ставки и сроки подачи деклараций для отдельных категорий налогоплательщиков. Рекомендуем заранее проконсультироваться с бухгалтерией или юристом.',
+          },
+        ]),
       },
       en: {
         title: 'Changes to Armenian tax law in 2024',
@@ -286,14 +278,13 @@ async function main() {
         excerpt: 'Overview of major changes to the tax code taking effect in the new year.',
         intro:
           'Several amendments to Armenia’s tax legislation take effect in 2024. Below is an overview of the main updates for businesses and individuals.',
-        sections: sectionPair(
-          'Основные изменения',
-          'Пересмотрены ставки и сроки подачи деклараций для отдельных категорий налогоплательщиков. Рекомендуем заранее проконсультироваться с бухгалтерией или юристом.',
-          'Key changes',
-          'Rates and filing deadlines have been revised for certain taxpayer categories. Consult your accountant or lawyer early.',
-          'Հիմնական փոփոխություններ',
-          'Վերանայվել են դրույքաչափերը և ներկայացման ժամկետները որոշ կատեգորիաների համար:',
-        ),
+        sections: JSON.stringify([
+          {
+            title: 'Key changes',
+            content:
+              'Rates and filing deadlines have been revised for certain taxpayer categories. Consult your accountant or lawyer early.',
+          },
+        ]),
       },
       hy: {
         title: '2024 թվականին Հայաստանի հարկային օրենսդրության փոփոխություններ',
@@ -301,14 +292,13 @@ async function main() {
         excerpt: 'Հարկային օրենսգրքի հիմնական փոփոխությունների համառոտ նկարագիր:',
         intro:
           '2024 թվականին ուժի մեջ են մտնում Հայաստանի հարկային օրենսդրության մի շարք փոփոխություններ:',
-        sections: sectionPair(
-          'Основные изменения',
-          'Пересмотрены ставки и сроки подачи деклараций для отдельных категорий налогоплательщиков. Рекомендуем заранее проконсультироваться с бухгалтерией или юристом.',
-          'Key changes',
-          'Rates and filing deadlines have been revised for certain taxpayer categories. Consult your accountant or lawyer early.',
-          'Հիմնական փոփոխություններ',
-          'Վերանայվել են դրույքաչափերը և ներկայացման ժամկետները որոշ կատեգորիաների համար:',
-        ),
+        sections: JSON.stringify([
+          {
+            title: 'Հիմնական փոփոխություններ',
+            content:
+              'Վերանայվել են դրույքաչափերը և ներկայացման ժամկետները որոշ կատեգորիաների համար:',
+          },
+        ]),
       },
     },
     {
@@ -322,14 +312,13 @@ async function main() {
           'Практические советы по защите трудовых прав и разрешению конфликтов с работодателем.',
         intro:
           'Трудовые споры требуют грамотного документооборота и соблюдения процедур. В статье собраны базовые шаги для защиты интересов работника или работодателя.',
-        sections: sectionPair(
-          'Документы и сроки',
-          'Сохраняйте трудовой договор, приказы и переписку. Соблюдайте сроки обращения в инспекцию труда или суд.',
-          'Documents and deadlines',
-          'Keep your contract, orders, and correspondence. Respect deadlines for labor inspectorate or court filings.',
-          'Փաստաթղթեր և ժամկետներ',
-          'Պահպանեք պայմանագիրը, հրամանները և նամակագրությունը:',
-        ),
+        sections: JSON.stringify([
+          {
+            title: 'Документы и сроки',
+            content:
+              'Сохраняйте трудовой договор, приказы и переписку. Соблюдайте сроки обращения в инспекцию труда или суд.',
+          },
+        ]),
       },
       en: {
         title: 'How to protect your rights in labor disputes',
@@ -337,14 +326,13 @@ async function main() {
         excerpt: 'Practical tips on labor rights and resolving conflicts with an employer.',
         intro:
           'Labor disputes require solid documentation and procedural care. This article outlines basic steps to protect employee or employer interests.',
-        sections: sectionPair(
-          'Документы и сроки',
-          'Сохраняйте трудовой договор, приказы и переписку. Соблюдайте сроки обращения в инспекцию труда или суд.',
-          'Documents and deadlines',
-          'Keep your contract, orders, and correspondence. Respect deadlines for labor inspectorate or court filings.',
-          'Փաստաթղթեր և ժամկետներ',
-          'Պահպանեք պայմանագիրը, հրամանները և նամակագրությունը:',
-        ),
+        sections: JSON.stringify([
+          {
+            title: 'Documents and deadlines',
+            content:
+              'Keep your contract, orders, and correspondence. Respect deadlines for labor inspectorate or court filings.',
+          },
+        ]),
       },
       hy: {
         title: 'Ինչպես պաշտպանել ձեր իրավունքները աշխատանքային վեճերի ժամանակ',
@@ -352,14 +340,12 @@ async function main() {
         excerpt: 'Խորհուրդներ աշխատանքային իրավունքների պաշտպանության և գործատուի հետ հակամարտությունների լուծման վերաբերյալ:',
         intro:
           'Աշխատանքային վեճերը պահանջում են ճիշտ փաստաթղթավորում և ընթացակարգերի պահպանում:',
-        sections: sectionPair(
-          'Документы и сроки',
-          'Сохраняйте трудовой договор, приказы и переписку. Соблюдайте сроки обращения в инспекцию труда или суд.',
-          'Documents and deadlines',
-          'Keep your contract, orders, and correspondence. Respect deadlines for labor inspectorate or court filings.',
-          'Փաստաթղթեր և ժամկետներ',
-          'Պահպանեք պայմանագիրը, հրամանները և նամակագրությունը:',
-        ),
+        sections: JSON.stringify([
+          {
+            title: 'Փաստաթղթեր և ժամկետներ',
+            content: 'Պահպանեք պայմանագիրը, հրամանները և նամակագրությունը:',
+          },
+        ]),
       },
     },
     {
@@ -373,14 +359,13 @@ async function main() {
           'Полное руководство по регистрации компании для иностранных инвесторов.',
         intro:
           'Армения предлагает прозрачные процедуры регистрации юридических лиц. Ниже приведена упрощённая последовательность шагов для иностранных инвесторов.',
-        sections: sectionPair(
-          'Этапы регистрации',
-          'Выбор организационно-правовой формы, учреждение, государственная регистрация и налоговый учёт.',
-          'Registration steps',
-          'Choose a legal form, incorporate, complete state registration, and tax enrollment.',
-          'Գրանցման փուլեր',
-          'Իրավաբանական ձևի ընտրություն, հիմնում, պետական գրանցում և հարկային հաշվառում:',
-        ),
+        sections: JSON.stringify([
+          {
+            title: 'Этапы регистрации',
+            content:
+              'Выбор организационно-правовой формы, учреждение, государственная регистрация и налоговый учёт.',
+          },
+        ]),
       },
       en: {
         title: 'Business registration in Armenia: a step-by-step guide',
@@ -388,14 +373,13 @@ async function main() {
         excerpt: 'A practical guide to company registration for foreign investors.',
         intro:
           'Armenia offers transparent procedures for registering legal entities. Below is a simplified sequence for foreign investors.',
-        sections: sectionPair(
-          'Этапы регистрации',
-          'Выбор организационно-правовой формы, учреждение, государственная регистрация и налоговый учёт.',
-          'Registration steps',
-          'Choose a legal form, incorporate, complete state registration, and tax enrollment.',
-          'Գրանցման փուլեր',
-          'Իրավաբանական ձևի ընտրություն, հիմնում, պետական գրանցում և հարկային հաշվառում:',
-        ),
+        sections: JSON.stringify([
+          {
+            title: 'Registration steps',
+            content:
+              'Choose a legal form, incorporate, complete state registration, and tax enrollment.',
+          },
+        ]),
       },
       hy: {
         title: 'Բիզնեսի գրանցում Հայաստանում. քայլ առ քայլ ուղեցույց',
@@ -403,14 +387,13 @@ async function main() {
         excerpt: 'Ընկերության գրանցման ամբողջական ուղեցույց օտարերկրյա ներդրողների համար:',
         intro:
           'Հայաստանում իրավաբանական անձանց գրանցումը բավական թափանցիկ ընթացակարգ է:',
-        sections: sectionPair(
-          'Этапы регистрации',
-          'Выбор организационно-правовой формы, учреждение, государственная регистрация и налоговый учёт.',
-          'Registration steps',
-          'Choose a legal form, incorporate, complete state registration, and tax enrollment.',
-          'Գրանցման փուլեր',
-          'Իրավաբանական ձևի ընտրություն, հիմնում, պետական գրանցում և հարկային հաշվառում:',
-        ),
+        sections: JSON.stringify([
+          {
+            title: 'Գրանցման փուլեր',
+            content:
+              'Իրավաբանական ձևի ընտրություն, հիմնում, պետական գրանցում և հարկային հաշվառում:',
+          },
+        ]),
       },
     },
   ];
