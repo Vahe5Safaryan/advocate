@@ -41,7 +41,39 @@ function formatDate(iso: string) {
 
 export default async function Blog({ posts = [] }: { posts?: BlogPost[] }) {
   const lang = await getLang();
-  const data = posts.length > 0 ? posts : FALLBACK;
+  const fromDb = posts.length > 0;
+  const data = fromDb ? posts : FALLBACK;
+
+  const cardInner = (post: BlogPost, index: number) => (
+    <>
+      <div className="blog-card-image">
+        {post.imageUrl ? (
+          <Image
+            src={post.imageUrl}
+            alt={post.title}
+            fill
+            priority={index === 0}
+            sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
+            style={{ objectFit: 'cover' }}
+          />
+        ) : (
+          <span className="blog-card-icon">📰</span>
+        )}
+        <span className="blog-card-category">{post.category}</span>
+      </div>
+      <div className="blog-card-content">
+        <span className="blog-card-date">{formatDate(post.publishedAt)}</span>
+        <h3 className="blog-card-title">{post.title}</h3>
+        <p className="blog-card-excerpt">{post.excerpt}</p>
+        <span className="blog-card-read-more">
+          {READ_MORE[lang] ?? READ_MORE.ru}
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </span>
+      </div>
+    </>
+  );
 
   return (
     <Section background="gray">
@@ -51,38 +83,17 @@ export default async function Blog({ posts = [] }: { posts?: BlogPost[] }) {
       />
 
       <div className="blog-grid">
-        {data.map((post, index) => (
-          <Link href={`/blog/${post.slug}`} key={post.id} className="blog-card-link">
-            <article className="blog-card">
-              <div className="blog-card-image">
-                {post.imageUrl ? (
-                  <Image
-                    src={post.imageUrl}
-                    alt={post.title}
-                    fill
-                    priority={index === 0}
-                    sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw"
-                    style={{ objectFit: 'cover' }}
-                  />
-                ) : (
-                  <span className="blog-card-icon">📰</span>
-                )}
-                <span className="blog-card-category">{post.category}</span>
-              </div>
-              <div className="blog-card-content">
-                <span className="blog-card-date">{formatDate(post.publishedAt)}</span>
-                <h3 className="blog-card-title">{post.title}</h3>
-                <p className="blog-card-excerpt">{post.excerpt}</p>
-                <span className="blog-card-read-more">
-                  {READ_MORE[lang] ?? READ_MORE.ru}
-                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </span>
-              </div>
-            </article>
-          </Link>
-        ))}
+        {data.map((post, index) =>
+          fromDb ? (
+            <Link href={`/blog/${post.slug}`} key={post.id} className="blog-card-link">
+              <article className="blog-card">{cardInner(post, index)}</article>
+            </Link>
+          ) : (
+            <div key={post.id} className="blog-card-link">
+              <article className="blog-card">{cardInner(post, index)}</article>
+            </div>
+          ),
+        )}
       </div>
 
       <div className="blog-footer">

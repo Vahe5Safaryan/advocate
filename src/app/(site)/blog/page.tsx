@@ -14,7 +14,8 @@ const FALLBACK = [
 export default async function BlogPage() {
   await waitForRequest();
   const [posts, lang] = await Promise.all([getBlogPosts(), getLang()]);
-  const data = posts.length > 0 ? posts : FALLBACK;
+  const fromDb = posts.length > 0;
+  const data = fromDb ? posts : FALLBACK;
 
   return (
     <>
@@ -31,7 +32,7 @@ export default async function BlogPage() {
           <h2 className="blog-page-title">{tl(L.blog_page_title, lang)}</h2>
         </div>
 
-        <PaginatedList items={data} basePath="/blog" perPage={12} lang={lang} />
+        <PaginatedList items={data} basePath="/blog" perPage={12} lang={lang} enableDetailLinks={fromDb} />
       </Section>
     </>
   );
