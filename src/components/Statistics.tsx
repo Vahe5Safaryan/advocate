@@ -11,13 +11,6 @@ interface StatItem {
   label: string;
 }
 
-const FALLBACK: StatItem[] = [
-  { id: '1', number: 500, suffix: '+', label: 'Успешных дел' },
-  { id: '2', number: 10, suffix: '+', label: 'Лет опыта' },
-  { id: '3', number: 15, suffix: '', label: 'Опытных юристов' },
-  { id: '4', number: 98, suffix: '%', label: 'Довольных клиентов' },
-];
-
 function Counter({ target, suffix }: { target: number; suffix: string }) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
@@ -53,7 +46,8 @@ function Counter({ target, suffix }: { target: number; suffix: string }) {
 }
 
 export default function Statistics({ stats = [] }: { stats?: StatItem[] }) {
-  const data = stats.length > 0 ? stats : FALLBACK;
+  const data = stats;
+  if (data.length === 0) return null;
 
   return (
     <Section background="dark" className="statistics-section">

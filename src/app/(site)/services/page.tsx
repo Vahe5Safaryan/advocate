@@ -2,7 +2,7 @@ import { waitForRequest } from '@/lib/next-connection';
 import Link from 'next/link';
 import { Section } from '@/components/ui';
 import { getServices, getLang } from '@/lib/data';
-import { L, tl } from '@/lib/labels';
+import { t } from '@/messages';
 import '@/styles/services-page.css';
 
 export default async function ServicesPage() {
@@ -23,14 +23,14 @@ export default async function ServicesPage() {
       <section className="services-hero">
         <div className="services-hero-overlay"></div>
         <div className="container services-hero-content">
-          <h1 className="services-hero-title">{tl(L.services, lang)}</h1>
+          <h1 className="services-hero-title">{t(lang, 'services')}</h1>
         </div>
       </section>
 
       <Section background="white">
         <div className="services-page-header">
-          <span className="services-page-label">{tl(L.services_page_label, lang)}</span>
-          <h2 className="services-page-title">{tl(L.services_page_title, lang)}</h2>
+          <span className="services-page-label">{t(lang, 'services_page_label')}</span>
+          <h2 className="services-page-title">{t(lang, 'services_page_title')}</h2>
         </div>
 
         <div className="services-page-grid">

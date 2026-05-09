@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Button, SectionHeader, Section } from '@/components/ui';
 import { getLang } from '@/lib/data';
-import { L, tl } from '@/lib/labels';
+import { t } from '@/messages';
 import '@/styles/services-page.css';
 
 interface ServiceItem {
@@ -28,8 +28,8 @@ export default async function Services({ services = [] }: { services?: ServiceIt
   return (
     <Section background="gray">
       <SectionHeader
-        subtitle={tl(L.services_subtitle, lang)}
-        title={tl(L.services_title, lang)}
+        subtitle={t(lang, 'services_subtitle')}
+        title={t(lang, 'services_title')}
       />
 
       <div className="services-page-grid">
@@ -52,7 +52,7 @@ export default async function Services({ services = [] }: { services?: ServiceIt
 
       <div className="services-footer">
         <Button href="/services" variant="outline">
-          {tl(L.services_btn, lang)}
+          {t(lang, 'services_btn')}
         </Button>
       </div>
     </Section>

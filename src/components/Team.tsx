@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { SectionHeader, Section } from '@/components/ui';
-import { L, tl } from '@/lib/labels';
+import { t } from '@/messages';
 import '@/styles/team.css';
 import { TEAM_FALLBACK_MEMBERS } from '@/lib/team-fallback';
 
@@ -42,8 +42,8 @@ export default function Team({ members = [], lang = 'ru' }: { members?: TeamMemb
   return (
     <Section background="gray">
       <SectionHeader
-        subtitle={tl(L.team_subtitle, lang)}
-        title={tl(L.team_title, lang)}
+        subtitle={t(lang, 'team_subtitle')}
+        title={t(lang, 'team_title')}
       />
 
       <div className="team-carousel">

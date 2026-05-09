@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { SectionHeader, Section } from '@/components/ui';
+import { getLang } from '@/lib/data';
+import { t } from '@/messages';
 import '@/styles/about.css';
 
 interface Feature {
@@ -17,36 +19,52 @@ interface AboutProps {
   features?: Feature[];
 }
 
-const DEFAULT_FEATURES: Feature[] = [
-  { icon: '📚', title: 'Множество успешных дел', description: 'Наша команда успешно завершила множество дел в различных сферах права' },
-  { icon: '⚖️', title: 'Профессиональные юристы', description: 'Опытные адвокаты предоставляют индивидуальные юридические консультации' },
-  { icon: '💼', title: 'Более 10 лет опыта', description: 'Наш стратегический подход основан на десятилетнем опыте работы' },
-];
-
-export default function About({
-  title = 'Высококачественные юридические и бухгалтерские услуги в Армении',
-  description = 'Адвокатская контора «NEW LEX» уже более 10 лет оказывает высококачественные юридические и бухгалтерские услуги в Ереване и регионах Армении.',
+export default async function About({
+  title,
+  description,
   statsNumber = '10+',
-  statsLabel = 'Лет опыта',
+  statsLabel,
   youtubeUrl = 'https://www.youtube.com/watch?v=ksvLw74GK2E',
-  features = DEFAULT_FEATURES,
+  features,
 }: AboutProps) {
+  const lang = await getLang();
+  const displayTitle = title || t(lang, 'about_default_title');
+  const displayDescription = description || t(lang, 'about_default_description');
+  const displayStatsLabel = statsLabel || t(lang, 'about_stats_label_default');
+  const displayFeatures: Feature[] =
+    features && features.length > 0
+      ? features
+      : [
+          {
+            icon: '📚',
+            title: t(lang, 'about_feature_1_title'),
+            description: t(lang, 'about_feature_1_desc'),
+          },
+          {
+            icon: '⚖️',
+            title: t(lang, 'about_feature_2_title'),
+            description: t(lang, 'about_feature_2_desc'),
+          },
+          {
+            icon: '💼',
+            title: t(lang, 'about_feature_3_title'),
+            description: t(lang, 'about_feature_3_desc'),
+          },
+        ];
+
   return (
     <Section background="white">
       <div className="about-wrapper">
-        {/* Left Content */}
         <div className="about-content">
           <SectionHeader
-          
-            title={title}
-            description={description}
+            title={displayTitle}
+            description={displayDescription}
             centered={false}
             className="light"
           />
 
-          {/* Features */}
           <div className="about-features">
-            {features.map((feature, index) => (
+            {displayFeatures.map((feature, index) => (
               <div key={index} className="about-feature">
                 <div className="about-feature-icon">{feature.icon}</div>
                 <div>
@@ -58,11 +76,10 @@ export default function About({
           </div>
         </div>
 
-        {/* Right Image/Video */}
         <div className="about-image">
           <div className="about-stats-box">
             <div className="about-stats-number">{statsNumber}</div>
-            <div className="about-stats-label">{statsLabel}</div>
+            <div className="about-stats-label">{displayStatsLabel}</div>
           </div>
 
           <Link href={youtubeUrl} target="_blank" className="about-play-btn">

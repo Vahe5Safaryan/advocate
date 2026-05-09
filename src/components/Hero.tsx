@@ -13,43 +13,19 @@ interface Slide {
   buttonText?: string;
 }
 
-const FALLBACK_SLIDES: Slide[] = [
-  {
-    id: '1',
-    imageUrl: '/images/hero/hero1.jpg',
-    subtitle: 'Ваш путь к справедливости начинается здесь',
-    title: 'Добро пожаловать в NEW LEX Law Firm',
-    description: 'Предоставляем исключительные юридические услуги с приверженностью профессионализму и совершенству.',
-    buttonText: 'Позвонить',
-  },
-  {
-    id: '2',
-    imageUrl: '/images/hero/hro2.jpg',
-    subtitle: 'Ваш путь к справедливости начинается здесь',
-    title: 'Надёжный партнёр на пути к правосудию',
-    description: 'Мы на вашей стороне, защищаем ваши права и добиваемся справедливости.',
-    buttonText: 'Позвонить',
-  },
-  {
-    id: '3',
-    imageUrl: '/images/hero/hero1.jpg',
-    subtitle: 'Ваш путь к справедливости начинается здесь',
-    title: 'Юридическая поддержка для каждого клиента',
-    description: 'Наша команда разрабатывает индивидуальные решения для ваших уникальных правовых вопросов.',
-    buttonText: 'Позвонить',
-  },
-];
-
 export default function Hero({ slides = [] }: { slides?: Slide[] }) {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const data = (slides.length > 0 ? slides : FALLBACK_SLIDES).filter((s) => !!s.imageUrl);
+  const data = slides.filter((s) => !!s.imageUrl);
 
   useEffect(() => {
+    if (data.length === 0) return;
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % data.length);
     }, 6000);
     return () => clearInterval(timer);
   }, [data.length]);
+
+  if (data.length === 0) return null;
 
   return (
     <section className="hero">
@@ -81,7 +57,7 @@ export default function Hero({ slides = [] }: { slides?: Slide[] }) {
                     <svg fill="currentColor" viewBox="0 0 20 20">
                       <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.493 1.498a1 1 0 01.684.949V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                     </svg>
-                    {slide.buttonText ?? 'Позвонить'}
+                    {slide.buttonText ?? ''}
                   </a>
                 </div>
               </div>
@@ -91,6 +67,7 @@ export default function Hero({ slides = [] }: { slides?: Slide[] }) {
       ))}
 
       <button
+        type="button"
         onClick={() => setCurrentSlide((prev) => (prev - 1 + data.length) % data.length)}
         className="hero-arrow prev"
       >
@@ -100,6 +77,7 @@ export default function Hero({ slides = [] }: { slides?: Slide[] }) {
       </button>
 
       <button
+        type="button"
         onClick={() => setCurrentSlide((prev) => (prev + 1) % data.length)}
         className="hero-arrow next"
       >

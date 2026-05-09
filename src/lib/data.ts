@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers';
 import { unstable_noStore as noStore } from 'next/cache';
+import { t } from '@/messages';
 import prisma from './prisma';
 import { getTeamFallbackDetail } from './team-fallback';
 import { SITE_LANGS, type SiteLang } from './site-lang';
@@ -32,17 +33,46 @@ export async function getHeroSlides() {
     orderBy: { order: 'asc' },
     include: { translations: true },
   });
-  return slides.map((s) => {
-    const tr = pickT(s.translations, lang);
-    return {
-      id: s.id,
-      imageUrl: s.imageUrl,
-      subtitle: tr?.subtitle ?? '',
-      title: tr?.title ?? '',
-      description: tr?.description ?? '',
-      buttonText: tr?.buttonText ?? 'Позвонить',
-    };
-  });
+  const btn = t(lang, 'hero_call_btn');
+  if (slides.length > 0) {
+    return slides.map((s) => {
+      const tr = pickT(s.translations, lang);
+      return {
+        id: s.id,
+        imageUrl: s.imageUrl,
+        subtitle: tr?.subtitle ?? '',
+        title: tr?.title ?? '',
+        description: tr?.description ?? '',
+        buttonText: tr?.buttonText ?? btn,
+      };
+    });
+  }
+  return [
+    {
+      id: '1',
+      imageUrl: '/images/hero/hero1.jpg',
+      subtitle: t(lang, 'hero_fallback_1_subtitle'),
+      title: t(lang, 'hero_fallback_1_title'),
+      description: t(lang, 'hero_fallback_1_desc'),
+      buttonText: btn,
+    },
+    {
+      id: '2',
+      imageUrl: '/images/hero/hro2.jpg',
+      subtitle: t(lang, 'hero_fallback_2_subtitle'),
+      title: t(lang, 'hero_fallback_2_title'),
+      description: t(lang, 'hero_fallback_2_desc'),
+      buttonText: btn,
+    },
+    {
+      id: '3',
+      imageUrl: '/images/hero/hero1.jpg',
+      subtitle: t(lang, 'hero_fallback_3_subtitle'),
+      title: t(lang, 'hero_fallback_3_title'),
+      description: t(lang, 'hero_fallback_3_desc'),
+      buttonText: btn,
+    },
+  ];
 }
 
 // ─── Services ────────────────────────────────────────────────────────────────

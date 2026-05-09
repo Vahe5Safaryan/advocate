@@ -4,17 +4,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { setSiteLang } from '@/app/actions/site-lang';
+import type { SiteLang } from '@/lib/site-lang';
 import '@/styles/header.css';
-
-const FALLBACK_MENU = [
-    { id: '1', title: 'Главная', href: '/', children: [] },
-    { id: '2', title: 'Услуги', href: '/services', children: [] },
-    { id: '3', title: 'Команда', href: '/team', children: [] },
-    { id: '4', title: 'Дела', href: '/cases', children: [] },
-    { id: '5', title: 'Блог', href: '/blog', children: [] },
-    { id: '6', title: 'О нас', href: '/about', children: [] },
-    { id: '7', title: 'Контакты', href: '/contact', children: [] },
-];
 
 interface MenuItem {
     id: string;
@@ -29,12 +20,6 @@ const languages = [
     { code: 'ru', name: 'Ру', flag: '🇷🇺' },
 ];
 
-function getCookieLang(): string {
-    if (typeof document === 'undefined') return 'ru';
-    const match = document.cookie.match(/(?:^|;\s*)site-lang=([^;]*)/);
-    return match ? match[1] : 'ru';
-}
-
 function setCookieLang(code: string): void {
     if (typeof document === 'undefined') return;
     document.cookie = `site-lang=${code}; path=/; max-age=31536000`;
@@ -42,22 +27,27 @@ function setCookieLang(code: string): void {
 
 export default function Header({
     menuItems = [],
+    fallbackMenu,
+    initialLang,
     phone = '+374 (96) 374 374',
     phone2 = '',
     email = 'info@newlex.am',
 }: {
     menuItems?: MenuItem[];
+    fallbackMenu: MenuItem[];
+    /** Must match `getLang()` on the server — never infer from `document.cookie` in state (SSR has no cookie in JS). */
+    initialLang: SiteLang;
     phone?: string;
     phone2?: string;
     email?: string;
 }) {
-    const items = menuItems.length > 0 ? menuItems : FALLBACK_MENU;
+    const items = menuItems.length > 0 ? menuItems : fallbackMenu;
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
     const [isLangOpen, setIsLangOpen] = useState(false);
     const [mobileSubmenu, setMobileSubmenu] = useState<string | null>(null);
     const [currentLang, setCurrentLang] = useState(() => {
-        const code = getCookieLang();
+        const code = initialLang;
         return languages.find((l) => l.code === code) ?? languages.find((l) => l.code === 'ru') ?? languages[0];
     });
     const [isScrolled, setIsScrolled] = useState(false);

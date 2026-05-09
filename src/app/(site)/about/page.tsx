@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Button, Section } from '@/components/ui';
 import { getAboutTabs, getProcessSteps, getPracticeAreas, getTeamMembers, getSettings, getLang } from '@/lib/data';
 import { TEAM_FALLBACK_MEMBERS } from '@/lib/team-fallback';
-import { L, tl } from '@/lib/labels';
+import { t } from '@/messages';
 import AboutTabs from '@/components/AboutTabs';
 import '@/styles/about-page.css';
 
@@ -52,7 +52,7 @@ export default async function AboutPage() {
       <section className="about-hero">
         <div className="about-hero-overlay"></div>
         <div className="container about-hero-content">
-          <h1 className="about-hero-title">{tl(L.about, lang)}</h1>
+          <h1 className="about-hero-title">{t(lang, 'about')}</h1>
         </div>
       </section>
 
@@ -96,8 +96,8 @@ export default async function AboutPage() {
       {/* Team Section */}
       <Section background="gray">
         <div className="about-team-header">
-          <span className="about-label centered">{tl(L.about_team_label, lang)}</span>
-          <h2 className="about-team-title">{tl(L.about_team_title, lang)}</h2>
+          <span className="about-label centered">{t(lang, 'about_team_label')}</span>
+          <h2 className="about-team-title">{t(lang, 'about_team_title')}</h2>
         </div>
 
         <div className="about-team-grid">
@@ -136,7 +136,7 @@ export default async function AboutPage() {
           </div>
 
           <div className="about-process-content">
-            <span className="about-label">{tl(L.about_process_label, lang)}</span>
+            <span className="about-label">{t(lang, 'about_process_label')}</span>
             <h2 className="about-process-title">
               {settings.about_process_title || 'Надежные юридические решения для вашего спокойствия'}
             </h2>
@@ -161,10 +161,10 @@ export default async function AboutPage() {
         <div className="container">
           <div className="about-practice-grid">
             <div className="about-practice-content">
-              <span className="about-label light">{tl(L.about_practice_label, lang)}</span>
-              <h2 className="about-practice-title">{tl(L.about_practice_title, lang)}</h2>
+              <span className="about-label light">{t(lang, 'about_practice_label')}</span>
+              <h2 className="about-practice-title">{t(lang, 'about_practice_title')}</h2>
               <Button href="/services" variant="gold">
-                {tl(L.about_services_btn, lang)}
+                {t(lang, 'about_services_btn')}
               </Button>
             </div>
 

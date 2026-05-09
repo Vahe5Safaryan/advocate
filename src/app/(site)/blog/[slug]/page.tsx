@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Section } from '@/components/ui';
 import { getBlogFallbackBySlug, getBlogFallbackRelatedList } from '@/lib/blog-fallback';
 import { getBlogPostBySlug, getBlogPosts, getLang } from '@/lib/data';
-import { L, tl } from '@/lib/labels';
+import { t } from '@/messages';
 import '@/styles/blog-detail.css';
 
 export const dynamic = 'force-dynamic';
@@ -77,7 +77,7 @@ export default async function BlogDetailPage({ params }: { params: Params }) {
 
           {related.length > 0 && (
             <aside className="blog-detail-sidebar">
-              <h3 className="blog-detail-sidebar-title">{tl(L.related_articles, lang)}</h3>
+              <h3 className="blog-detail-sidebar-title">{t(lang, 'related_articles')}</h3>
               <div className="blog-detail-related">
                 {related.map((p) => (
                   <Link key={p.id} href={`/blog/${p.slug}`} className="blog-detail-related-card">
