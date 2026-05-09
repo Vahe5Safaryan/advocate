@@ -82,7 +82,7 @@ export default function Header({
                     <Link href="/" className="logo">
                         <div className="logo-text">
                             <span className="logo-gold">NEW LEX</span>
-                            <span className={isScrolled ? 'logo-dark' : 'logo-light'}> Legal 2</span>
+                            <span className={isScrolled ? 'logo-dark' : 'logo-light'}> Legal 112</span>
                         </div>
                     </Link>
 
