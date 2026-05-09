@@ -3,22 +3,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Section } from '@/components/ui';
 import { getTeamMembers, getLang } from '@/lib/data';
+import { TEAM_FALLBACK_MEMBERS } from '@/lib/team-fallback';
 import { L, tl } from '@/lib/labels';
 import '@/styles/team-page.css';
-
-const FALLBACK = [
-  { id: '1', slug: 'tatevik-malkhasyan', imageUrl: '/images/team/team1.jpg', name: 'Татевик Малхасян', position: 'Директор компании, Адвокат' },
-  { id: '2', slug: 'andranik-mnatsakanyan', imageUrl: '/images/team/team2.jpg', name: 'Андраник Мнацаканян', position: 'Партнер, Адвокат' },
-  { id: '3', slug: 'gurgen-nersisyan', imageUrl: '/images/team/team3.jpg', name: 'Гурген Нерсисян', position: 'Партнер, Адвокат' },
-  { id: '4', slug: 'edgar-ayvazyan', imageUrl: '/images/team/team1.jpg', name: 'Эдгар Айвазян', position: 'Партнер, Адвокат' },
-  { id: '5', slug: 'arsen-sardaryan', imageUrl: '/images/team/team2.jpg', name: 'Арсен Сардарян', position: 'Управляющий партнер' },
-  { id: '6', slug: 'susanna-pambukchyan', imageUrl: '/images/team/team3.jpg', name: 'Сусанна Памбукчян', position: 'Главный бухгалтер' },
-];
 
 export default async function TeamPage() {
   await waitForRequest();
   const [members, lang] = await Promise.all([getTeamMembers(), getLang()]);
-  const data = members.length > 0 ? members : FALLBACK;
+  const data = members.length > 0 ? members : TEAM_FALLBACK_MEMBERS;
 
   return (
     <>
