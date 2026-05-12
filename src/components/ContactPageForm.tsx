@@ -139,6 +139,12 @@ export default function ContactPageForm({ contactInfo, lang = 'ru' }: { contactI
             <button type="reset" disabled={sending} className="contact-page-submit">
              cancle
             </button>
+            <button type="reset" disabled={sending} className="contact-page-submit">
+             cancle2
+            </button>
+            <button type="reset" disabled={sending} className="contact-page-submit">
+             cancle3
+            </button>
           </form>
         )}
       </div>
