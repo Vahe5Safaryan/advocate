@@ -19,9 +19,9 @@ function agentLog(
 ) {
   fetch('http://127.0.0.1:7526/ingest/59d47303-fa84-473a-b633-7ae7bcfef4ec', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': 'e11b32' },
+    headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '7cca3b' },
     body: JSON.stringify({
-      sessionId: 'e11b32',
+      sessionId: '7cca3b',
       runId,
       hypothesisId,
       location,
