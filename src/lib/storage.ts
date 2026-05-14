@@ -37,6 +37,9 @@ export function getS3Client(): S3Client {
     region,
     endpoint,
     forcePathStyle,
+    // Default SDK behavior sends optional payload checksums MinIO often rejects.
+    requestChecksumCalculation: 'WHEN_REQUIRED',
+    responseChecksumValidation: 'WHEN_REQUIRED',
     credentials: {
       accessKeyId: minioAccessKey(),
       secretAccessKey: minioSecretKey(),

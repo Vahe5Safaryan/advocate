@@ -47,12 +47,10 @@ export async function POST(request: NextRequest) {
         Key: objectKey,
         Body: buffer,
         ContentType: file.type,
-        Metadata: {
-          originalFilename: file.name,
-        },
       }),
     );
-  } catch {
+  } catch (err) {
+    console.error('[upload] MinIO PutObject failed:', err);
     return NextResponse.json({ error: 'Upload storage error' }, { status: 500 });
   }
 
