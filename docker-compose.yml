@@ -63,6 +63,8 @@ services:
     volumes:
       - ./scripts/minio-init.sh:/minio-init.sh:ro
     entrypoint: ["/bin/sh", "/minio-init.sh"]
+    networks:
+      - app-network
 
 networks:
   app-network:
