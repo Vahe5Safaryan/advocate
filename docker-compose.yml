@@ -7,6 +7,9 @@ services:
     restart: always
     env_file:
       - .env
+    # Inside Compose, localhost is this container — MinIO is reachable only via the service name.
+    environment:
+      MINIO_ENDPOINT: http://minio:9000
     ports:
       - "3000:3000"
     depends_on:

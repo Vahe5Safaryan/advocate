@@ -12,6 +12,22 @@ export function getMinioBucket(): string {
   return requiredEnv('MINIO_BUCKET');
 }
 
+function minioAccessKey(): string {
+  return (
+    process.env.MINIO_ACCESS_KEY ||
+    process.env.MINIO_ROOT_USER ||
+    requiredEnv('MINIO_ACCESS_KEY')
+  );
+}
+
+function minioSecretKey(): string {
+  return (
+    process.env.MINIO_SECRET_KEY ||
+    process.env.MINIO_ROOT_PASSWORD ||
+    requiredEnv('MINIO_SECRET_KEY')
+  );
+}
+
 export function getS3Client(): S3Client {
   const endpoint = requiredEnv('MINIO_ENDPOINT');
   const region = process.env.MINIO_REGION ?? 'us-east-1';
@@ -22,8 +38,8 @@ export function getS3Client(): S3Client {
     endpoint,
     forcePathStyle,
     credentials: {
-      accessKeyId: requiredEnv('MINIO_ACCESS_KEY'),
-      secretAccessKey: requiredEnv('MINIO_SECRET_KEY'),
+      accessKeyId: minioAccessKey(),
+      secretAccessKey: minioSecretKey(),
     },
   });
 }
