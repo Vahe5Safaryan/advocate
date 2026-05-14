@@ -12,10 +12,16 @@ jobs:
     steps:
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1.0.3
+        # These exist only on the Actions runner unless forwarded — compose ${MINIO_*} on the VPS needs them in the remote shell.
+        env:
+          MINIO_ROOT_USER: ${{ secrets.MINIO_ROOT_USER }}
+          MINIO_ROOT_PASSWORD: ${{ secrets.MINIO_ROOT_PASSWORD }}
+          MINIO_BUCKET: ${{ secrets.MINIO_BUCKET }}
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
+          envs: MINIO_ROOT_USER,MINIO_ROOT_PASSWORD,MINIO_BUCKET
           script: |
             cd /opt/app/advocate
 
