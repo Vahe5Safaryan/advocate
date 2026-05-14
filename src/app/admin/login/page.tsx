@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import '@/styles/admin/login.css';
@@ -41,7 +42,15 @@ export default function AdminLoginPage() {
       <div className="admin-login-container">
         <div className="admin-login-card">
           <div className="admin-login-header">
-            <div className="admin-login-logo">NEW LEX Admin</div>
+            <div className="admin-login-logo">
+              <Image
+                src="/images/logo/11.png"
+                alt="NEW LEX"
+                width={200}
+                height={80}
+                style={{ objectFit: 'contain' }}
+              />
+            </div>
             <p className="admin-login-subtitle">Войдите в панель управления</p>
           </div>
 

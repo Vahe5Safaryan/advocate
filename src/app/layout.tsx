@@ -18,6 +18,10 @@ const playfair = Playfair_Display({
 /** Minimal defaults; public routes override via `(site)/layout` `generateMetadata`. */
 export const metadata: Metadata = {
   title: 'NEW LEX Legal',
+  icons: {
+    icon: '/images/logo/logo-fav.png',
+    apple: '/images/logo/logo-fav.png',
+  },
 };
 
 export default async function RootLayout({

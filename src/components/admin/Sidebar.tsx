@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 
@@ -177,7 +178,13 @@ export default function AdminSidebar() {
     <aside className="admin-sidebar">
       <div className="admin-sidebar-header">
         <div className="admin-sidebar-logo">
-          NEW LEX <span>Admin</span>
+          <Image
+            src="/images/logo/11.png"
+            alt="NEW LEX"
+            width={200}
+            height={80}
+            style={{ objectFit: 'contain' }}
+          />
         </div>
       </div>
 
