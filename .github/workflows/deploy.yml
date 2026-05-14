@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1.0.3
-        # These exist only on the Actions runner unless forwarded — compose ${MINIO_*} on the VPS needs them in the remote shell.
+        # Forward secrets to the VPS shell; merge_minio_env.py writes them into .env so compose has no ${MINIO_*} warnings.
         env:
           MINIO_ROOT_USER: ${{ secrets.MINIO_ROOT_USER }}
           MINIO_ROOT_PASSWORD: ${{ secrets.MINIO_ROOT_PASSWORD }}
@@ -27,6 +27,8 @@ jobs:
 
             git reset --hard
             git pull origin main
+
+            python3 scripts/merge_minio_env.py .env
 
             docker compose down
             docker compose up -d --build
