@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { getContactInfo, getLang, getMenuItems, getServices, getSettings } from '@/lib/data';
 import { t } from '@/messages';
 import '@/styles/footer.css';
@@ -54,8 +55,13 @@ export default async function Footer() {
           {/* Company Info */}
           <div>
             <div className="footer-logo">
-              <span className="footer-logo-gold">NEW LEX</span>
-              <span> Legal</span>
+              <Image
+                src="/images/logo/logo-f2.png"
+                alt="NEW LEX"
+                width={200}
+                height={60}
+                style={{ objectFit: 'contain' }}
+              />
             </div>
             <p className="footer-description">{description}</p>
             {activeSocials.length > 0 && (

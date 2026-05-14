@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { setSiteLang } from '@/app/actions/site-lang';
 import type { SiteLang } from '@/lib/site-lang';
@@ -80,10 +81,14 @@ export default function Header({
                 <div className="header-inner">
                     {/* Logo */}
                     <Link href="/" className="logo">
-                        <div className="logo-text">
-                            <span className="logo-gold">NEW LEX</span>
-                            <span className={isScrolled ? 'logo-dark' : 'logo-light'}> Legal</span>
-                        </div>
+                        <Image
+                            src="/images/logo/18.png"
+                            alt="NEW LEX"
+                            width={200}
+                            height={80}
+                            style={{ objectFit: 'contain' }}
+                            priority
+                        />
                     </Link>
 
                     {/* Desktop Navigation */}
