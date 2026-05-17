@@ -24,7 +24,7 @@
 }
 
 .blog-hero-title {
-  font-size: 48px;
+  font-size: 42px;
   font-weight: 700;
   color: white;
   margin-bottom: 16px;
@@ -75,7 +75,7 @@
 }
 
 .blog-page-title {
-  font-size: 32px;
+  font-size: 26px;
   font-weight: 700;
   color: #0D3631;
   margin-bottom: 16px;
@@ -299,4 +299,10 @@
 .case-result.result-partial {
   background-color: #f59e0b;
   color: white;
+}
+
+@media (max-width: 768px) {
+  .blog-hero {
+    min-height: 300px;
+  }
 }
