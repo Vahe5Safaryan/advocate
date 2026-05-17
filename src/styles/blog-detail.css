@@ -26,7 +26,7 @@
 
 .blog-detail-hero-title {
   font-family: var(--font-playfair), Georgia, serif;
-  font-size: 36px;
+  font-size: 30px;
   font-weight: 700;
   color: white;
   margin-bottom: 20px;
@@ -150,7 +150,7 @@
 }
 
 .blog-detail-section-title {
-  font-size: 20px;
+  font-size: 14px;
   font-weight: 700;
   color: #0D3631;
   line-height: 1.4;
@@ -283,4 +283,10 @@
 
 .case-related-image {
   background: linear-gradient(135deg, #1a3a2a 0%, #0d2818 100%);
+}
+
+@media (max-width: 768px) {
+  .blog-detail-hero {
+    min-height: 300px;
+  }
 }

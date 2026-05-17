@@ -25,7 +25,7 @@
 }
 
 .service-detail-hero-title {
-  font-size: 36px;
+  font-size: 30px;
   font-weight: 700;
   color: white;
   margin-bottom: 20px;
@@ -194,7 +194,7 @@
 }
 
 .service-detail-section-title {
-  font-size: 22px;
+  font-size: 16px;
   font-weight: 700;
   color: #0D3631;
   margin-bottom: 20px;
@@ -249,4 +249,10 @@
 .service-detail-sidebar {
   scrollbar-width: thin;
   scrollbar-color: #A38B4D #f1f1f1;
+}
+
+@media (max-width: 768px) {
+  .service-detail-hero {
+    min-height: 300px;
+  }
 }
